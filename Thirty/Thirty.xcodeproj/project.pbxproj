@@ -13,6 +13,9 @@
 		4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7651E4BDD5A00AF54AA /* Assets.xcassets */; };
 		4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7671E4BDD5A00AF54AA /* LaunchScreen.storyboard */; };
 		4500C7741E4BE44C00AF54AA /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7731E4BE44C00AF54AA /* Keys.swift */; };
+		4500C7761E4D3D2D00AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7751E4D3D2D00AF54AA /* CallViewController.swift */; };
+		4500C7781E4D439900AF54AA /* SinchClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7771E4D439900AF54AA /* SinchClientManager.swift */; };
+		4500C77B1E4D463400AF54AA /* incoming.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4500C77A1E4D463400AF54AA /* incoming.wav */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +31,9 @@
 		4500C76A1E4BDD5A00AF54AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4500C7701E4BE23600AF54AA /* Thirty-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Thirty-Bridging-Header.h"; sourceTree = "<group>"; };
 		4500C7731E4BE44C00AF54AA /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
+		4500C7751E4D3D2D00AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
+		4500C7771E4D439900AF54AA /* SinchClientManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinchClientManager.swift; sourceTree = "<group>"; };
+		4500C77A1E4D463400AF54AA /* incoming.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = incoming.wav; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,8 +79,11 @@
 		4500C75D1E4BDD5A00AF54AA /* Thirty */ = {
 			isa = PBXGroup;
 			children = (
+				4500C7791E4D463400AF54AA /* Sounds */,
 				4500C75E1E4BDD5A00AF54AA /* AppDelegate.swift */,
+				4500C7771E4D439900AF54AA /* SinchClientManager.swift */,
 				4500C7601E4BDD5A00AF54AA /* ViewController.swift */,
+				4500C7751E4D3D2D00AF54AA /* CallViewController.swift */,
 				4500C7621E4BDD5A00AF54AA /* Main.storyboard */,
 				4500C7651E4BDD5A00AF54AA /* Assets.xcassets */,
 				4500C7671E4BDD5A00AF54AA /* LaunchScreen.storyboard */,
@@ -83,6 +92,14 @@
 				4500C7731E4BE44C00AF54AA /* Keys.swift */,
 			);
 			path = Thirty;
+			sourceTree = "<group>";
+		};
+		4500C7791E4D463400AF54AA /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				4500C77A1E4D463400AF54AA /* incoming.wav */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
@@ -162,6 +179,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4500C77B1E4D463400AF54AA /* incoming.wav in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
@@ -225,6 +243,8 @@
 			files = (
 				4500C7611E4BDD5A00AF54AA /* ViewController.swift in Sources */,
 				4500C7741E4BE44C00AF54AA /* Keys.swift in Sources */,
+				4500C7761E4D3D2D00AF54AA /* CallViewController.swift in Sources */,
+				4500C7781E4D439900AF54AA /* SinchClientManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,6 +370,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 98E8SVTQ29;
 				INFOPLIST_FILE = Thirty/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirty.Thirty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -367,6 +388,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 98E8SVTQ29;
 				INFOPLIST_FILE = Thirty/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirty.Thirty;
 				PRODUCT_NAME = "$(TARGET_NAME)";

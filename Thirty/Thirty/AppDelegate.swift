@@ -9,32 +9,13 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, SINClientDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let sinchClient = Sinch.client(withApplicationKey: SinchAppKey, applicationSecret: SinchSecret, environmentHost: SinchEnvHost, userId: "alan")
+    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        initializeSinchClient()
         return true
-    }
-    
-    func initializeSinchClient() {
-        sinchClient?.delegate = self
-        sinchClient?.setSupportCalling(true)
-        sinchClient?.setSupportActiveConnectionInBackground(true)
-        sinchClient?.start()
-        sinchClient?.startListeningOnActiveConnection()
-    }
-    
-    // MARK - SINClientDelegate
-    
-    func clientDidStart(_ client: SINClient!) {
-        print("Sinch client started.")
-    }
-    
-    func clientDidFail(_ client: SINClient!, error: Error!) {
-        print("Sinch client failed!")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

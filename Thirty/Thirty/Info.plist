@@ -39,5 +39,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to display video</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to send and receive sound</string>
 </dict>
 </plist>
