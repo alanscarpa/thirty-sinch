@@ -44,6 +44,9 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.popViewController(animated: true)
     }
     
+    func goToLoginVC() {
+        rootNavigationController.setViewControllers([LoginViewController()], animated: true)
+    }
     
 // TODO: Just for reference. Will delete.
 //    func goToHomeVC() {
