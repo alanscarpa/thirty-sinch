@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +18,50 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" red="0.022945646196603775" green="0.9779776930809021" blue="0.040814585983753204" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thirtyLogo" translatesAutoresizingMaskIntoConstraints="NO" id="OEM-LY-OJe">
+                    <rect key="frame" x="87.5" y="33.5" width="200" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="NDZ-kE-QKB"/>
+                        <constraint firstAttribute="height" constant="200" id="q0V-cR-2Jk"/>
+                    </constraints>
+                </imageView>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zY5-wF-stU">
+                    <rect key="frame" x="109" y="270" width="156" height="30"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YZ-ze-gvL">
+                    <rect key="frame" x="127" y="324" width="120" height="30"/>
+                    <color key="backgroundColor" red="0.12156862745098039" green="0.72156862745098038" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="a1F-v4-Dv2"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="Log In">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="zY5-wF-stU" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="GHH-wi-KNP"/>
+                <constraint firstItem="OEM-LY-OJe" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="0.4" id="UyW-ni-5n5"/>
+                <constraint firstItem="1YZ-ze-gvL" firstAttribute="centerX" secondItem="zY5-wF-stU" secondAttribute="centerX" id="mFD-pv-PNK"/>
+                <constraint firstItem="OEM-LY-OJe" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="r5o-0Y-mug"/>
+                <constraint firstItem="1YZ-ze-gvL" firstAttribute="top" secondItem="zY5-wF-stU" secondAttribute="bottom" constant="24" id="rFu-Iz-IsR"/>
+                <constraint firstItem="zY5-wF-stU" firstAttribute="top" secondItem="OEM-LY-OJe" secondAttribute="bottom" constant="36.5" id="vvI-Gw-STP"/>
+            </constraints>
+            <point key="canvasLocation" x="43.5" y="53.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="thirtyLogo" width="800" height="800"/>
+    </resources>
 </document>
