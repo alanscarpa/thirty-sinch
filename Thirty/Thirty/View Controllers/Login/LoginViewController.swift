@@ -14,13 +14,12 @@ class LoginViewController: UIViewController, SINClientDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     // MARK: - Actions
     
     @IBAction func loginButtonTapped() {
-        if let userId = loginTextField.text {
+        if let userId = loginTextField.text, !userId.isEmpty {
             initializeSinchClientWithUserId(userId)
         } else {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username.")
@@ -29,20 +28,12 @@ class LoginViewController: UIViewController, SINClientDelegate {
     }
     
     func initializeSinchClientWithUserId(_ userId: String) {
-        // TODO: Changehost to env host
-        // TODO: Change authorization so app secret and key not used
-        SinchClientManager.shared.client = Sinch.client(withApplicationKey: SinchAppKey, applicationSecret: SinchSecret, environmentHost: SinchEnvHost, userId: userId)
-        SinchClientManager.shared.client?.delegate = self
-        SinchClientManager.shared.client?.setSupportCalling(true)
-        SinchClientManager.shared.client?.enableManagedPushNotifications()
-        SinchClientManager.shared.client?.start()
-        SinchClientManager.shared.client?.startListeningOnActiveConnection()
+        SinchClientManager.shared.initializeWithUserId(userId, delegate: self)
     }
     
     // MARK: - SINClientDelegate
     
     func clientDidStart(_ client: SINClient!) {
-        print("Sinch client started.")
         RootViewController.shared.pushHomeVC()
     }
     
