@@ -14,12 +14,15 @@
 		4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7671E4BDD5A00AF54AA /* LaunchScreen.storyboard */; };
 		4500C7741E4BE44C00AF54AA /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7731E4BE44C00AF54AA /* Keys.swift */; };
 		4500C7761E4D3D2D00AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7751E4D3D2D00AF54AA /* CallViewController.swift */; };
-		4500C7781E4D439900AF54AA /* SinchClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7771E4D439900AF54AA /* SinchClientManager.swift */; };
 		4500C77B1E4D463400AF54AA /* incoming.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4500C77A1E4D463400AF54AA /* incoming.wav */; };
 		4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C77F1E4E8F2500AF54AA /* RootViewController.swift */; };
 		4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */; };
 		4500C7871E4E92C200AF54AA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7851E4E92C200AF54AA /* LoginViewController.swift */; };
 		4500C7881E4E92C200AF54AA /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7861E4E92C200AF54AA /* LoginViewController.xib */; };
+		4500C78B1E4E9EEA00AF54AA /* SinchClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78A1E4E9EEA00AF54AA /* SinchClientManager.swift */; };
+		4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */; };
+		4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78F1E527AFF00AF54AA /* HomeViewController.swift */; };
+		4500C7921E527AFF00AF54AA /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7901E527AFF00AF54AA /* HomeViewController.xib */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -36,12 +39,15 @@
 		4500C7701E4BE23600AF54AA /* Thirty-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Thirty-Bridging-Header.h"; path = "../Thirty-Bridging-Header.h"; sourceTree = "<group>"; };
 		4500C7731E4BE44C00AF54AA /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		4500C7751E4D3D2D00AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
-		4500C7771E4D439900AF54AA /* SinchClientManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinchClientManager.swift; sourceTree = "<group>"; };
 		4500C77A1E4D463400AF54AA /* incoming.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = incoming.wav; sourceTree = "<group>"; };
 		4500C77F1E4E8F2500AF54AA /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Thirty.swift"; sourceTree = "<group>"; };
 		4500C7851E4E92C200AF54AA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4500C7861E4E92C200AF54AA /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		4500C78A1E4E9EEA00AF54AA /* SinchClientManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinchClientManager.swift; sourceTree = "<group>"; };
+		4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Thirty.swift"; sourceTree = "<group>"; };
+		4500C78F1E527AFF00AF54AA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		4500C7901E527AFF00AF54AA /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,9 +94,9 @@
 			isa = PBXGroup;
 			children = (
 				4500C75E1E4BDD5A00AF54AA /* AppDelegate.swift */,
+				4500C7891E4E9EBD00AF54AA /* Utilities */,
 				4500C7811E4E924800AF54AA /* Extensions */,
 				4500C77D1E4E8EE800AF54AA /* View Controllers */,
-				4500C7771E4D439900AF54AA /* SinchClientManager.swift */,
 				4500C7601E4BDD5A00AF54AA /* ViewController.swift */,
 				4500C7751E4D3D2D00AF54AA /* CallViewController.swift */,
 				4500C7731E4BE44C00AF54AA /* Keys.swift */,
@@ -123,6 +129,7 @@
 		4500C77D1E4E8EE800AF54AA /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4500C78E1E527ADA00AF54AA /* Home */,
 				4500C7841E4E92AF00AF54AA /* Login */,
 				4500C77E1E4E8F0500AF54AA /* Root */,
 			);
@@ -141,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */,
+				4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -152,6 +160,23 @@
 				4500C7861E4E92C200AF54AA /* LoginViewController.xib */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		4500C7891E4E9EBD00AF54AA /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				4500C78A1E4E9EEA00AF54AA /* SinchClientManager.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		4500C78E1E527ADA00AF54AA /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				4500C78F1E527AFF00AF54AA /* HomeViewController.swift */,
+				4500C7901E527AFF00AF54AA /* HomeViewController.xib */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
@@ -236,6 +261,7 @@
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
+				4500C7921E527AFF00AF54AA /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,12 +321,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
+				4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */,
 				4500C7611E4BDD5A00AF54AA /* ViewController.swift in Sources */,
 				4500C7741E4BE44C00AF54AA /* Keys.swift in Sources */,
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
+				4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* LoginViewController.swift in Sources */,
 				4500C7761E4D3D2D00AF54AA /* CallViewController.swift in Sources */,
-				4500C7781E4D439900AF54AA /* SinchClientManager.swift in Sources */,
+				4500C78B1E4E9EEA00AF54AA /* SinchClientManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

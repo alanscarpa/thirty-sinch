@@ -10,7 +10,7 @@ import UIKit
 
 class RootViewController: UIViewController, UINavigationControllerDelegate {
     
-    static let sharedInstance = RootViewController()
+    static let shared = RootViewController()
     
     private let rootNavigationController = UINavigationController()
 
@@ -48,13 +48,9 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.setViewControllers([LoginViewController()], animated: true)
     }
     
-// TODO: Just for reference. Will delete.
-//    func goToHomeVC() {
-//        rootNavigationController.setViewControllers([LoginViewController(), HomeViewController()], animated: true)
-//    }
-    
-//    func pushSnoopersVC() {
-//        rootNavigationController.pushViewController(SnoopersViewController(), animated: true)
-//    }
+    func pushHomeVC() {
+        rootNavigationController.pushViewController(HomeViewController(), animated: true)
+    }
+
 }
 

@@ -25,6 +25,8 @@ class ViewController: UIViewController, SINClientDelegate, SINCallClientDelegate
         SinchClientManager.shared.client?.enableManagedPushNotifications()
         SinchClientManager.shared.client?.start()
         SinchClientManager.shared.client?.startListeningOnActiveConnection()
+        
+        // TODO: Call client delegate
         SinchClientManager.shared.client?.call().delegate = self
     }
     

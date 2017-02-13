@@ -13,4 +13,8 @@ class SinchClientManager {
     var client: SINClient?
     
     private init(){}
+    
+    func initializeWithUserId(_ userId: String) {
+        
+    }
 }
