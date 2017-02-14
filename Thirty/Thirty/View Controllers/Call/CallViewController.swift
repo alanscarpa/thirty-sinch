@@ -14,6 +14,7 @@ class CallViewController: UIViewController, SINCallDelegate {
     @IBOutlet weak var localVideoView: UIView!
     @IBOutlet weak var remoteUserLabel: UILabel!
     @IBOutlet weak var answerCallButton: UIButton!
+    @IBOutlet weak var timeRemainingLabel: UILabel!
     
     let audioController = SinchClientManager.shared.client?.audioController()
     let videoController = SinchClientManager.shared.client?.videoController()
@@ -23,6 +24,8 @@ class CallViewController: UIViewController, SINCallDelegate {
             call?.delegate = self
         }
     }
+    
+    var timer = Timer()
     
     // MARK: - View Lifecycle
     
@@ -50,11 +53,25 @@ class CallViewController: UIViewController, SINCallDelegate {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer.invalidate()
+    }
+    
     // MARK: - SINCallDelegate
     
     func callDidAddVideoTrack(_ call: SINCall!) {
         guard let remoteView = videoController?.remoteView() else { return }
         remoteVideoView.addSubview(remoteView)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+    }
+    
+    func callDidEstablish(_ call: SINCall!) {
+        //timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+    }
+    
+    func callDidEnd(_ call: SINCall!) {
+        RootViewController.shared.popViewController()
     }
     
     // MARK: - Actions
@@ -66,7 +83,22 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     @IBAction func cancelButtonTapped() {
+        endCall()
+    }
+    
+    // MARK: - Call Handling
+    
+    func updateTime() {
+        guard let timeRemainingString = timeRemainingLabel.text else { return }
+        guard var timeRemaining = Int(timeRemainingString) else { return }
+        timeRemaining = timeRemaining - 1
+        timeRemainingLabel.text = String(timeRemaining)
+        if timeRemaining == 0 {
+            endCall()
+        }
+    }
+    
+    func endCall() {
         call?.hangup()
-        RootViewController.shared.popViewController()
     }
 }
