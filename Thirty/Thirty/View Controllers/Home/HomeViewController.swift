@@ -20,19 +20,18 @@ class HomeViewController: UIViewController, SINCallClientDelegate {
     // MARK: - SINCallClientDelegate
     
     func client(_ client: SINCallClient!, didReceiveIncomingCall call: SINCall!) {
-        // TODO: create call vc
-        performSegue(withIdentifier: "callView", sender: call)
+        RootViewController.shared.pushCallVCWithCall(call)
     }
     
     // MARK: - Actions
     
     @IBAction func callButtonTapped() {
-        if let calleeId = calleeTextField.text, !calleeId.isEmpty {
+        if let calleeId = calleeTextField.text,
+            !calleeId.isEmpty,
+            let call = SinchClientManager.shared.client?.call().callUserVideo(withId: calleeId),
+            SinchClientManager.shared.client?.isStarted() == true {
             if SinchClientManager.shared.client?.isStarted() == true {
-                let call = SinchClientManager.shared.client?.call().callUserVideo(withId: calleeId)
-                performSegue(withIdentifier: "callView", sender: call)
-                let callViewController = segue.destination as! CallViewController
-                callViewController.call = sender as! SINCall?
+                RootViewController.shared.pushCallVCWithCall(call)
             }
         } else {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter the username of who you want to call.")

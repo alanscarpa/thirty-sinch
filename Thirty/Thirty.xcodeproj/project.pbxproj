@@ -13,7 +13,6 @@
 		4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7651E4BDD5A00AF54AA /* Assets.xcassets */; };
 		4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7671E4BDD5A00AF54AA /* LaunchScreen.storyboard */; };
 		4500C7741E4BE44C00AF54AA /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7731E4BE44C00AF54AA /* Keys.swift */; };
-		4500C7761E4D3D2D00AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7751E4D3D2D00AF54AA /* CallViewController.swift */; };
 		4500C77B1E4D463400AF54AA /* incoming.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4500C77A1E4D463400AF54AA /* incoming.wav */; };
 		4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C77F1E4E8F2500AF54AA /* RootViewController.swift */; };
 		4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */; };
@@ -40,7 +39,6 @@
 		4500C76A1E4BDD5A00AF54AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4500C7701E4BE23600AF54AA /* Thirty-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Thirty-Bridging-Header.h"; path = "../Thirty-Bridging-Header.h"; sourceTree = "<group>"; };
 		4500C7731E4BE44C00AF54AA /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
-		4500C7751E4D3D2D00AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		4500C77A1E4D463400AF54AA /* incoming.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = incoming.wav; sourceTree = "<group>"; };
 		4500C77F1E4E8F2500AF54AA /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Thirty.swift"; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 				4500C7811E4E924800AF54AA /* Extensions */,
 				4500C77D1E4E8EE800AF54AA /* View Controllers */,
 				4500C7601E4BDD5A00AF54AA /* ViewController.swift */,
-				4500C7751E4D3D2D00AF54AA /* CallViewController.swift */,
 				4500C7731E4BE44C00AF54AA /* Keys.swift */,
 				4500C77C1E4E8DEA00AF54AA /* Supporting Files */,
 				4500C7791E4D463400AF54AA /* Sounds */,
@@ -343,7 +340,6 @@
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
 				4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* LoginViewController.swift in Sources */,
-				4500C7761E4D3D2D00AF54AA /* CallViewController.swift in Sources */,
 				4500C78B1E4E9EEA00AF54AA /* SinchClientManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 			);

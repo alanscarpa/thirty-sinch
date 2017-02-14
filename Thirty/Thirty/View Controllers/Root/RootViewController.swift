@@ -54,7 +54,8 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     
     func pushCallVCWithCall(_ call: SINCall) {
         let callVC = CallViewController()
-        rootNavigationController.pushViewController(CallViewController(), animated: true)
+        callVC.call = call
+        rootNavigationController.pushViewController(callVC, animated: true)
     }
 
 
