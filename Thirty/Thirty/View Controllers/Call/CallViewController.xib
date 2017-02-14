@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,33 +30,68 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ah-Jn-y0d" userLabel="Remote User Label">
                             <rect key="frame" x="187" y="12" width="0.0" height="0.0"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="0.022945646196603775" green="0.9779776930809021" blue="0.040814585983753204" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.1215686275" green="0.72156862749999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gzb-IT-lWs">
-                            <rect key="frame" x="136" y="302.5" width="103" height="42"/>
+                            <rect key="frame" x="83.5" y="289" width="208" height="69"/>
+                            <color key="backgroundColor" red="0.1215686275" green="0.72156862749999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="208" id="2JG-KC-COY"/>
+                                <constraint firstAttribute="width" secondItem="gzb-IT-lWs" secondAttribute="height" multiplier="208:69" id="gfN-SI-vRe"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                            <state key="normal" title="ANSWER"/>
+                            <state key="normal" title="ANSWER CALL">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGt-2Q-r26">
+                            <rect key="frame" x="263" y="602" width="100" height="33"/>
+                            <color key="backgroundColor" red="0.99928373100000001" green="0.15537679200000001" blue="0.22883668539999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="eGt-2Q-r26" secondAttribute="height" multiplier="208:69" id="CNH-4b-M6U"/>
+                                <constraint firstAttribute="width" constant="100" id="SkF-NI-1Rn"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="cancelButtonTapped" destination="-1" eventType="touchUpInside" id="czr-CB-UoO"/>
+                            </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="0.68052642620000003" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="8Ah-Jn-y0d" firstAttribute="top" secondItem="pkp-zq-p9e" secondAttribute="top" constant="12" id="ArO-hh-bG1"/>
                         <constraint firstItem="gzb-IT-lWs" firstAttribute="centerX" secondItem="pkp-zq-p9e" secondAttribute="centerX" id="Btg-Ap-hqF"/>
                         <constraint firstItem="8Ah-Jn-y0d" firstAttribute="centerX" secondItem="pkp-zq-p9e" secondAttribute="centerX" id="KLd-9t-77l"/>
+                        <constraint firstItem="eGt-2Q-r26" firstAttribute="width" secondItem="eGt-2Q-r26" secondAttribute="height" multiplier="208:69" id="LnP-95-Sh1"/>
+                        <constraint firstAttribute="trailing" secondItem="eGt-2Q-r26" secondAttribute="trailing" constant="12" id="P1K-aB-hEC"/>
+                        <constraint firstAttribute="bottom" secondItem="eGt-2Q-r26" secondAttribute="bottom" constant="12" id="Ufa-2A-33G"/>
                         <constraint firstItem="gzb-IT-lWs" firstAttribute="centerY" secondItem="pkp-zq-p9e" secondAttribute="centerY" id="YCB-yc-pKD"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nZc-U7-ulj" userLabel="Local Video View">
                     <rect key="frame" x="20" y="478" width="123" height="177"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="177" id="T48-Id-VON"/>
                         <constraint firstAttribute="width" constant="123" id="hQx-tK-lPh"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="0.0" blue="0.17586349179999999" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="trailing" secondItem="esb-ui-Src" secondAttribute="trailing" id="4bz-5b-iZU"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leading" id="BJM-En-AsO"/>
@@ -64,6 +100,7 @@
                 <constraint firstAttribute="bottom" secondItem="nZc-U7-ulj" secondAttribute="bottom" constant="12" id="XSB-Qb-qqd"/>
                 <constraint firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" id="hts-QR-ptT"/>
             </constraints>
+            <point key="canvasLocation" x="34.5" y="131.5"/>
         </view>
     </objects>
 </document>

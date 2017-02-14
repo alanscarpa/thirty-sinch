@@ -34,12 +34,6 @@ class CallViewController: UIViewController, SINCallDelegate {
         } else {
             // sending call
         }
-        
-        //        if call?.details.isVideoOffered == true {
-        //            if let localView = videoController?.localView() {
-        //                localVideoView.addSubview(localView)
-        //            }
-        //        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,5 +63,10 @@ class CallViewController: UIViewController, SINCallDelegate {
         answerCallButton.isHidden = true
         audioController?.stopPlayingSoundFile()
         call?.answer()
+    }
+    
+    @IBAction func cancelButtonTapped() {
+        call?.hangup()
+        RootViewController.shared.popViewController()
     }
 }
