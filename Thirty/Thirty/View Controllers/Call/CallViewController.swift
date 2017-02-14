@@ -8,8 +8,8 @@
 
 import UIKit
 
-class CallViewControllerOLD: UIViewController, SINCallDelegate {
-
+class CallViewController: UIViewController, SINCallDelegate {
+    
     @IBOutlet weak var remoteVideoView: UIView!
     @IBOutlet weak var localVideoView: UIView!
     @IBOutlet weak var remoteUserLabel: UILabel!
@@ -35,11 +35,11 @@ class CallViewControllerOLD: UIViewController, SINCallDelegate {
             // sending call
         }
         
-//        if call?.details.isVideoOffered == true {
-//            if let localView = videoController?.localView() {
-//                localVideoView.addSubview(localView)
-//            }
-//        }
+        //        if call?.details.isVideoOffered == true {
+        //            if let localView = videoController?.localView() {
+        //                localVideoView.addSubview(localView)
+        //            }
+        //        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,7 +55,7 @@ class CallViewControllerOLD: UIViewController, SINCallDelegate {
             }
         }
     }
-
+    
     // MARK: - SINCallDelegate
     
     func callDidAddVideoTrack(_ call: SINCall!) {

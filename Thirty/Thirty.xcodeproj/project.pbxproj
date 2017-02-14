@@ -23,6 +23,8 @@
 		4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */; };
 		4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78F1E527AFF00AF54AA /* HomeViewController.swift */; };
 		4500C7921E527AFF00AF54AA /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7901E527AFF00AF54AA /* HomeViewController.xib */; };
+		4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7941E5286E000AF54AA /* CallViewController.swift */; };
+		4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7951E5286E000AF54AA /* CallViewController.xib */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +50,8 @@
 		4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Thirty.swift"; sourceTree = "<group>"; };
 		4500C78F1E527AFF00AF54AA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		4500C7901E527AFF00AF54AA /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		4500C7941E5286E000AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
+		4500C7951E5286E000AF54AA /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,6 +133,7 @@
 		4500C77D1E4E8EE800AF54AA /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4500C7931E52868F00AF54AA /* Call */,
 				4500C78E1E527ADA00AF54AA /* Home */,
 				4500C7841E4E92AF00AF54AA /* Login */,
 				4500C77E1E4E8F0500AF54AA /* Root */,
@@ -177,6 +182,15 @@
 				4500C7901E527AFF00AF54AA /* HomeViewController.xib */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		4500C7931E52868F00AF54AA /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				4500C7941E5286E000AF54AA /* CallViewController.swift */,
+				4500C7951E5286E000AF54AA /* CallViewController.xib */,
+			);
+			path = Call;
 			sourceTree = "<group>";
 		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
@@ -260,6 +274,7 @@
 				4500C77B1E4D463400AF54AA /* incoming.wav in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
+				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
 				4500C7921E527AFF00AF54AA /* HomeViewController.xib in Resources */,
 			);
@@ -320,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
 				4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */,
 				4500C7611E4BDD5A00AF54AA /* ViewController.swift in Sources */,
