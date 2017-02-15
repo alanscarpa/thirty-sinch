@@ -9,7 +9,7 @@
 import UIKit
 
 class CallViewController: UIViewController, SINCallDelegate {
-    
+
     @IBOutlet weak var remoteVideoView: UIView!
     @IBOutlet weak var localVideoView: UIView!
     @IBOutlet weak var remoteUserLabel: UILabel!
@@ -67,7 +67,7 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     func callDidEstablish(_ call: SINCall!) {
-        //timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+
     }
     
     func callDidEnd(_ call: SINCall!) {

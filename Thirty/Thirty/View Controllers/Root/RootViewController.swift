@@ -57,7 +57,4 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         callVC.call = call
         rootNavigationController.pushViewController(callVC, animated: true)
     }
-
-
 }
-

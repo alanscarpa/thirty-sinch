@@ -27,13 +27,14 @@ class HomeViewController: UIViewController, SINCallClientDelegate, UITextFieldDe
     // MARK: - Actions
     
     @IBAction func callButtonTapped() {
-        if let calleeId = calleeTextField.text,
-            !calleeId.isEmpty,
-            let call = SinchClientManager.shared.client?.call().callUserVideo(withId: calleeId),
-            SinchClientManager.shared.client?.isStarted() == true {
-            if SinchClientManager.shared.client?.isStarted() == true {
+        guard SinchClientManager.shared.client?.isStarted() == true else {
+            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Problem with call client. Please try again.")
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        if let calleeId = calleeTextField.text, !calleeId.isEmpty,
+            let call = SinchClientManager.shared.client?.call().callUserVideo(withId: calleeId) {
                 RootViewController.shared.pushCallVCWithCall(call)
-            }
         } else {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter the username of who you want to call.")
             present(alert, animated: true, completion: nil)
