@@ -49,4 +49,14 @@ class LoginViewController: UIViewController, SINClientDelegate, UITextFieldDeleg
         loginButtonTapped()
         return false
     }
+    
+    // MARK: - UIResponder
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        let touch = event?.allTouches?.first
+        if touch?.view?.isKind(of: UITextField.self) == false {
+            view.endEditing(true)
+        }
+    }
 }
