@@ -51,6 +51,10 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     func pushHomeVC() {
         rootNavigationController.pushViewController(HomeViewController(), animated: true)
     }
-
+    
+    func pushCallVCWithCall(_ call: SINCall) {
+        let callVC = CallViewController()
+        callVC.call = call
+        rootNavigationController.pushViewController(callVC, animated: true)
+    }
 }
-

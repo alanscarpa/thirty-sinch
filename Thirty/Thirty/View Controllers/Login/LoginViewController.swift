@@ -8,12 +8,13 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, SINClientDelegate {
+class LoginViewController: UIViewController, SINClientDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var loginTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loginTextField.delegate = self
     }
     
     // MARK: - Actions
@@ -40,5 +41,22 @@ class LoginViewController: UIViewController, SINClientDelegate {
     func clientDidFail(_ client: SINClient!, error: Error!) {
         let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to log in.  Please try again.")
         present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - UITextFieldDelegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        loginButtonTapped()
+        return false
+    }
+    
+    // MARK: - UIResponder
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        let touch = event?.allTouches?.first
+        if touch?.view?.isKind(of: UITextField.self) == false {
+            view.endEditing(true)
+        }
     }
 }
