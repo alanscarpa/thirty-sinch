@@ -24,6 +24,13 @@ class HomeViewController: UIViewController, SINCallClientDelegate, UITextFieldDe
         RootViewController.shared.pushCallVCWithCall(call)
     }
     
+    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
+        let notification = SINLocalNotification()
+        notification.alertAction = "Answer"
+        notification.alertBody = "Incoming call from \(call.remoteUserId)"
+        return notification;
+    }
+    
     // MARK: - Actions
     
     @IBAction func callButtonTapped() {

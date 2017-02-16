@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import UserNotifications
+import PushKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
     
@@ -21,7 +23,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         RootViewController.shared.goToLoginVC()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
         UINavigationBar.appearance().tintColor = UIColor.thirtyBlue
+        
+        if #available(iOS 10.0, *) {
+            let center = UNUserNotificationCenter.current()
+            center.delegate = self
+            
+            center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
+                if granted {
+                    application.registerForRemoteNotifications()
+                }
+            })
+        } else {
+            //Enable all notification type. VoIP Notifications don't present a UI but we will use this to show local nofications later
+            let notificationSettings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil)
+            //register the notification settings
+            application.registerUserNotificationSettings(notificationSettings)
+            application.registerForRemoteNotifications()
+        }
+        
         return true
+    }
+    
+    // MARK: - UNUserNotificationCenterDelegate
+    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void) {
+        let userInfo = response.notification.request.content.userInfo
+        SinchClientManager.shared.push?.application(UIApplication.shared, didReceiveRemoteNotification: userInfo)
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        SinchClientManager.shared.push?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        SinchClientManager.shared.push?.application(application, didReceiveRemoteNotification: userInfo)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -45,7 +81,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 
