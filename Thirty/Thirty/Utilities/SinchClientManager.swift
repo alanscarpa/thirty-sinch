@@ -37,7 +37,7 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
     // MARK: - Helpers
     
     func handleRemoteNotification(userInfo: Dictionary<AnyHashable, Any>) {
-        if let userId = UserDefaultsManager.shared.userId, client == nil {
+        if let userId = UserManager.shared.userId, client == nil {
             initializeWithUserId(userId, delegate: nil)
         }
         _ = client?.relayRemotePushNotification(userInfo)

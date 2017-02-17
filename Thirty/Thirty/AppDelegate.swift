@@ -20,7 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window!.rootViewController = RootViewController.shared
         window!.makeKeyAndVisible()
         
-        RootViewController.shared.goToLoginVC()
+        if UserManager.shared.hasUserId {
+            RootViewController.shared.goToHomeVC()
+        } else {
+            RootViewController.shared.goToLoginVC()
+        }
+        
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
         UINavigationBar.appearance().tintColor = UIColor.thirtyBlue
         

@@ -23,7 +23,7 @@
 		4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7941E5286E000AF54AA /* CallViewController.swift */; };
 		4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7951E5286E000AF54AA /* CallViewController.xib */; };
 		454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7021E54FEAD0087FAAD /* Keys.swift */; };
-		454CC7051E5515150087FAAD /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7041E5515150087FAAD /* UserDefaultsManager.swift */; };
+		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,8 +49,8 @@
 		4500C7941E5286E000AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		4500C7951E5286E000AF54AA /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		454CC7021E54FEAD0087FAAD /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = "Thirty/Supporting Files/Keys.swift"; sourceTree = SOURCE_ROOT; };
-		454CC7041E5515150087FAAD /* UserDefaultsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
+		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,7 +169,7 @@
 			children = (
 				454CC7021E54FEAD0087FAAD /* Keys.swift */,
 				4500C78A1E4E9EEA00AF54AA /* SinchClientManager.swift */,
-				454CC7041E5515150087FAAD /* UserDefaultsManager.swift */,
+				454CC7071E568F640087FAAD /* UserManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -343,9 +343,9 @@
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
 				4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* LoginViewController.swift in Sources */,
-				454CC7051E5515150087FAAD /* UserDefaultsManager.swift in Sources */,
 				4500C78B1E4E9EEA00AF54AA /* SinchClientManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
+				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
 				454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

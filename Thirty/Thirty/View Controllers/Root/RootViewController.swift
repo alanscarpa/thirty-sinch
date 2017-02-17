@@ -48,6 +48,10 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.setViewControllers([LoginViewController()], animated: true)
     }
     
+    func goToHomeVC() {
+        rootNavigationController.setViewControllers([LoginViewController(), HomeViewController()], animated: true)
+    }
+    
     func pushHomeVC() {
         rootNavigationController.pushViewController(HomeViewController(), animated: true)
     }

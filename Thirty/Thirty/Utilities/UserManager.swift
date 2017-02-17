@@ -1,15 +1,22 @@
 //
-//  UserDefaultsManager.swift
+//  UserManager.swift
 //  Thirty
 //
-//  Created by Alan Scarpa on 2/15/17.
+//  Created by Alan Scarpa on 2/16/17.
 //  Copyright © 2017 Thirty. All rights reserved.
 //
 
 import Foundation
 
-class UserDefaultsManager {
-    static let shared = UserDefaultsManager()
+class UserManager {
+    static let shared = UserManager()
+    private init(){}
+    
+    var hasUserId: Bool {
+        get {
+            return userId != nil
+        }
+    }
     
     let UserIdKey = "UserIdKey"
     
@@ -18,7 +25,7 @@ class UserDefaultsManager {
             return UserDefaults.standard.string(forKey: UserIdKey)
         }
         set {
-            UserDefaults.standard.set(userId, forKey: UserIdKey)
+            UserDefaults.standard.set(newValue, forKey: UserIdKey)
             UserDefaults.standard.synchronize()
         }
     }

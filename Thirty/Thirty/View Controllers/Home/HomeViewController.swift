@@ -8,14 +8,31 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, SINCallClientDelegate, UITextFieldDelegate {
+class HomeViewController: UIViewController, SINClientDelegate, SINCallClientDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var calleeTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        SinchClientManager.shared.client?.call().delegate = self
-        calleeTextField.delegate = self
+        if SinchClientManager.shared.client == nil {
+            if let userId = UserManager.shared.userId {
+                SinchClientManager.shared.initializeWithUserId(userId, delegate: self)
+                SinchClientManager.shared.client?.call().delegate = self
+                calleeTextField.delegate = self
+            } else {
+                handleClientDidFail()
+            }
+        }
+    }
+    
+    // MARK: - SINClientDelegate
+    
+    func clientDidStart(_ client: SINClient!) {
+        // no-op
+    }
+    
+    func clientDidFail(_ client: SINClient!, error: Error!) {
+        handleClientDidFail()
     }
     
     // MARK: - SINCallClientDelegate
@@ -63,6 +80,14 @@ class HomeViewController: UIViewController, SINCallClientDelegate, UITextFieldDe
         if touch?.view?.isKind(of: UITextField.self) == false {
             view.endEditing(true)
         }
+    }
+    
+    // MARK: - Helpers
+    
+    func handleClientDidFail() {
+        let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to log in.  Please try again.")
+        present(alert, animated: true, completion: nil)
+        RootViewController.shared.popViewController()
     }
     
 }

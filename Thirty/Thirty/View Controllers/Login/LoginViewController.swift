@@ -35,7 +35,7 @@ class LoginViewController: UIViewController, SINClientDelegate, UITextFieldDeleg
     // MARK: - SINClientDelegate
     
     func clientDidStart(_ client: SINClient!) {
-        UserDefaultsManager.shared.userId = loginTextField.text
+        UserManager.shared.userId = loginTextField.text
         RootViewController.shared.pushHomeVC()
     }
     
