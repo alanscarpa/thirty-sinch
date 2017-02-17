@@ -52,8 +52,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         SinchClientManager.shared.push?.application(UIApplication.shared, didReceiveRemoteNotification: userInfo)
     }
     
+    // MARK: - Notifications
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         SinchClientManager.shared.push?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // TODO: Present screen asking to turn on notifications
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {

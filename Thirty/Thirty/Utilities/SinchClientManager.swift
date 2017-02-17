@@ -26,7 +26,6 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
         
         push?.delegate = self
         push?.setDesiredPushType("SINPushTypeVoIP")
-        push?.registerUserNotificationSettings()
     }
     
     // MARK: - SINManagedPushDelegate
