@@ -20,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window!.rootViewController = RootViewController.shared
         window!.makeKeyAndVisible()
         
+        setUpRemoteNotificationsForApplication(application)
+
         if UserManager.shared.hasUserId {
             RootViewController.shared.goToHomeVC()
         } else {
@@ -28,23 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
         UINavigationBar.appearance().tintColor = UIColor.thirtyBlue
-        
-        if #available(iOS 10.0, *) {
-            let center = UNUserNotificationCenter.current()
-            center.delegate = self
-            
-            center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
-                if granted {
-                    application.registerForRemoteNotifications()
-                }
-            })
-        } else {
-            //Enable all notification type. VoIP Notifications don't present a UI but we will use this to show local nofications later
-            let notificationSettings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil)
-            //register the notification settings
-            application.registerUserNotificationSettings(notificationSettings)
-            application.registerForRemoteNotifications()
-        }
         
         return true
     }
@@ -69,6 +54,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         SinchClientManager.shared.push?.application(application, didReceiveRemoteNotification: userInfo)
+    }
+    
+    func setUpRemoteNotificationsForApplication(_ application: UIApplication) {
+        if !application.isRegisteredForRemoteNotifications {
+            if #available(iOS 10.0, *) {
+                let center = UNUserNotificationCenter.current()
+                center.delegate = self
+                
+                center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
+                    if granted {
+                        application.registerForRemoteNotifications()
+                    }
+                })
+            } else {
+                //Enable all notification type. VoIP Notifications don't present a UI but we will use this to show local nofications later
+                let notificationSettings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil)
+                //register the notification settings
+                application.registerUserNotificationSettings(notificationSettings)
+                application.registerForRemoteNotifications()
+            }
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
