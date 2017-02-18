@@ -13,7 +13,7 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
     var client: SINClient?
     // TODO: change to production when ready
     let push = Sinch.managedPush(with: SINAPSEnvironment.development)
-        
+    
     func initializeWithUserId(_ userId: String) {
         // TODO: Changehost to env host
         // TODO: Change authorization so app secret and key not used

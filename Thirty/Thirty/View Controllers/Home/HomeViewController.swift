@@ -11,14 +11,11 @@ import UIKit
 class HomeViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var calleeTextField: UITextField!
-    
-    @IBOutlet weak var debugLabel: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    
     // MARK: - Actions
     
     @IBAction func callButtonTapped() {

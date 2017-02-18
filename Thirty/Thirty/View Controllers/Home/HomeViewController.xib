@@ -12,7 +12,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController" customModule="Thirty" customModuleProvider="target">
             <connections>
                 <outlet property="calleeTextField" destination="wSs-j7-RWh" id="Jpg-ub-PPQ"/>
-                <outlet property="debugLabel" destination="an9-In-VSb" id="tev-8L-ltf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -46,20 +45,12 @@
                         <action selector="callButtonTapped" destination="-1" eventType="touchUpInside" id="WI2-7s-75t"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="an9-In-VSb">
-                    <rect key="frame" x="84" y="251" width="42" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="CCB-Ww-GIa" firstAttribute="leading" secondItem="wSs-j7-RWh" secondAttribute="trailing" constant="36" id="56G-et-Xfc"/>
                 <constraint firstItem="CCB-Ww-GIa" firstAttribute="centerY" secondItem="wSs-j7-RWh" secondAttribute="centerY" id="5Nb-OM-Ckp"/>
-                <constraint firstItem="an9-In-VSb" firstAttribute="top" secondItem="wSs-j7-RWh" secondAttribute="bottom" constant="69" id="Iw0-Si-fvI"/>
                 <constraint firstItem="wSs-j7-RWh" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="0.5" id="Jch-ao-GFH"/>
-                <constraint firstItem="an9-In-VSb" firstAttribute="centerX" secondItem="wSs-j7-RWh" secondAttribute="centerX" id="YFi-Cm-kcT"/>
                 <constraint firstItem="wSs-j7-RWh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="qqt-za-d6x"/>
             </constraints>
             <point key="canvasLocation" x="43.5" y="131.5"/>
