@@ -25,6 +25,7 @@
 		454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7021E54FEAD0087FAAD /* Keys.swift */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CC7091E57CDB00087FAAD /* ringback.wav */; };
+		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		454CC7091E57CDB00087FAAD /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
+		454CC70E1E57D4F60087FAAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,6 +128,7 @@
 				4500C7621E4BDD5A00AF54AA /* Main.storyboard */,
 				4500C7671E4BDD5A00AF54AA /* LaunchScreen.storyboard */,
 				4500C7701E4BE23600AF54AA /* Thirty-Bridging-Header.h */,
+				454CC70F1E57D4F60087FAAD /* Localizable.strings */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */,
 				4500C77B1E4D463400AF54AA /* incoming.wav in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
+				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
 				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
@@ -373,6 +377,14 @@
 			);
 			name = LaunchScreen.storyboard;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		454CC70F1E57D4F60087FAAD /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				454CC70E1E57D4F60087FAAD /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -62,16 +62,26 @@ class CallViewController: UIViewController, SINCallDelegate {
         guard let remoteView = videoController?.remoteView() else { return }
         remoteVideoView.addSubview(remoteView)
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+        print("++++++++ callDidAddVideoTrack  ++++++++++")
+    }
+    
+    func callDidProgress(_ call: SINCall!) {
+        print("++++++++ callDidProgress  ++++++++++")
     }
     
     func callDidEstablish(_ call: SINCall!) {
         // TODO: Maybe start timer here?
+        print("++++++++ CALL DID ESTABLISH  ++++++++++")
         audioController?.stopPlayingSoundFile()
     }
     
     func callDidEnd(_ call: SINCall!) {
         audioController?.stopPlayingSoundFile()
         RootViewController.shared.popViewController()
+    }
+    
+    func call(_ call: SINCall!, shouldSendPushNotifications pushPairs: [Any]!) {
+        //
     }
     
     // MARK: - Actions

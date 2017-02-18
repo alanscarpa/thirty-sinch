@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  Thirty
+
+  Created by Alan Scarpa on 2/17/17.
+  Copyright © 2017 Thirty. All rights reserved.
+*/
+
+SIN_INCOMING_CALL_DISPLAY_NAME = "Incoming 30 from %@";
