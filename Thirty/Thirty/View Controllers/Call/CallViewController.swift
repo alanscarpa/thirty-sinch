@@ -31,26 +31,29 @@ class CallViewController: UIViewController, SINCallDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        audioController?.enableSpeaker()
+        remoteUserLabel.text = call?.remoteUserId
+        
         if call?.direction == SINCallDirection.incoming {
             //audioController?.startPlayingSoundFile("incoming.wav", loop: true)
             answerCallButton.isHidden = false
         } else {
             // sending call
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        audioController?.enableSpeaker()
-        remoteUserLabel.text = call?.remoteUserId
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
+        
         if call?.details.isVideoOffered == true {
             if let localView = videoController?.localView() {
                 localVideoView.addSubview(localView)
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

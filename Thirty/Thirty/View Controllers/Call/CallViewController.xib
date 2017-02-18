@@ -54,26 +54,6 @@
                                 <action selector="answerCallButtonTapped" destination="-1" eventType="touchUpInside" id="7QJ-oZ-FG4"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGt-2Q-r26">
-                            <rect key="frame" x="263" y="602" width="100" height="33"/>
-                            <color key="backgroundColor" red="0.99928373100000001" green="0.15537679200000001" blue="0.22883668539999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="eGt-2Q-r26" secondAttribute="height" multiplier="208:69" id="CNH-4b-M6U"/>
-                                <constraint firstAttribute="width" constant="100" id="SkF-NI-1Rn"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                            <state key="normal" title="Cancel">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="8"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                            <connections>
-                                <action selector="cancelButtonTapped" destination="-1" eventType="touchUpInside" id="czr-CB-UoO"/>
-                            </connections>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UlY-R0-YDU">
                             <rect key="frame" x="174" y="24" width="27" height="31.5"/>
                             <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="23"/>
@@ -87,9 +67,6 @@
                         <constraint firstItem="8Ah-Jn-y0d" firstAttribute="top" secondItem="pkp-zq-p9e" secondAttribute="top" constant="12" id="ArO-hh-bG1"/>
                         <constraint firstItem="gzb-IT-lWs" firstAttribute="centerX" secondItem="pkp-zq-p9e" secondAttribute="centerX" id="Btg-Ap-hqF"/>
                         <constraint firstItem="8Ah-Jn-y0d" firstAttribute="centerX" secondItem="pkp-zq-p9e" secondAttribute="centerX" id="KLd-9t-77l"/>
-                        <constraint firstItem="eGt-2Q-r26" firstAttribute="width" secondItem="eGt-2Q-r26" secondAttribute="height" multiplier="208:69" id="LnP-95-Sh1"/>
-                        <constraint firstAttribute="trailing" secondItem="eGt-2Q-r26" secondAttribute="trailing" constant="12" id="P1K-aB-hEC"/>
-                        <constraint firstAttribute="bottom" secondItem="eGt-2Q-r26" secondAttribute="bottom" constant="12" id="Ufa-2A-33G"/>
                         <constraint firstItem="gzb-IT-lWs" firstAttribute="centerY" secondItem="pkp-zq-p9e" secondAttribute="centerY" id="YCB-yc-pKD"/>
                         <constraint firstItem="UlY-R0-YDU" firstAttribute="centerX" secondItem="8Ah-Jn-y0d" secondAttribute="centerX" id="hvd-Gs-Vl5"/>
                     </constraints>
@@ -102,6 +79,26 @@
                         <constraint firstAttribute="width" constant="123" id="hQx-tK-lPh"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGt-2Q-r26">
+                    <rect key="frame" x="267" y="626" width="100" height="33"/>
+                    <color key="backgroundColor" red="0.99928373100000001" green="0.15537679200000001" blue="0.22883668539999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="eGt-2Q-r26" secondAttribute="height" multiplier="208:69" id="CNH-4b-M6U"/>
+                        <constraint firstAttribute="width" constant="100" id="SkF-NI-1Rn"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="cancelButtonTapped" destination="-1" eventType="touchUpInside" id="czr-CB-UoO"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -110,7 +107,9 @@
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" constant="20" id="Qz9-Ym-Ll8"/>
                 <constraint firstItem="nZc-U7-ulj" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leadingMargin" constant="12" id="RjN-Da-5M1"/>
                 <constraint firstAttribute="bottom" secondItem="nZc-U7-ulj" secondAttribute="bottom" constant="12" id="XSB-Qb-qqd"/>
+                <constraint firstItem="eGt-2Q-r26" firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" constant="-8" id="gqd-RS-3dd"/>
                 <constraint firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" id="hts-QR-ptT"/>
+                <constraint firstAttribute="trailing" secondItem="eGt-2Q-r26" secondAttribute="trailing" constant="8" id="woc-5y-tGb"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="131.5"/>
         </view>
