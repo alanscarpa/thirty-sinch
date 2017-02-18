@@ -8,22 +8,15 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, SINCallClientDelegate, UITextFieldDelegate {
+class HomeViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var calleeTextField: UITextField!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        SinchClientManager.shared.client?.call().delegate = self
         calleeTextField.delegate = self
     }
-    
-    // MARK: - SINCallClientDelegate
-    
-    func client(_ client: SINCallClient!, didReceiveIncomingCall call: SINCall!) {
-        RootViewController.shared.pushCallVCWithCall(call)
-    }
-    
+
     // MARK: - Actions
     
     @IBAction func callButtonTapped() {
@@ -56,6 +49,14 @@ class HomeViewController: UIViewController, SINCallClientDelegate, UITextFieldDe
         if touch?.view?.isKind(of: UITextField.self) == false {
             view.endEditing(true)
         }
+    }
+    
+    // MARK: - Helpers
+    
+    func handleClientDidFail() {
+        let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to log in.  Please try again.")
+        present(alert, animated: true, completion: nil)
+        RootViewController.shared.popViewController()
     }
     
 }

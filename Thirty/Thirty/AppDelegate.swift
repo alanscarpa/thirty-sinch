@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import UserNotifications
+import PushKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
     
@@ -18,10 +20,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.rootViewController = RootViewController.shared
         window!.makeKeyAndVisible()
         
-        RootViewController.shared.goToLoginVC()
+        setUpRemoteNotificationsForApplication(application)
+
+        if UserManager.shared.hasUserId, let userId = UserManager.shared.userId {
+            SinchClientManager.shared.initializeWithUserId(userId)
+        } else {
+            RootViewController.shared.goToLoginVC()
+        }
+        
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
         UINavigationBar.appearance().tintColor = UIColor.thirtyBlue
+        
         return true
+    }
+    
+    // MARK: - UNUserNotificationCenterDelegate
+    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void) {
+        let userInfo = response.notification.request.content.userInfo
+        SinchClientManager.shared.push?.application(UIApplication.shared, didReceiveRemoteNotification: userInfo)
+    }
+    
+    // MARK: - Notifications
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        SinchClientManager.shared.push?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // TODO: Present screen asking to turn on notifications
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        SinchClientManager.shared.push?.application(application, didReceiveRemoteNotification: userInfo)
+    }
+    
+    func setUpRemoteNotificationsForApplication(_ application: UIApplication) {
+        if !application.isRegisteredForRemoteNotifications {
+            if #available(iOS 10.0, *) {
+                let center = UNUserNotificationCenter.current()
+                center.delegate = self
+                center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
+                    if granted {
+                        application.registerForRemoteNotifications()
+                    } else {
+                        // TODO: Present screen asking to turn on notifications
+                    }
+                })
+            } else {
+                let notificationSettings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil)
+                application.registerUserNotificationSettings(notificationSettings)
+                application.registerForRemoteNotifications()
+            }
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -45,7 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 

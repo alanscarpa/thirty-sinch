@@ -8,20 +8,39 @@
 
 import Foundation
 
-class SinchClientManager {
+class SinchClientManager: NSObject, SINManagedPushDelegate {
     static let shared = SinchClientManager()
     var client: SINClient?
+    // TODO: change to production when ready
+    let push = Sinch.managedPush(with: SINAPSEnvironment.development)
     
-    private init(){}
-    
-    func initializeWithUserId(_ userId: String, delegate: SINClientDelegate) {
+    func initializeWithUserId(_ userId: String) {
         // TODO: Changehost to env host
         // TODO: Change authorization so app secret and key not used
-        SinchClientManager.shared.client = Sinch.client(withApplicationKey: SinchAppKey, applicationSecret: SinchSecret, environmentHost: SinchEnvHost, userId: userId)
-        SinchClientManager.shared.client?.delegate = delegate
-        SinchClientManager.shared.client?.setSupportCalling(true)
-        SinchClientManager.shared.client?.enableManagedPushNotifications()
-        SinchClientManager.shared.client?.start()
-        SinchClientManager.shared.client?.startListeningOnActiveConnection()
+        client = Sinch.client(withApplicationKey: SinchAppKey, applicationSecret: SinchSecret, environmentHost: SinchEnvHost, userId: userId)
+        client?.delegate = RootViewController.shared
+        client?.call().delegate = RootViewController.shared
+        client?.setSupportCalling(true)
+        client?.enableManagedPushNotifications()
+        client?.start()
+        client?.startListeningOnActiveConnection()
+        
+        push?.delegate = self
+        push?.setDesiredPushType("SINPushTypeVoIP")
+    }
+    
+    // MARK: - SINManagedPushDelegate
+    
+    func managedPush(_ managedPush: SINManagedPush!, didReceiveIncomingPushWithPayload payload: [AnyHashable : Any]!, forType pushType: String!) {
+        handleRemoteNotification(userInfo: payload)
+    }
+    
+    // MARK: - Helpers
+    
+    func handleRemoteNotification(userInfo: Dictionary<AnyHashable, Any>) {
+        if let userId = UserManager.shared.userId, client == nil {
+            initializeWithUserId(userId)
+        }
+        _ = client?.relayRemotePushNotification(userInfo)
     }
 }
