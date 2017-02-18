@@ -62,7 +62,6 @@ class CallViewController: UIViewController, SINCallDelegate {
         guard let remoteView = videoController?.remoteView() else { return }
         remoteVideoView.addSubview(remoteView)
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
-        print("++++++++ callDidAddVideoTrack  ++++++++++")
     }
     
     func callDidProgress(_ call: SINCall!) {
@@ -81,7 +80,7 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     func call(_ call: SINCall!, shouldSendPushNotifications pushPairs: [Any]!) {
-        //
+        // TODO: not sure what this is for. maybe multiple accoutns on 1 device?
     }
     
     // MARK: - Actions
