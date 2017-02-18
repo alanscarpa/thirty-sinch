@@ -14,11 +14,12 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
     // TODO: change to production when ready
     let push = Sinch.managedPush(with: SINAPSEnvironment.development)
         
-    func initializeWithUserId(_ userId: String, delegate: SINClientDelegate?) {
+    func initializeWithUserId(_ userId: String) {
         // TODO: Changehost to env host
         // TODO: Change authorization so app secret and key not used
         client = Sinch.client(withApplicationKey: SinchAppKey, applicationSecret: SinchSecret, environmentHost: SinchEnvHost, userId: userId)
-        client?.delegate = delegate
+        client?.delegate = RootViewController.shared
+        client?.call().delegate = RootViewController.shared
         client?.setSupportCalling(true)
         client?.enableManagedPushNotifications()
         client?.start()
@@ -38,7 +39,7 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
     
     func handleRemoteNotification(userInfo: Dictionary<AnyHashable, Any>) {
         if let userId = UserManager.shared.userId, client == nil {
-            initializeWithUserId(userId, delegate: nil)
+            initializeWithUserId(userId)
         }
         _ = client?.relayRemotePushNotification(userInfo)
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, SINClientDelegate, SINCallClientDelegate, UITextFieldDelegate {
+class HomeViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var calleeTextField: UITextField!
     
@@ -16,47 +16,8 @@ class HomeViewController: UIViewController, SINClientDelegate, SINCallClientDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if SinchClientManager.shared.client == nil {
-            if let userId = UserManager.shared.userId {
-                SinchClientManager.shared.initializeWithUserId(userId, delegate: self)
-                SinchClientManager.shared.client?.call().delegate = self
-                calleeTextField.delegate = self
-                debugLabel.text = "Client initialized"
-            } else {
-                handleClientDidFail()
-            }
-        }
-        if SinchClientManager.shared.client?.delegate == nil {
-            SinchClientManager.shared.client?.delegate = self
-            debugLabel.text = "delegate set"
-        }
     }
-    
-    // MARK: - SINClientDelegate
-    
-    func clientDidStart(_ client: SINClient!) {
-        // no-op
-        // debugLabel.text = "Client did start"
-    }
-    
-    func clientDidFail(_ client: SINClient!, error: Error!) {
-        debugLabel.text = "Client did fail"
-        handleClientDidFail()
-    }
-    
-    // MARK: - SINCallClientDelegate
-    
-    func client(_ client: SINCallClient!, didReceiveIncomingCall call: SINCall!) {
-        debugLabel.text = "Received incoming call"
-        RootViewController.shared.pushCallVCWithCall(call)
-    }
-    
-    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
-        let notification = SINLocalNotification()
-        notification.alertAction = "Answer"
-        notification.alertBody = "Incoming call from \(call.remoteUserId)"
-        return notification
-    }
+
     
     // MARK: - Actions
     

@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         setUpRemoteNotificationsForApplication(application)
 
-        if UserManager.shared.hasUserId {
-            RootViewController.shared.goToHomeVC()
+        if UserManager.shared.hasUserId, let userId = UserManager.shared.userId {
+            SinchClientManager.shared.initializeWithUserId(userId)
         } else {
             RootViewController.shared.goToLoginVC()
         }
@@ -65,6 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
                     if granted {
                         application.registerForRemoteNotifications()
+                    } else {
+                        // TODO: Present screen asking to turn on notifications
                     }
                 })
             } else {

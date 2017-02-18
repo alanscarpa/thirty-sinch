@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RootViewController: UIViewController, UINavigationControllerDelegate {
+class RootViewController: UIViewController, UINavigationControllerDelegate, SINClientDelegate, SINCallClientDelegate {
     
     static let shared = RootViewController()
     
@@ -60,5 +60,29 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         let callVC = CallViewController()
         callVC.call = call
         rootNavigationController.pushViewController(callVC, animated: true)
+    }
+    
+    // MARK: - SINClientDelegate
+    
+    func clientDidStart(_ client: SINClient!) {
+        goToHomeVC()
+    }
+    
+    func clientDidFail(_ client: SINClient!, error: Error!) {
+        let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to log in.  Please try again.")
+        present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - SINCallClientDelegate
+    
+    func client(_ client: SINCallClient!, didReceiveIncomingCall call: SINCall!) {
+        pushCallVCWithCall(call)
+    }
+    
+    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
+        let notification = SINLocalNotification()
+        notification.alertAction = "Answer"
+        notification.alertBody = "Incoming call from \(call.remoteUserId)"
+        return notification
     }
 }
