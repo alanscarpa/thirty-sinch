@@ -31,14 +31,17 @@ class CallViewController: UIViewController, SINCallDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        audioController?.enableSpeaker()
         remoteUserLabel.text = call?.remoteUserId
+
+        audioController?.enableSpeaker()
         
         if call?.direction == SINCallDirection.incoming {
-            //audioController?.startPlayingSoundFile("incoming.wav", loop: true)
+            let incomingSoundPath = Bundle.main.path(forResource: "incoming", ofType: "wav")
+            audioController?.startPlayingSoundFile(incomingSoundPath, loop: true)
             answerCallButton.isHidden = false
         } else {
-            // sending call
+            let callingSoundPath = Bundle.main.path(forResource: "ringback", ofType: "wav")
+            audioController?.startPlayingSoundFile(callingSoundPath, loop: true)
         }
         
         if call?.details.isVideoOffered == true {
@@ -46,14 +49,6 @@ class CallViewController: UIViewController, SINCallDelegate {
                 localVideoView.addSubview(localView)
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,10 +65,12 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     func callDidEstablish(_ call: SINCall!) {
-
+        // TODO: Maybe start timer here?
+        audioController?.stopPlayingSoundFile()
     }
     
     func callDidEnd(_ call: SINCall!) {
+        audioController?.stopPlayingSoundFile()
         RootViewController.shared.popViewController()
     }
     
@@ -81,7 +78,6 @@ class CallViewController: UIViewController, SINCallDelegate {
     
     @IBAction func answerCallButtonTapped() {
         answerCallButton.isHidden = true
-        audioController?.stopPlayingSoundFile()
         call?.answer()
     }
     

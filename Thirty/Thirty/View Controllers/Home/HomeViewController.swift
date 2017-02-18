@@ -14,6 +14,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        calleeTextField.delegate = self
     }
 
     // MARK: - Actions
