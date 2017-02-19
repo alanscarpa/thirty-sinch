@@ -44,6 +44,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // MARK: - Notifications
     
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        if notificationSettings.types != .none {
+            application.registerForRemoteNotifications()
+        } else {
+            // TODO: Present screen asking to turn on notifications
+        }
+    }
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         SinchClientManager.shared.push?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
@@ -71,7 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             } else {
                 let notificationSettings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil)
                 application.registerUserNotificationSettings(notificationSettings)
-                application.registerForRemoteNotifications()
             }
         }
     }
