@@ -44,6 +44,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // MARK: - Notifications
     
+    func setUpRemoteNotificationsForApplication(_ application: UIApplication) {
+        if !application.isRegisteredForRemoteNotifications {
+            if #available(iOS 10.0, *) {
+                let center = UNUserNotificationCenter.current()
+                center.delegate = self
+                center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
+                    if granted {
+                        application.registerForRemoteNotifications()
+                    } else {
+                        // TODO: Present screen asking to turn on notifications
+                    }
+                })
+            } else {
+                let notificationSettings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil)
+                application.registerUserNotificationSettings(notificationSettings)
+            }
+        }
+    }
+    
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         if notificationSettings.types != .none {
             application.registerForRemoteNotifications()
@@ -62,25 +81,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         SinchClientManager.shared.push?.application(application, didReceiveRemoteNotification: userInfo)
-    }
-    
-    func setUpRemoteNotificationsForApplication(_ application: UIApplication) {
-        if !application.isRegisteredForRemoteNotifications {
-            if #available(iOS 10.0, *) {
-                let center = UNUserNotificationCenter.current()
-                center.delegate = self
-                center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
-                    if granted {
-                        application.registerForRemoteNotifications()
-                    } else {
-                        // TODO: Present screen asking to turn on notifications
-                    }
-                })
-            } else {
-                let notificationSettings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil)
-                application.registerUserNotificationSettings(notificationSettings)
-            }
-        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
