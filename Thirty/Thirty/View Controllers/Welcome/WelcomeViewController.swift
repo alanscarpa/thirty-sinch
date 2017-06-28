@@ -14,9 +14,19 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        RootViewController.shared.showNavigationBar = false
+    }
+    
     // MARK: - Actions
     
     @IBAction func loginButtonTapped() {
         RootViewController.shared.goToLoginVC()
     }
+    
+    @IBAction func signupButtonTapped() {
+        RootViewController.shared.goToSignupVC()
+    }
+    
 }

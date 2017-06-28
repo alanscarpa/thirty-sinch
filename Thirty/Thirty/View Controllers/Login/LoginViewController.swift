@@ -16,6 +16,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         usernameTextField.delegate = self
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        RootViewController.shared.showNavigationBar = true
+    }
 
     // MARK: - Actions
     

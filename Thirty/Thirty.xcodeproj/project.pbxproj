@@ -27,6 +27,8 @@
 		4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9031F033DDD0039D303 /* LoginViewController.swift */; };
 		4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9041F033DDD0039D303 /* LoginViewController.xib */; };
 		4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9071F044CDC0039D303 /* GoogleService-Info.plist */; };
+		4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A90A1F0451FE0039D303 /* SignupViewController.swift */; };
+		4530A90D1F0451FE0039D303 /* SignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4530A90B1F0451FE0039D303 /* SignupViewController.xib */; };
 		454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7021E54FEAD0087FAAD /* Keys.swift */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CC7091E57CDB00087FAAD /* ringback.wav */; };
@@ -59,6 +61,8 @@
 		4530A9031F033DDD0039D303 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4530A9041F033DDD0039D303 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		4530A9071F044CDC0039D303 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4530A90A1F0451FE0039D303 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		4530A90B1F0451FE0039D303 /* SignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignupViewController.xib; sourceTree = "<group>"; };
 		454CC7021E54FEAD0087FAAD /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = "Thirty/Supporting Files/Keys.swift"; sourceTree = SOURCE_ROOT; };
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 			children = (
 				4500C7841E4E92AF00AF54AA /* Welcome */,
 				4530A9021F033DB00039D303 /* Login */,
+				4530A9091F0451DD0039D303 /* Signup */,
 				4500C7931E52868F00AF54AA /* Call */,
 				4500C78E1E527ADA00AF54AA /* Home */,
 				4500C77E1E4E8F0500AF54AA /* Root */,
@@ -219,6 +224,15 @@
 				4530A9041F033DDD0039D303 /* LoginViewController.xib */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		4530A9091F0451DD0039D303 /* Signup */ = {
+			isa = PBXGroup;
+			children = (
+				4530A90A1F0451FE0039D303 /* SignupViewController.swift */,
+				4530A90B1F0451FE0039D303 /* SignupViewController.xib */,
+			);
+			path = Signup;
 			sourceTree = "<group>";
 		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
@@ -309,6 +323,7 @@
 				4500C77B1E4D463400AF54AA /* incoming.wav in Resources */,
 				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
+				4530A90D1F0451FE0039D303 /* SignupViewController.xib in Resources */,
 				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
 				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
@@ -378,6 +393,7 @@
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
 				4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */,
+				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,
 				4500C78B1E4E9EEA00AF54AA /* SinchClientManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
