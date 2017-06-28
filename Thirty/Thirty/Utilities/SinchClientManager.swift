@@ -28,7 +28,7 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
         
         push?.delegate = self
         push?.setDesiredPushTypeAutomatically()
-        push?.setDisplayName("\(userId). Tap to answer!")
+        push?.setDisplayName("\(userId) is 30'ing! Tap to answer!")
     }
     
     // MARK: - SINManagedPushDelegate
