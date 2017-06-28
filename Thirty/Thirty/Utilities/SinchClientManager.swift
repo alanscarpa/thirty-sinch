@@ -45,4 +45,8 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
         }
         _ = client?.relayRemotePushNotification(userInfo)
     }
+    
+    // TODO: add LOGOUT functionality and unregisterPushNotificationDeviceToken
+    // https://www.sinch.com/docs/video/ios/
+    
 }

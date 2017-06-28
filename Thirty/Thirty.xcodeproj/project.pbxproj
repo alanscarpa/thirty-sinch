@@ -26,6 +26,7 @@
 		4530A9011F0331500039D303 /* leaguespartan-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9001F0331500039D303 /* leaguespartan-bold.ttf */; };
 		4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9031F033DDD0039D303 /* LoginViewController.swift */; };
 		4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9041F033DDD0039D303 /* LoginViewController.xib */; };
+		4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9071F044CDC0039D303 /* GoogleService-Info.plist */; };
 		454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7021E54FEAD0087FAAD /* Keys.swift */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CC7091E57CDB00087FAAD /* ringback.wav */; };
@@ -57,6 +58,7 @@
 		4530A9001F0331500039D303 /* leaguespartan-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "leaguespartan-bold.ttf"; sourceTree = "<group>"; };
 		4530A9031F033DDD0039D303 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4530A9041F033DDD0039D303 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		4530A9071F044CDC0039D303 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		454CC7021E54FEAD0087FAAD /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = "Thirty/Supporting Files/Keys.swift"; sourceTree = SOURCE_ROOT; };
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				4530A9001F0331500039D303 /* leaguespartan-bold.ttf */,
+				4530A9071F044CDC0039D303 /* GoogleService-Info.plist */,
 				4500C7621E4BDD5A00AF54AA /* Main.storyboard */,
 				4500C7671E4BDD5A00AF54AA /* LaunchScreen.storyboard */,
 				4500C7701E4BE23600AF54AA /* Thirty-Bridging-Header.h */,
@@ -304,6 +307,7 @@
 				4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */,
 				454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */,
 				4500C77B1E4D463400AF54AA /* incoming.wav in Resources */,
+				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
 				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,

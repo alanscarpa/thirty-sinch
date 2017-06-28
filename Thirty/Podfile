@@ -8,5 +8,6 @@ target 'Thirty' do
   # Pods for Thirty
   pod 'SinchRTC'
   pod 'IQKeyboardManagerSwift'
-  
+  pod 'Firebase/Core' 
+  pod 'Firebase/Auth'
 end

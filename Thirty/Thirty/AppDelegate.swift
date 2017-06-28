@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import PushKit
 import IQKeyboardManagerSwift
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -34,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
         UINavigationBar.appearance().tintColor = UIColor.thirtyBlue
+        
+        FIRApp.configure()
         
         return true
     }
