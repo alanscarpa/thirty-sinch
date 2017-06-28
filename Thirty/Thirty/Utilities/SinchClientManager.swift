@@ -27,7 +27,7 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
         client?.startListeningOnActiveConnection()
         
         push?.delegate = self
-        push?.setDesiredPushType("SINPushTypeVoIP")
+        push?.setDesiredPushTypeAutomatically()
         push?.setDisplayName("\(userId). Tap to answer!")
     }
     
