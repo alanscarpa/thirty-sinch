@@ -30,12 +30,14 @@ PODS:
   - GTMSessionFetcher/Core (1.1.9)
   - IQKeyboardManagerSwift (4.0.9)
   - SinchRTC (3.11.0)
+  - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - IQKeyboardManagerSwift
   - SinchRTC
+  - SVProgressHUD
 
 SPEC CHECKSUMS:
   Firebase: 4b66b5b59c43edac745b87f0c87e42cdd0279c13
@@ -47,7 +49,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
   IQKeyboardManagerSwift: 2eefe6c429b86aa08bfbc1b5c891164d754adf91
   SinchRTC: 68b940110104f8ccc7a42076e5ee75450d2e3456
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: 8b581df3cd8eebe4cdcb581c0b8b6f51417fb478
+PODFILE CHECKSUM: d16b99f66a4ae3bc4b9419635e732577cc19d424
 
 COCOAPODS: 1.2.1
