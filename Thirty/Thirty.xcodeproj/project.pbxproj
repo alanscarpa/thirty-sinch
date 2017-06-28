@@ -24,6 +24,8 @@
 		4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7951E5286E000AF54AA /* CallViewController.xib */; };
 		4527AF111EC010D8003920DA /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45635E401EC0089B0011096C /* PushKit.framework */; };
 		4530A9011F0331500039D303 /* leaguespartan-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9001F0331500039D303 /* leaguespartan-bold.ttf */; };
+		4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9031F033DDD0039D303 /* LoginViewController.swift */; };
+		4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9041F033DDD0039D303 /* LoginViewController.xib */; };
 		454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7021E54FEAD0087FAAD /* Keys.swift */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CC7091E57CDB00087FAAD /* ringback.wav */; };
@@ -53,6 +55,8 @@
 		4500C7941E5286E000AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		4500C7951E5286E000AF54AA /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		4530A9001F0331500039D303 /* leaguespartan-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "leaguespartan-bold.ttf"; sourceTree = "<group>"; };
+		4530A9031F033DDD0039D303 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		4530A9041F033DDD0039D303 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		454CC7021E54FEAD0087FAAD /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = "Thirty/Supporting Files/Keys.swift"; sourceTree = SOURCE_ROOT; };
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				4500C7841E4E92AF00AF54AA /* Welcome */,
+				4530A9021F033DB00039D303 /* Login */,
 				4500C7931E52868F00AF54AA /* Call */,
 				4500C78E1E527ADA00AF54AA /* Home */,
 				4500C77E1E4E8F0500AF54AA /* Root */,
@@ -202,6 +207,15 @@
 				4500C7951E5286E000AF54AA /* CallViewController.xib */,
 			);
 			path = Call;
+			sourceTree = "<group>";
+		};
+		4530A9021F033DB00039D303 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				4530A9031F033DDD0039D303 /* LoginViewController.swift */,
+				4530A9041F033DDD0039D303 /* LoginViewController.xib */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
@@ -287,6 +301,7 @@
 			files = (
 				4530A9011F0331500039D303 /* leaguespartan-bold.ttf in Resources */,
 				4500C7881E4E92C200AF54AA /* WelcomeViewController.xib in Resources */,
+				4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */,
 				454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */,
 				4500C77B1E4D463400AF54AA /* incoming.wav in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
@@ -363,6 +378,7 @@
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
 				454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */,
+				4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

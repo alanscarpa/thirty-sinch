@@ -14,6 +14,7 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
     // TODO: change to production when ready
     let push = Sinch.managedPush(with: SINAPSEnvironment.development)
     
+    // TODO: Verify password on Firebase before initializing
     func initializeWithUserId(_ userId: String) {
         // TODO: Changehost to env host
         // TODO: Change authorization so app secret and key not used

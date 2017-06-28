@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if UserManager.shared.hasUserId, let userId = UserManager.shared.userId {
             SinchClientManager.shared.initializeWithUserId(userId)
         } else {
-            RootViewController.shared.goToLoginVC()
+            RootViewController.shared.goToWelcomeVC()
         }
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
