@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  WelcomeViewController.swift
 //  Thirty
 //
 //  Created by Alan Scarpa on 2/10/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class WelcomeViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var loginTextField: UITextField!
     
