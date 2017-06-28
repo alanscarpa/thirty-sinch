@@ -7,5 +7,6 @@ target 'Thirty' do
 
   # Pods for Thirty
   pod 'SinchRTC'
+  pod 'IQKeyboardManagerSwift'
   
 end

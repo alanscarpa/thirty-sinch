@@ -1,12 +1,15 @@
 PODS:
+  - IQKeyboardManagerSwift (4.0.9)
   - SinchRTC (3.11.0)
 
 DEPENDENCIES:
+  - IQKeyboardManagerSwift
   - SinchRTC
 
 SPEC CHECKSUMS:
+  IQKeyboardManagerSwift: 2eefe6c429b86aa08bfbc1b5c891164d754adf91
   SinchRTC: 68b940110104f8ccc7a42076e5ee75450d2e3456
 
-PODFILE CHECKSUM: d06a2bb7a171b8fa15e54f3481f365d295cc3126
+PODFILE CHECKSUM: fb6ca72fd92c4f2c23b4a603de6945bad04c2e6b
 
 COCOAPODS: 1.2.1

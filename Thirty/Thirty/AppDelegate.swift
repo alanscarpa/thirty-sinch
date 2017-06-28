@@ -9,6 +9,7 @@
 import UIKit
 import UserNotifications
 import PushKit
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -19,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.rootViewController = RootViewController.shared
         window!.makeKeyAndVisible()
+        
+        IQKeyboardManager.sharedManager().enable = true
+        IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
         setUpRemoteNotificationsForApplication(application)
 
