@@ -2,7 +2,7 @@
 //  LoginViewController.swift
 //  Thirty
 //
-//  Created by Alan Scarpa on 2/10/17.
+//  Created by Alan Scarpa on 6/27/17.
 //  Copyright © 2017 Thirty. All rights reserved.
 //
 
@@ -10,18 +10,25 @@ import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet weak var loginTextField: UITextField!
-    
+    @IBOutlet weak var usernameTextField: UITextField!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        loginTextField.delegate = self
+        usernameTextField.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        RootViewController.shared.showNavigationBar = true
+    }
+
     // MARK: - Actions
     
     @IBAction func loginButtonTapped() {
-        if let userId = loginTextField.text, !userId.isEmpty {
-            UserManager.shared.userId = loginTextField.text
+        // TODO: Add PW field and check for accuracy
+        // TODO: add loading spinner
+        if let userId = usernameTextField.text, !userId.isEmpty {
+            UserManager.shared.userId = usernameTextField.text
             SinchClientManager.shared.initializeWithUserId(userId)
         } else {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username.")
@@ -45,4 +52,5 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             view.endEditing(true)
         }
     }
+
 }

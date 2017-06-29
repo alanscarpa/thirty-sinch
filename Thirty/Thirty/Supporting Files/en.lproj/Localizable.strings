@@ -6,4 +6,7 @@
   Copyright © 2017 Thirty. All rights reserved.
 */
 
+// TODO: Check that push banner looks right
+// https://www.sinch.com/docs/video/ios/
+
 SIN_INCOMING_CALL_DISPLAY_NAME = "Incoming 30 from %@";

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="leaguespartan-bold.ttf">
+            <string>LeagueSpartan-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignupViewController" customModule="Thirty" customModuleProvider="target">
+            <connections>
+                <outlet property="confirmPasswordTextField" destination="AND-0L-JpQ" id="O6N-k1-eU1"/>
+                <outlet property="emailTextField" destination="P6Z-y5-ow8" id="b4h-3X-bY1"/>
+                <outlet property="passwordTextField" destination="aya-Vh-zpl" id="Gr9-SQ-V7S"/>
+                <outlet property="phoneNumberTextField" destination="0nT-vo-bSD" id="7Zr-lZ-nc0"/>
+                <outlet property="usernameTextField" destination="fUF-Qk-Hwi" id="VLi-Hn-yBK"/>
+                <outlet property="view" destination="IlC-it-SIT" id="RRW-TW-w3b"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="IlC-it-SIT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="EMAIL" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P6Z-y5-ow8">
+                    <rect key="frame" x="40" y="148" width="240" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="dvu-gw-s6x"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" keyboardAppearance="alert" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="hH8-pO-IWL"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="USERNAME" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fUF-Qk-Hwi">
+                    <rect key="frame" x="40" y="201" width="240" height="45"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="zBA-1m-wN1"/>
+                    </connections>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfq-mh-JAh">
+                    <rect key="frame" x="0.0" y="495.5" width="320" height="55"/>
+                    <color key="backgroundColor" red="0.94509803920000002" green="0.49019607840000001" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="55" id="bxQ-NO-KTz"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="19"/>
+                    <state key="normal" title="SIGN UP">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="signupButtonTapped" destination="-1" eventType="touchUpInside" id="Vvv-q4-WfB"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="PASSWORD" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aya-Vh-zpl">
+                    <rect key="frame" x="40" y="254" width="240" height="45"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="MZh-PN-fj7"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="CONFIRM PW" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AND-0L-JpQ">
+                    <rect key="frame" x="40" y="307" width="240" height="45"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="kw5-1U-UCp"/>
+                    </connections>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="(Used to connect with friends)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOo-Nb-Wep">
+                    <rect key="frame" x="29.5" y="417" width="262" height="21.5"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="700" verticalCompressionResistancePriority="1000" text="Let's 30!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kbW-Ta-KhU">
+                    <rect key="frame" x="99.5" y="89" width="121" height="35"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="28"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="PHONE NUMBER" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0nT-vo-bSD">
+                    <rect key="frame" x="40" y="360" width="240" height="45"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad" keyboardAppearance="alert" returnKeyType="join" enablesReturnKeyAutomatically="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="pOd-pI-M1K"/>
+                    </connections>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" red="0.062745098040000002" green="0.070588235289999995" blue="0.062745098040000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Jfq-mh-JAh" firstAttribute="top" secondItem="dOo-Nb-Wep" secondAttribute="bottom" priority="900" constant="57" id="2zR-5J-Mcw"/>
+                <constraint firstItem="dOo-Nb-Wep" firstAttribute="centerX" secondItem="AND-0L-JpQ" secondAttribute="centerX" id="5gj-1v-T68"/>
+                <constraint firstItem="0nT-vo-bSD" firstAttribute="height" secondItem="AND-0L-JpQ" secondAttribute="height" id="8YW-qG-Fw7"/>
+                <constraint firstItem="Jfq-mh-JAh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dOo-Nb-Wep" secondAttribute="bottom" constant="12" id="A2f-GK-vbY"/>
+                <constraint firstItem="fUF-Qk-Hwi" firstAttribute="width" secondItem="P6Z-y5-ow8" secondAttribute="width" id="D5i-E3-cBc"/>
+                <constraint firstItem="fUF-Qk-Hwi" firstAttribute="centerX" secondItem="P6Z-y5-ow8" secondAttribute="centerX" id="GKS-S0-eiE"/>
+                <constraint firstItem="P6Z-y5-ow8" firstAttribute="centerX" secondItem="IlC-it-SIT" secondAttribute="centerX" id="MGn-Fs-FV4"/>
+                <constraint firstItem="AND-0L-JpQ" firstAttribute="width" secondItem="aya-Vh-zpl" secondAttribute="width" id="R3e-aH-fpY"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Jfq-mh-JAh" secondAttribute="bottom" id="R8z-b7-ci0"/>
+                <constraint firstItem="aya-Vh-zpl" firstAttribute="width" secondItem="fUF-Qk-Hwi" secondAttribute="width" id="RWw-hS-jBj"/>
+                <constraint firstItem="AND-0L-JpQ" firstAttribute="top" secondItem="aya-Vh-zpl" secondAttribute="bottom" constant="8" id="UCX-Bu-YQU"/>
+                <constraint firstAttribute="bottom" secondItem="Jfq-mh-JAh" secondAttribute="bottom" priority="700" constant="77" id="WOO-Di-dYA"/>
+                <constraint firstItem="0nT-vo-bSD" firstAttribute="top" secondItem="AND-0L-JpQ" secondAttribute="bottom" constant="8" id="WlR-wM-irl"/>
+                <constraint firstItem="dOo-Nb-Wep" firstAttribute="top" secondItem="0nT-vo-bSD" secondAttribute="bottom" constant="12" id="Z5i-1c-ZRn"/>
+                <constraint firstItem="kbW-Ta-KhU" firstAttribute="top" secondItem="IlC-it-SIT" secondAttribute="top" constant="89" id="Z9e-Rr-N7n"/>
+                <constraint firstItem="aya-Vh-zpl" firstAttribute="centerX" secondItem="fUF-Qk-Hwi" secondAttribute="centerX" id="Zc9-Z9-YTI"/>
+                <constraint firstItem="aya-Vh-zpl" firstAttribute="height" secondItem="fUF-Qk-Hwi" secondAttribute="height" id="dnq-za-efG"/>
+                <constraint firstAttribute="trailing" secondItem="Jfq-mh-JAh" secondAttribute="trailing" id="fph-Jb-iQF"/>
+                <constraint firstItem="AND-0L-JpQ" firstAttribute="height" secondItem="aya-Vh-zpl" secondAttribute="height" id="hZL-hB-yDz"/>
+                <constraint firstItem="0nT-vo-bSD" firstAttribute="centerX" secondItem="AND-0L-JpQ" secondAttribute="centerX" id="hoi-p1-XHL"/>
+                <constraint firstItem="0nT-vo-bSD" firstAttribute="width" secondItem="AND-0L-JpQ" secondAttribute="width" id="ilY-9u-tiD"/>
+                <constraint firstItem="fUF-Qk-Hwi" firstAttribute="top" secondItem="P6Z-y5-ow8" secondAttribute="bottom" constant="8" id="lFi-qp-WPw"/>
+                <constraint firstItem="kbW-Ta-KhU" firstAttribute="centerX" secondItem="IlC-it-SIT" secondAttribute="centerX" id="ldO-l9-vbN"/>
+                <constraint firstItem="fUF-Qk-Hwi" firstAttribute="height" secondItem="P6Z-y5-ow8" secondAttribute="height" id="qfy-rj-KrD"/>
+                <constraint firstItem="Jfq-mh-JAh" firstAttribute="leading" secondItem="IlC-it-SIT" secondAttribute="leading" id="vTj-2M-wGO"/>
+                <constraint firstItem="P6Z-y5-ow8" firstAttribute="width" secondItem="IlC-it-SIT" secondAttribute="width" multiplier="0.75" id="wlc-Uk-Az8"/>
+                <constraint firstItem="P6Z-y5-ow8" firstAttribute="top" secondItem="kbW-Ta-KhU" secondAttribute="bottom" constant="24" id="xBc-YD-sZf"/>
+                <constraint firstItem="aya-Vh-zpl" firstAttribute="top" secondItem="fUF-Qk-Hwi" secondAttribute="bottom" constant="8" id="yMT-nL-aDv"/>
+                <constraint firstItem="AND-0L-JpQ" firstAttribute="centerX" secondItem="aya-Vh-zpl" secondAttribute="centerX" id="yQz-kF-eW9"/>
+            </constraints>
+            <point key="canvasLocation" x="33" y="68"/>
+        </view>
+    </objects>
+</document>

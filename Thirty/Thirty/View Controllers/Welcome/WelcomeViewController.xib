@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="leaguespartan-bold.ttf">
+            <string>LeagueSpartan-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WelcomeViewController" customModule="Thirty" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="OEM-LY-OJe">
+                    <rect key="frame" x="87.5" y="33.5" width="200" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="NDZ-kE-QKB"/>
+                        <constraint firstAttribute="height" constant="200" id="q0V-cR-2Jk"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YZ-ze-gvL">
+                    <rect key="frame" x="0.0" y="334.5" width="375" height="55"/>
+                    <color key="backgroundColor" red="1" green="0.70588235294117641" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="55" id="gfG-LN-rcD"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="19"/>
+                    <state key="normal" title="LOG IN">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="loginButtonTapped" destination="-1" eventType="touchUpInside" id="NbH-VT-pv5"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 Second Video Chats" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5q6-1m-0HR">
+                    <rect key="frame" x="12" y="251.5" width="351" height="22"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9gW-Bt-evH">
+                    <rect key="frame" x="0.0" y="389.5" width="375" height="55"/>
+                    <color key="backgroundColor" red="0.94509803921568625" green="0.49019607843137253" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="55" id="CeT-WB-9wb"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="19"/>
+                    <state key="normal" title="SIGN UP">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="signupButtonTapped" destination="-1" eventType="touchUpInside" id="tui-eh-Rte"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.062745098039215685" green="0.070588235294117646" blue="0.062745098039215685" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="5q6-1m-0HR" secondAttribute="trailing" constant="12" id="4h0-Y5-j1Z"/>
+                <constraint firstAttribute="trailing" secondItem="1YZ-ze-gvL" secondAttribute="trailing" id="5wl-l7-QQo"/>
+                <constraint firstItem="5q6-1m-0HR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="CKW-Yt-Tz0"/>
+                <constraint firstItem="9gW-Bt-evH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="HEY-oe-We4"/>
+                <constraint firstAttribute="trailing" secondItem="9gW-Bt-evH" secondAttribute="trailing" id="P6T-o9-gMP"/>
+                <constraint firstItem="OEM-LY-OJe" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="0.4" id="UyW-ni-5n5"/>
+                <constraint firstItem="5q6-1m-0HR" firstAttribute="top" secondItem="OEM-LY-OJe" secondAttribute="bottom" constant="18" id="Zs3-Ah-4n9"/>
+                <constraint firstItem="1YZ-ze-gvL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ab4-lC-tQy"/>
+                <constraint firstItem="1YZ-ze-gvL" firstAttribute="top" secondItem="5q6-1m-0HR" secondAttribute="bottom" constant="61" id="geg-IW-jUq"/>
+                <constraint firstItem="9gW-Bt-evH" firstAttribute="top" secondItem="1YZ-ze-gvL" secondAttribute="bottom" id="gu8-0i-dgd"/>
+                <constraint firstItem="OEM-LY-OJe" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="r5o-0Y-mug"/>
+            </constraints>
+            <point key="canvasLocation" x="43.5" y="53.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="logo" width="800" height="800"/>
+    </resources>
+</document>

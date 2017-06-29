@@ -44,12 +44,20 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, SINC
         rootNavigationController.popViewController(animated: true)
     }
     
+    func goToWelcomeVC() {
+        rootNavigationController.setViewControllers([WelcomeViewController()], animated: true)
+    }
+    
     func goToLoginVC() {
-        rootNavigationController.setViewControllers([LoginViewController()], animated: true)
+        rootNavigationController.pushViewController(LoginViewController(), animated: true)
+    }
+    
+    func goToSignupVC() {
+        rootNavigationController.pushViewController(SignupViewController(), animated: true)
     }
     
     func goToHomeVC() {
-        rootNavigationController.setViewControllers([LoginViewController(), HomeViewController()], animated: true)
+        rootNavigationController.setViewControllers([WelcomeViewController(), HomeViewController()], animated: true)
     }
     
     func pushHomeVC() {

@@ -9,6 +9,8 @@
 import UIKit
 import UserNotifications
 import PushKit
+import IQKeyboardManagerSwift
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -20,16 +22,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window!.rootViewController = RootViewController.shared
         window!.makeKeyAndVisible()
         
+        IQKeyboardManager.sharedManager().enable = true
+        IQKeyboardManager.sharedManager().enableAutoToolbar = false
+        
         setUpRemoteNotificationsForApplication(application)
 
         if UserManager.shared.hasUserId, let userId = UserManager.shared.userId {
             SinchClientManager.shared.initializeWithUserId(userId)
         } else {
-            RootViewController.shared.goToLoginVC()
+            RootViewController.shared.goToWelcomeVC()
         }
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
         UINavigationBar.appearance().tintColor = UIColor.thirtyBlue
+        
+        FIRApp.configure()
         
         return true
     }
