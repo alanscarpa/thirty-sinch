@@ -60,7 +60,17 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             present(UIAlertController.createSimpleAlert(withTitle: "Problem Signing Up", message: "Make sure you've filled out all fields correctly, your password has at least 6 characters, and both passwords match.  Please try again!"), animated: true, completion: nil)
             return
         }
+        // TODO: refactor credentials + User
+        let user = User(username: credentials.username, email: credentials.email, phoneNumber: credentials.phoneNumber, password: credentials.password)
         SVProgressHUD.show()
+        FirebaseManager.shared.createNewUser(user: user) { result in
+            switch result {
+            case .Success(_):
+                RootViewController.shared.goToHomeVC()
+            case .Failure(let error):
+                self.present(UIAlertController.createSimpleAlert(withTitle: "Error Signing Up", message: error.localizedDescription), animated: true, completion: nil)
+            }
+        }
         FIRAuth.auth()?.createUser(withEmail: credentials.email, password: credentials.password) { (user, error) in
             if let error = error {
                 SVProgressHUD.dismiss()

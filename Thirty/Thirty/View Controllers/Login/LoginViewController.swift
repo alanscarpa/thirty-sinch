@@ -27,6 +27,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginButtonTapped() {
         // TODO: Add PW field and check for accuracy
         // TODO: add loading spinner
+        // TODO: Check for username in Firebase, grab email, and then log in with associated email
         if let userId = usernameTextField.text, !userId.isEmpty {
             UserManager.shared.userId = usernameTextField.text
             SinchClientManager.shared.initializeWithUserId(userId)

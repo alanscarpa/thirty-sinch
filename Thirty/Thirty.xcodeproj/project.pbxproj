@@ -29,6 +29,9 @@
 		4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9071F044CDC0039D303 /* GoogleService-Info.plist */; };
 		4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A90A1F0451FE0039D303 /* SignupViewController.swift */; };
 		4530A90D1F0451FE0039D303 /* SignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4530A90B1F0451FE0039D303 /* SignupViewController.xib */; };
+		4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A90E1F05B7A80039D303 /* FirebaseManager.swift */; };
+		4530A9111F05B7F20039D303 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9101F05B7F20039D303 /* Result.swift */; };
+		4530A9141F05BA3D0039D303 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9131F05BA3D0039D303 /* User.swift */; };
 		454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7021E54FEAD0087FAAD /* Keys.swift */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CC7091E57CDB00087FAAD /* ringback.wav */; };
@@ -63,6 +66,9 @@
 		4530A9071F044CDC0039D303 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4530A90A1F0451FE0039D303 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		4530A90B1F0451FE0039D303 /* SignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignupViewController.xib; sourceTree = "<group>"; };
+		4530A90E1F05B7A80039D303 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		4530A9101F05B7F20039D303 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		4530A9131F05BA3D0039D303 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		454CC7021E54FEAD0087FAAD /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = "Thirty/Supporting Files/Keys.swift"; sourceTree = SOURCE_ROOT; };
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -117,6 +123,7 @@
 			children = (
 				454CC7061E5532870087FAAD /* Thirty.entitlements */,
 				4500C75E1E4BDD5A00AF54AA /* AppDelegate.swift */,
+				4530A9121F05B9E80039D303 /* Models */,
 				4500C7891E4E9EBD00AF54AA /* Utilities */,
 				4500C7811E4E924800AF54AA /* Extensions */,
 				4500C77D1E4E8EE800AF54AA /* View Controllers */,
@@ -195,6 +202,8 @@
 				454CC7021E54FEAD0087FAAD /* Keys.swift */,
 				4500C78A1E4E9EEA00AF54AA /* SinchClientManager.swift */,
 				454CC7071E568F640087FAAD /* UserManager.swift */,
+				4530A90E1F05B7A80039D303 /* FirebaseManager.swift */,
+				4530A9101F05B7F20039D303 /* Result.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -233,6 +242,14 @@
 				4530A90B1F0451FE0039D303 /* SignupViewController.xib */,
 			);
 			path = Signup;
+			sourceTree = "<group>";
+		};
+		4530A9121F05B9E80039D303 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4530A9131F05BA3D0039D303 /* User.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
@@ -387,12 +404,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */,
 				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
 				4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */,
+				4530A9111F05B7F20039D303 /* Result.swift in Sources */,
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
 				4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */,
+				4530A9141F05BA3D0039D303 /* User.swift in Sources */,
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,
 				4500C78B1E4E9EEA00AF54AA /* SinchClientManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
