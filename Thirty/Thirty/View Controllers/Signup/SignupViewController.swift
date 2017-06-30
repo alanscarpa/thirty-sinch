@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
-import SVProgressHUD
+import JHSpinner
 
 class SignupViewController: UIViewController, UITextFieldDelegate {
 
@@ -18,9 +18,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var phoneNumberTextField: UITextField!
-    
-    let databaseRef = FIRDatabase.database().reference()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -62,38 +60,14 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         }
         // TODO: refactor credentials + User
         let user = User(username: credentials.username, email: credentials.email, phoneNumber: credentials.phoneNumber, password: credentials.password)
-        SVProgressHUD.show()
+        THSpinner.showSpinnerOnView(view)
         FirebaseManager.shared.createNewUser(user: user) { result in
+            THSpinner.dismiss()
             switch result {
             case .Success(_):
                 RootViewController.shared.goToHomeVC()
             case .Failure(let error):
                 self.present(UIAlertController.createSimpleAlert(withTitle: "Error Signing Up", message: error.localizedDescription), animated: true, completion: nil)
-            }
-        }
-        FIRAuth.auth()?.createUser(withEmail: credentials.email, password: credentials.password) { (user, error) in
-            if let error = error {
-                SVProgressHUD.dismiss()
-                self.present(UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription), animated: true, completion: nil)
-            } else {
-                FIRAuth.auth()?.signIn(withEmail: credentials.email, password: credentials.password, completion: { (user, error) in
-                    if let error = error {
-                        SVProgressHUD.dismiss()
-                        self.present(UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription), animated: true, completion: nil)
-                    } else {
-                        // TODO: get rid of explicit unwrapping
-                        self.databaseRef.child("users")
-                            .child(user!.uid).setValue(["phone-number": credentials.phoneNumber, "username": credentials.username, "email": credentials.email], withCompletionBlock: { (error, ref) in
-                                SVProgressHUD.dismiss()
-                                if let error = error {
-                                    print(error.localizedDescription)
-                                } else {
-                                    print("Success")
-                                    RootViewController.shared.goToHomeVC()
-                                }
-                            })
-                    }
-                })
             }
         }
     }

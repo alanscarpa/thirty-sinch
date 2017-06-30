@@ -52,7 +52,7 @@
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfq-mh-JAh">
                     <rect key="frame" x="0.0" y="495.5" width="320" height="55"/>
-                    <color key="backgroundColor" red="0.94509803920000002" green="0.49019607840000001" blue="0.1215686275" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.41568627450000001" green="0.094117647060000004" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="55" id="bxQ-NO-KTz"/>
                     </constraints>
@@ -83,13 +83,13 @@
                     </connections>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="(Used to connect with friends)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOo-Nb-Wep">
-                    <rect key="frame" x="29.5" y="417" width="262" height="21.5"/>
+                    <rect key="frame" x="30" y="417" width="261.5" height="21.5"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="17"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="700" verticalCompressionResistancePriority="1000" text="Let's 30!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kbW-Ta-KhU">
-                    <rect key="frame" x="99.5" y="89" width="121" height="35"/>
+                    <rect key="frame" x="100" y="89" width="120.5" height="35"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="28"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -104,7 +104,7 @@
                     </connections>
                 </textField>
             </subviews>
-            <color key="backgroundColor" red="0.062745098040000002" green="0.070588235289999995" blue="0.062745098040000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.15686274509803921" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Jfq-mh-JAh" firstAttribute="top" secondItem="dOo-Nb-Wep" secondAttribute="bottom" priority="900" constant="57" id="2zR-5J-Mcw"/>
                 <constraint firstItem="dOo-Nb-Wep" firstAttribute="centerX" secondItem="AND-0L-JpQ" secondAttribute="centerX" id="5gj-1v-T68"/>
