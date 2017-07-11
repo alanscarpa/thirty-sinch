@@ -57,6 +57,7 @@ class FirebaseManager {
     }
     
     func createNewUser(user: User, completion: @escaping (Result<Void>) -> Void) {
+        // TODO: FIRST MAKE SURE THAT USERNAME IS NOT TAKEN
         // STEP 1 - First we create our user
         FIRAuth.auth()?.createUser(withEmail: user.email, password: user.password) { (fbUser, error) in
             if let error = error {
@@ -65,9 +66,9 @@ class FirebaseManager {
                 // STEP 2 - Then we add details to user which allows a username sign-in
                 if let fbUser = fbUser {
                     self.databaseRef.child("users")
-                        .child(fbUser.uid)
+                        .child(user.username)
                         .setValue(["phone-number": user.phoneNumber,
-                                   "username": user.username,
+                                   "uid": fbUser.uid,
                                    "email": user.email], withCompletionBlock: { (error, ref) in
                                     if let error = error {
                                         completion(.Failure(error))
@@ -81,4 +82,28 @@ class FirebaseManager {
             }
         }
     }
+    
+//    func getCurrentUserImageURLs(completion: @escaping (Result<Void>) -> Void) {
+//        guard let userID = FIRAuth.auth()?.currentUser?.uid else { return }
+//        databaseRef.child("users").child(userID).child("images").observeSingleEvent(of: .value, with: { (snapshot) in
+//            guard snapshot.exists() else {
+//                completion(.Success(nil))
+//                return
+//            }
+//            let allValues = snapshot.value as! NSDictionary
+//            for (key, value) in allValues {
+//                let valueDictionary = value as! NSDictionary
+//                let urlString = valueDictionary["downloadURL"] as? String ?? ""
+//                let dateDouble = valueDictionary["date"] as? Double ?? 0
+//                
+//                let url = URL(string: urlString)
+//                let date = Date(timeIntervalSince1970: TimeInterval(dateDouble))
+//                let imageObject = FBImageData(url: url, databaseKey: key as! String, date: date, image: nil)
+//                imageObjects.append(imageObject)
+//            }
+//            completion(.Success(imageObjects))
+//        }) { (error) in
+//            completion(.Failure(error))
+//        }
+//    }
 }

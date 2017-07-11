@@ -11,7 +11,8 @@ import UIKit
 class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerClientDelegate {
 
     @IBOutlet weak var usernameTextField: UITextField!
-
+    @IBOutlet weak var passwordTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         SinchManager.shared.clientDelegate = self

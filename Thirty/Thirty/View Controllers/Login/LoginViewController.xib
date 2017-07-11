@@ -16,6 +16,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController" customModule="Thirty" customModuleProvider="target">
             <connections>
+                <outlet property="passwordTextField" destination="kXW-fK-onW" id="ltm-1v-8Py"/>
                 <outlet property="usernameTextField" destination="hkv-mZ-SXf" id="2oY-UL-7od"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

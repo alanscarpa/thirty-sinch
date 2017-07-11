@@ -11,7 +11,7 @@ import Firebase
 import FirebaseDatabase
 import JHSpinner
 
-class SignupViewController: UIViewController, UITextFieldDelegate {
+class SignupViewController: UIViewController, UITextFieldDelegate, SinchManagerClientDelegate {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -21,6 +21,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        SinchManager.shared.clientDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
