@@ -16,8 +16,8 @@ class CallViewController: UIViewController, SINCallDelegate {
     @IBOutlet weak var answerCallButton: UIButton!
     @IBOutlet weak var timeRemainingLabel: UILabel!
     
-    let audioController = SinchClientManager.shared.client?.audioController()
-    let videoController = SinchClientManager.shared.client?.videoController()
+    let audioController = SinchManager.shared.client?.audioController()
+    let videoController = SinchManager.shared.client?.videoController()
     
     var call: SINCall? {
         didSet {

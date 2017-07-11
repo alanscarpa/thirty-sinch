@@ -62,14 +62,28 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         let user = User(username: credentials.username, email: credentials.email, phoneNumber: credentials.phoneNumber, password: credentials.password)
         THSpinner.showSpinnerOnView(view)
         FirebaseManager.shared.createNewUser(user: user) { result in
-            THSpinner.dismiss()
             switch result {
             case .Success(_):
-                RootViewController.shared.goToHomeVC()
+                // Spinner is dismissed when initialization is successful
+                UserManager.shared.userId = user.username
+                SinchManager.shared.initializeWithUserId(user.username)
             case .Failure(let error):
+                THSpinner.dismiss()
                 self.present(UIAlertController.createSimpleAlert(withTitle: "Error Signing Up", message: error.localizedDescription), animated: true, completion: nil)
             }
         }
+    }
+    
+    // MARK: - SinchManagerClientDelegate
+    
+    func sinchClientDidStart() {
+        THSpinner.dismiss()
+        RootViewController.shared.goToHomeVC()
+    }
+    
+    func sinchClientDidFailWithError(_ error: Error) {
+        THSpinner.dismiss()
+        present(UIAlertController.createSimpleAlert(withTitle: "Error Starting Sinch", message: error.localizedDescription), animated: true, completion: nil)
     }
     
     // MARK: - Helpers

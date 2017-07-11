@@ -26,12 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
         setUpRemoteNotificationsForApplication(application)
-
-        if UserManager.shared.hasUserId, let userId = UserManager.shared.userId {
-            SinchClientManager.shared.initializeWithUserId(userId)
-        } else {
-            RootViewController.shared.goToWelcomeVC()
-        }
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
         UINavigationBar.appearance().tintColor = UIColor.thirtyBlue
@@ -46,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void) {
         let userInfo = response.notification.request.content.userInfo
-        SinchClientManager.shared.push?.application(UIApplication.shared, didReceiveRemoteNotification: userInfo)
+        SinchManager.shared.push?.application(UIApplication.shared, didReceiveRemoteNotification: userInfo)
     }
     
     // MARK: - Notifications
@@ -79,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        SinchClientManager.shared.push?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        SinchManager.shared.push?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -87,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        SinchClientManager.shared.push?.application(application, didReceiveRemoteNotification: userInfo)
+        SinchManager.shared.push?.application(application, didReceiveRemoteNotification: userInfo)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

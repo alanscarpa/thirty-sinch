@@ -8,12 +8,13 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerClientDelegate {
 
     @IBOutlet weak var usernameTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        SinchManager.shared.clientDelegate = self
         usernameTextField.delegate = self
     }
     
@@ -29,8 +30,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         // TODO: add loading spinner
         // TODO: Check for username in Firebase, grab email, and then log in with associated email
         if let userId = usernameTextField.text, !userId.isEmpty {
+            THSpinner.showSpinnerOnView(view)
             UserManager.shared.userId = usernameTextField.text
-            SinchClientManager.shared.initializeWithUserId(userId)
+            SinchManager.shared.initializeWithUserId(userId)
         } else {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username.")
             present(alert, animated: true, completion: nil)
@@ -52,6 +54,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if touch?.view?.isKind(of: UITextField.self) == false {
             view.endEditing(true)
         }
+    }
+    
+    // MARK: - SinchManagerClientDelegate
+    
+    func sinchClientDidStart() {
+        THSpinner.dismiss()
+        RootViewController.shared.goToHomeVC()
+    }
+    
+    func sinchClientDidFailWithError(_ error: Error) {
+        present(UIAlertController.createSimpleAlert(withTitle: "Error Starting Sinch", message: error.localizedDescription), animated: true, completion: nil)
     }
 
 }

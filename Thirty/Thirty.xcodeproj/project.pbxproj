@@ -16,7 +16,7 @@
 		4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */; };
 		4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7851E4E92C200AF54AA /* WelcomeViewController.swift */; };
 		4500C7881E4E92C200AF54AA /* WelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7861E4E92C200AF54AA /* WelcomeViewController.xib */; };
-		4500C78B1E4E9EEA00AF54AA /* SinchClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78A1E4E9EEA00AF54AA /* SinchClientManager.swift */; };
+		4500C78B1E4E9EEA00AF54AA /* SinchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78A1E4E9EEA00AF54AA /* SinchManager.swift */; };
 		4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */; };
 		4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78F1E527AFF00AF54AA /* HomeViewController.swift */; };
 		4500C7921E527AFF00AF54AA /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7901E527AFF00AF54AA /* HomeViewController.xib */; };
@@ -56,7 +56,7 @@
 		4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Thirty.swift"; sourceTree = "<group>"; };
 		4500C7851E4E92C200AF54AA /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		4500C7861E4E92C200AF54AA /* WelcomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WelcomeViewController.xib; sourceTree = "<group>"; };
-		4500C78A1E4E9EEA00AF54AA /* SinchClientManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinchClientManager.swift; sourceTree = "<group>"; };
+		4500C78A1E4E9EEA00AF54AA /* SinchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinchManager.swift; sourceTree = "<group>"; };
 		4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Thirty.swift"; sourceTree = "<group>"; };
 		4500C78F1E527AFF00AF54AA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		4500C7901E527AFF00AF54AA /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
@@ -205,7 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				454CC7021E54FEAD0087FAAD /* Keys.swift */,
-				4500C78A1E4E9EEA00AF54AA /* SinchClientManager.swift */,
+				4500C78A1E4E9EEA00AF54AA /* SinchManager.swift */,
 				454CC7071E568F640087FAAD /* UserManager.swift */,
 				4530A90E1F05B7A80039D303 /* FirebaseManager.swift */,
 				4530A9101F05B7F20039D303 /* Result.swift */,
@@ -421,7 +421,7 @@
 				4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */,
 				4530A9141F05BA3D0039D303 /* User.swift in Sources */,
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,
-				4500C78B1E4E9EEA00AF54AA /* SinchClientManager.swift in Sources */,
+				4500C78B1E4E9EEA00AF54AA /* SinchManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
 				454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */,
