@@ -14,11 +14,11 @@ extension UIColor {
     }
     
     static var thPrimaryPurple: UIColor {
-        return UIColor(colorLiteralRed: 126.0 / 255.0, green: 0.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
+        return UIColor(colorLiteralRed: 101.0 / 255.0, green: 0.0 / 255.0, blue: 225.0 / 255.0, alpha: 1)
     }
     
     static var thSecondaryPurple: UIColor {
-        return UIColor(colorLiteralRed: 106.0 / 255.0, green: 24.0 / 255.0, blue: 124.0 / 255.0, alpha: 1)
+        return UIColor(colorLiteralRed: 137.0 / 255.0, green: 0.0 / 255.0, blue: 208.0 / 255.0, alpha: 1)
     }
     
     static var thBlack: UIColor {

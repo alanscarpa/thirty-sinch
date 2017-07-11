@@ -52,7 +52,7 @@
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfq-mh-JAh">
                     <rect key="frame" x="0.0" y="495.5" width="320" height="55"/>
-                    <color key="backgroundColor" red="0.41568627450000001" green="0.094117647060000004" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.53725490196078429" green="0.0" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="55" id="bxQ-NO-KTz"/>
                     </constraints>
@@ -104,7 +104,7 @@
                     </connections>
                 </textField>
             </subviews>
-            <color key="backgroundColor" red="0.15686274509803921" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.396078431372549" green="0.0" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Jfq-mh-JAh" firstAttribute="top" secondItem="dOo-Nb-Wep" secondAttribute="bottom" priority="900" constant="57" id="2zR-5J-Mcw"/>
                 <constraint firstItem="dOo-Nb-Wep" firstAttribute="centerX" secondItem="AND-0L-JpQ" secondAttribute="centerX" id="5gj-1v-T68"/>

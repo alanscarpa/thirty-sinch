@@ -49,7 +49,7 @@
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="buu-1t-FSh">
                     <rect key="frame" x="0.0" y="480.5" width="375" height="55"/>
-                    <color key="backgroundColor" red="0.4941176471" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.63921568630000003" green="0.40000000000000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="55" id="PXD-Be-YHc"/>
                     </constraints>
@@ -62,7 +62,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.15686274509803921" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.396078431372549" green="0.0" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="buu-1t-FSh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="DHt-aC-R4k"/>
                 <constraint firstItem="kXW-fK-onW" firstAttribute="centerX" secondItem="hkv-mZ-SXf" secondAttribute="centerX" id="E9J-1J-1DL"/>
@@ -81,6 +81,6 @@
         </view>
     </objects>
     <resources>
-        <image name="logo" width="800" height="800"/>
+        <image name="logo" width="574" height="576"/>
     </resources>
 </document>

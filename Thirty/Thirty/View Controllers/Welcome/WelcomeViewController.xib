@@ -33,7 +33,7 @@
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YZ-ze-gvL">
                     <rect key="frame" x="0.0" y="334" width="375" height="55"/>
-                    <color key="backgroundColor" red="0.49411764705882355" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.63921568627450975" green="0.40000000000000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="55" id="gfG-LN-rcD"/>
                     </constraints>
@@ -53,7 +53,7 @@
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9gW-Bt-evH">
                     <rect key="frame" x="0.0" y="389" width="375" height="55"/>
-                    <color key="backgroundColor" red="0.41568627450980389" green="0.094117647058823528" blue="0.48627450980392156" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.53725490196078429" green="0.0" blue="0.81568627450980391" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="55" id="CeT-WB-9wb"/>
                     </constraints>
@@ -66,7 +66,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.15686274509803921" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.396078431372549" green="0.0" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="5q6-1m-0HR" secondAttribute="trailing" constant="12" id="4h0-Y5-j1Z"/>
                 <constraint firstAttribute="trailing" secondItem="1YZ-ze-gvL" secondAttribute="trailing" id="5wl-l7-QQo"/>
@@ -84,6 +84,6 @@
         </view>
     </objects>
     <resources>
-        <image name="logo" width="800" height="800"/>
+        <image name="logo" width="574" height="576"/>
     </resources>
 </document>

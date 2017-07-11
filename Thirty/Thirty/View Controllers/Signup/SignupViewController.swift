@@ -18,7 +18,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var phoneNumberTextField: UITextField!
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
