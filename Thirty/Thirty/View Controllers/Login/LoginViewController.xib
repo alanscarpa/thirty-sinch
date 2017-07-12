@@ -39,7 +39,7 @@
                     <rect key="frame" x="47" y="385.5" width="281" height="45"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
                 </textField>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="QoU-8g-qvI">
                     <rect key="frame" x="137.5" y="161" width="100" height="100"/>

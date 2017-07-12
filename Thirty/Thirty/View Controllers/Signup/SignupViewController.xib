@@ -36,7 +36,7 @@
                     </constraints>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" keyboardAppearance="alert" returnKeyType="next"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="hH8-pO-IWL"/>
                     </connections>
@@ -45,7 +45,7 @@
                     <rect key="frame" x="40" y="201" width="240" height="45"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="next"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="zBA-1m-wN1"/>
                     </connections>
@@ -68,7 +68,7 @@
                     <rect key="frame" x="40" y="254" width="240" height="45"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="next"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" secureTextEntry="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="MZh-PN-fj7"/>
                     </connections>
@@ -77,7 +77,7 @@
                     <rect key="frame" x="40" y="307" width="240" height="45"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="next"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="kw5-1U-UCp"/>
                     </connections>
@@ -98,7 +98,7 @@
                     <rect key="frame" x="40" y="360" width="240" height="45"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad" keyboardAppearance="alert" returnKeyType="join" enablesReturnKeyAutomatically="YES"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad" returnKeyType="join" enablesReturnKeyAutomatically="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="pOd-pI-M1K"/>
                     </connections>

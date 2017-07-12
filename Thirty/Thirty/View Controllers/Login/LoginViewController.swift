@@ -27,19 +27,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerCl
     // MARK: - Actions
     
     @IBAction func loginButtonTapped() {
-        // TODO: Add PW field and check for accuracy
-        // TODO: add loading spinner
         // TODO: Check for username in Firebase, grab email, and then log in with associated email
         if let userId = usernameTextField.text, let password = passwordTextField.text, !userId.isEmpty, !password.isEmpty {
             THSpinner.showSpinnerOnView(view)
             FirebaseManager.shared.logInUserWithUsername(userId, password: password) { [weak self] result in
-                THSpinner.dismiss()
                 switch result {
                 case .Success(_):
-                    print("suc")
+                    // Spinner dismissed in delegate call of successful Sinch client initializtion
                     UserManager.shared.userId = self?.usernameTextField.text
                     SinchManager.shared.initializeWithUserId(userId)
                 case .Failure(let error):
+                    THSpinner.dismiss()
                     let errorInfo = THErrorHandler.errorInfoFromError(error)
                     let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description)
                     self?.present(alert, animated: true, completion: nil)

@@ -101,9 +101,12 @@ class FirebaseManager {
             let value = snapshot.value as? NSDictionary
             if let email = value?["email"] as? String {
                 FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
-                    // ...
+                    if let error = error {
+                        completion(.Failure(error))
+                    } else {
+                        completion(.Success())
+                    }
                 }
-                completion(.Success())
             }
         }) { (error) in
             completion(.Failure(error))
