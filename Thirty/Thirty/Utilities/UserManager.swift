@@ -11,13 +11,7 @@ import Foundation
 class UserManager {
     static let shared = UserManager()
     private init(){}
-    
-    var hasUserId: Bool {
-        get {
-            return userId != nil
-        }
-    }
-    
+
     let UserIdKey = "UserIdKey"
     
     var userId: String? {

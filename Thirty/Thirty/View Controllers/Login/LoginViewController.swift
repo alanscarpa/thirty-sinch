@@ -8,12 +8,14 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerClientDelegate {
 
     @IBOutlet weak var usernameTextField: UITextField!
-
+    @IBOutlet weak var passwordTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        SinchManager.shared.clientDelegate = self
         usernameTextField.delegate = self
     }
     
@@ -25,13 +27,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func loginButtonTapped() {
-        // TODO: Add PW field and check for accuracy
-        // TODO: add loading spinner
-        if let userId = usernameTextField.text, !userId.isEmpty {
-            UserManager.shared.userId = usernameTextField.text
-            SinchClientManager.shared.initializeWithUserId(userId)
+        // TODO: Check for username in Firebase, grab email, and then log in with associated email
+        if let userId = usernameTextField.text, let password = passwordTextField.text, !userId.isEmpty, !password.isEmpty {
+            THSpinner.showSpinnerOnView(view)
+            FirebaseManager.shared.logInUserWithUsername(userId, password: password) { [weak self] result in
+                switch result {
+                case .Success(_):
+                    // Spinner dismissed in delegate call of successful Sinch client initializtion
+                    UserManager.shared.userId = self?.usernameTextField.text
+                    SinchManager.shared.initializeWithUserId(userId)
+                case .Failure(let error):
+                    THSpinner.dismiss()
+                    let errorInfo = THErrorHandler.errorInfoFromError(error)
+                    let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description)
+                    self?.present(alert, animated: true, completion: nil)
+                }
+            }
         } else {
-            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username.")
+            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username and password.")
             present(alert, animated: true, completion: nil)
         }
     }
@@ -51,6 +64,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if touch?.view?.isKind(of: UITextField.self) == false {
             view.endEditing(true)
         }
+    }
+    
+    // MARK: - SinchManagerClientDelegate
+    
+    func sinchClientDidStart() {
+        THSpinner.dismiss()
+        RootViewController.shared.goToHomeVC()
+    }
+    
+    func sinchClientDidFailWithError(_ error: Error) {
+        present(UIAlertController.createSimpleAlert(withTitle: "Error Starting Sinch", message: error.localizedDescription), animated: true, completion: nil)
     }
 
 }

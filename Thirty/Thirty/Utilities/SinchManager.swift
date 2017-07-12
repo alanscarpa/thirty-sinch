@@ -8,8 +8,21 @@
 
 import Foundation
 
-class SinchClientManager: NSObject, SINManagedPushDelegate {
-    static let shared = SinchClientManager()
+protocol SinchManagerClientDelegate: class {
+    func sinchClientDidStart()
+    func sinchClientDidFailWithError(_ error: Error)
+}
+
+protocol SinchManagerCallClientDelegate: class {
+    func sinchClientDidReceiveIncomingCall(_ call: SINCall)
+}
+
+class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCallClientDelegate {
+    static let shared = SinchManager()
+    
+    weak var clientDelegate: SinchManagerClientDelegate?
+    weak var callClientDelegate: SinchManagerCallClientDelegate?
+    
     var client: SINClient?
     // TODO: change to production when ready
     let push = Sinch.managedPush(with: SINAPSEnvironment.development)
@@ -19,8 +32,8 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
         // TODO: Changehost to env host
         // TODO: Change authorization so app secret and key not used
         client = Sinch.client(withApplicationKey: SinchAppKey, applicationSecret: SinchSecret, environmentHost: SinchEnvHost, userId: userId)
-        client?.delegate = RootViewController.shared
-        client?.call().delegate = RootViewController.shared
+        client?.delegate = self
+        client?.call().delegate = self
         client?.setSupportCalling(true)
         client?.enableManagedPushNotifications()
         client?.start()
@@ -35,6 +48,29 @@ class SinchClientManager: NSObject, SINManagedPushDelegate {
     
     func managedPush(_ managedPush: SINManagedPush!, didReceiveIncomingPushWithPayload payload: [AnyHashable : Any]!, forType pushType: String!) {
         handleRemoteNotification(userInfo: payload)
+    }
+    
+    // MARK: - SINClientDelegate
+    
+    func clientDidStart(_ client: SINClient!) {
+        clientDelegate?.sinchClientDidStart()
+    }
+    
+    func clientDidFail(_ client: SINClient!, error: Error!) {
+        clientDelegate?.sinchClientDidFailWithError(error)
+    }
+    
+    // MARK: - SINCallClientDelegate
+    
+    func client(_ client: SINCallClient!, didReceiveIncomingCall call: SINCall!) {
+        callClientDelegate?.sinchClientDidReceiveIncomingCall(call)
+    }
+    
+    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
+        let notification = SINLocalNotification()
+        notification.alertAction = "Answer"
+        notification.alertBody = "Incoming call from \(call.remoteUserId)"
+        return notification
     }
     
     // MARK: - Helpers

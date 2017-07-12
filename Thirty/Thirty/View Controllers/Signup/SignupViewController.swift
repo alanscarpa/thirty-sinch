@@ -9,9 +9,9 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
-import SVProgressHUD
+import JHSpinner
 
-class SignupViewController: UIViewController, UITextFieldDelegate {
+class SignupViewController: UIViewController, UITextFieldDelegate, SinchManagerClientDelegate {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -19,10 +19,9 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var confirmPasswordTextField: UITextField!
     @IBOutlet weak var phoneNumberTextField: UITextField!
     
-    let databaseRef = FIRDatabase.database().reference()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        SinchManager.shared.clientDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,32 +59,33 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             present(UIAlertController.createSimpleAlert(withTitle: "Problem Signing Up", message: "Make sure you've filled out all fields correctly, your password has at least 6 characters, and both passwords match.  Please try again!"), animated: true, completion: nil)
             return
         }
-        SVProgressHUD.show()
-        FIRAuth.auth()?.createUser(withEmail: credentials.email, password: credentials.password) { (user, error) in
-            if let error = error {
-                SVProgressHUD.dismiss()
-                self.present(UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription), animated: true, completion: nil)
-            } else {
-                FIRAuth.auth()?.signIn(withEmail: credentials.email, password: credentials.password, completion: { (user, error) in
-                    if let error = error {
-                        SVProgressHUD.dismiss()
-                        self.present(UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription), animated: true, completion: nil)
-                    } else {
-                        // TODO: get rid of explicit unwrapping
-                        self.databaseRef.child("users")
-                            .child(user!.uid).setValue(["phone-number": credentials.phoneNumber, "username": credentials.username, "email": credentials.email], withCompletionBlock: { (error, ref) in
-                                SVProgressHUD.dismiss()
-                                if let error = error {
-                                    print(error.localizedDescription)
-                                } else {
-                                    print("Success")
-                                    RootViewController.shared.goToHomeVC()
-                                }
-                            })
-                    }
-                })
+        // TODO: refactor credentials + User
+        let user = User(username: credentials.username, email: credentials.email, phoneNumber: credentials.phoneNumber, password: credentials.password)
+        THSpinner.showSpinnerOnView(view)
+        FirebaseManager.shared.createNewUser(user: user) { result in
+            switch result {
+            case .Success(_):
+                // Spinner is dismissed when initialization is successful
+                UserManager.shared.userId = user.username
+                SinchManager.shared.initializeWithUserId(user.username)
+            case .Failure(let error):
+                THSpinner.dismiss()
+                let errorInfo = THErrorHandler.errorInfoFromError(error)
+                self.present(UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description), animated: true, completion: nil)
             }
         }
+    }
+    
+    // MARK: - SinchManagerClientDelegate
+    
+    func sinchClientDidStart() {
+        THSpinner.dismiss()
+        RootViewController.shared.goToHomeVC()
+    }
+    
+    func sinchClientDidFailWithError(_ error: Error) {
+        THSpinner.dismiss()
+        present(UIAlertController.createSimpleAlert(withTitle: "Error Starting Sinch", message: error.localizedDescription), animated: true, completion: nil)
     }
     
     // MARK: - Helpers

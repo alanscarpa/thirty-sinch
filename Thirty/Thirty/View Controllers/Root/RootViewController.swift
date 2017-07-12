@@ -8,12 +8,12 @@
 
 import UIKit
 
-class RootViewController: UIViewController, UINavigationControllerDelegate, SINClientDelegate, SINCallClientDelegate {
+class RootViewController: UIViewController, UINavigationControllerDelegate, SinchManagerClientDelegate, SinchManagerCallClientDelegate {
     
     static let shared = RootViewController()
     
     private let rootNavigationController = UINavigationController()
-
+    
     var showNavigationBar = false {
         didSet {
             rootNavigationController.setNavigationBarHidden(!showNavigationBar, animated: true)
@@ -30,6 +30,8 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, SINC
         super.viewDidLoad()
         view.backgroundColor = .blue
         
+        SinchManager.shared.callClientDelegate = self
+        
         rootNavigationController.setNavigationBarHidden(true, animated: false)
         rootNavigationController.delegate = self
         rootNavigationController.willMove(toParentViewController: self)
@@ -38,6 +40,13 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, SINC
         rootNavigationController.didMove(toParentViewController: self)
         
         rootNavigationController.view.frame = super.view.frame
+        
+        if let userId = UserManager.shared.userId {
+            SinchManager.shared.clientDelegate = self
+            SinchManager.shared.initializeWithUserId(userId)
+        } else {
+            goToWelcomeVC()
+        }
     }
     
     func popViewController() {
@@ -69,28 +78,22 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, SINC
         callVC.call = call
         rootNavigationController.pushViewController(callVC, animated: true)
     }
+
     
-    // MARK: - SINClientDelegate
+    // MARK: - SinchManagerCallClientDelegate
     
-    func clientDidStart(_ client: SINClient!) {
-        goToHomeVC()
-    }
-    
-    func clientDidFail(_ client: SINClient!, error: Error!) {
-        let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to log in.  Please try again.")
-        present(alert, animated: true, completion: nil)
-    }
-    
-    // MARK: - SINCallClientDelegate
-    
-    func client(_ client: SINCallClient!, didReceiveIncomingCall call: SINCall!) {
+    func sinchClientDidReceiveIncomingCall(_ call: SINCall) {
         pushCallVCWithCall(call)
     }
     
-    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
-        let notification = SINLocalNotification()
-        notification.alertAction = "Answer"
-        notification.alertBody = "Incoming call from \(call.remoteUserId)"
-        return notification
+    // MARK: - SinchManagerClientDelegate
+    
+    func sinchClientDidStart() {
+        goToHomeVC()
     }
+    
+    func sinchClientDidFailWithError(_ error: Error) {
+        present(UIAlertController.createSimpleAlert(withTitle: "Error Starting Sinch", message: error.localizedDescription), animated: true, completion: nil)
+    }
+    
 }

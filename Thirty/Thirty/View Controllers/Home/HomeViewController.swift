@@ -16,17 +16,22 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         calleeTextField.delegate = self
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        RootViewController.shared.showNavigationBar = false
+    }
 
     // MARK: - Actions
     
     @IBAction func callButtonTapped() {
-        guard SinchClientManager.shared.client?.isStarted() == true else {
+        guard SinchManager.shared.client?.isStarted() == true else {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Problem with call client. Please try again.")
             present(alert, animated: true, completion: nil)
             return
         }
         if let calleeId = calleeTextField.text, !calleeId.isEmpty,
-            let call = SinchClientManager.shared.client?.call().callUserVideo(withId: calleeId) {
+            let call = SinchManager.shared.client?.call().callUserVideo(withId: calleeId) {
                 RootViewController.shared.pushCallVCWithCall(call)
         } else {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter the username of who you want to call.")
@@ -49,14 +54,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate {
         if touch?.view?.isKind(of: UITextField.self) == false {
             view.endEditing(true)
         }
-    }
-    
-    // MARK: - Helpers
-    
-    func handleClientDidFail() {
-        let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to log in.  Please try again.")
-        present(alert, animated: true, completion: nil)
-        RootViewController.shared.popViewController()
     }
     
 }
