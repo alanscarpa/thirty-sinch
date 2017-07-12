@@ -57,30 +57,39 @@ class FirebaseManager {
     }
     
     func createNewUser(user: User, completion: @escaping (Result<Void>) -> Void) {
-        // TODO: FIRST MAKE SURE THAT USERNAME IS NOT TAKEN
-        // STEP 1 - First we create our user
-        FIRAuth.auth()?.createUser(withEmail: user.email, password: user.password) { (fbUser, error) in
-            if let error = error {
-                completion(.Failure(error))
+        // STEP 1 - First we make sure the username is available
+        databaseRef.child("users").child(user.username).observeSingleEvent(of: .value, with: { snapshot in
+            if snapshot.exists() {
+                completion(.Failure(THError(errorType: .usernameAlreadyExists)))
             } else {
-                // STEP 2 - Then we add details to user which allows a username sign-in
-                if let fbUser = fbUser {
-                    self.databaseRef.child("users")
-                        .child(user.username)
-                        .setValue(["phone-number": user.phoneNumber,
-                                   "uid": fbUser.uid,
-                                   "email": user.email], withCompletionBlock: { (error, ref) in
-                                    if let error = error {
-                                        completion(.Failure(error))
-                                    } else {
-                                        completion(.Success())
-                                    }
-                        })
-                } else {
-                    completion(.Failure(THError(errorType: .blankFBUserReturned)))
+                // STEP 2 - First we create our user
+                FIRAuth.auth()?.createUser(withEmail: user.email, password: user.password) { (fbUser, error) in
+                    if let error = error {
+                        completion(.Failure(error))
+                    } else {
+                        // STEP 3 - Then we add details to user which allows a username sign-in
+                        if let fbUser = fbUser {
+                            self.databaseRef.child("users")
+                                .child(user.username)
+                                .setValue(["phone-number": user.phoneNumber,
+                                           "uid": fbUser.uid,
+                                           "email": user.email], withCompletionBlock: { (error, ref) in
+                                            if let error = error {
+                                                completion(.Failure(error))
+                                            } else {
+                                                completion(.Success())
+                                            }
+                                })
+                        } else {
+                            completion(.Failure(THError(errorType: .blankFBUserReturned)))
+                        }
+                    }
                 }
             }
+        }) { (error) in
+            completion(.Failure(error))
         }
+        
     }
     
     func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {

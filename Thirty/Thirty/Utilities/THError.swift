@@ -32,6 +32,10 @@ struct THError: Error {
             title = "Username Does Not Exist"
             description = "Incorrect username.  Please try again."
             code = 002
+        case .usernameAlreadyExists:
+            title = "Username Already Exists"
+            description = "That username is already taken.  Please try another."
+            code = 003
         }
     }
 }
@@ -39,4 +43,5 @@ struct THError: Error {
 enum THErrorType {
     case blankFBUserReturned
     case usernameDoesNotExist
+    case usernameAlreadyExists
 }
