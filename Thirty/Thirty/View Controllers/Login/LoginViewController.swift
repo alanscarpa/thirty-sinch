@@ -17,6 +17,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerCl
         super.viewDidLoad()
         SinchManager.shared.clientDelegate = self
         usernameTextField.delegate = self
+        passwordTextField.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +53,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerCl
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        loginButtonTapped()
+        let nextTag = textField.tag + 1
+        if let nextResponder = textField.superview?.viewWithTag(nextTag) {
+            nextResponder.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+            loginButtonTapped()
+        }
         return false
     }
     
