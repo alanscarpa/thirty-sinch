@@ -57,7 +57,7 @@ class FirebaseManager {
     }
     
     func createNewUser(user: User, completion: @escaping (Result<Void>) -> Void) {
-        // STEP 1 - First we create our user and sign in because sign in required to access DB
+        // STEP 1 - First we create our user and sign in because sign in is required to access DB
         FIRAuth.auth()?.createUser(withEmail: user.email, password: user.password) { [weak self] (fbUser, error) in
             if let error = error {
                 completion(.Failure(error))
@@ -65,7 +65,7 @@ class FirebaseManager {
                 // STEP 2 - Make sure the username is available
                 self?.databaseRef.child("users").child(user.username).observeSingleEvent(of: .value, with: { snapshot in
                     if snapshot.exists() {
-                        // Delete our user from DB is username already exists
+                        // Delete our user from DB if username already exists
                         fbUser?.delete(completion: { error in
                             completion(.Failure(error ?? THError(errorType: .usernameAlreadyExists)))
                         })
@@ -88,7 +88,10 @@ class FirebaseManager {
                         }
                     }
                 }) { (error) in
-                    completion(.Failure(error))
+                    // Delete our user if we were unable to access DB after creating user
+                    fbUser?.delete(completion: { error in
+                        completion(.Failure(error ?? THError(errorType: .usernameAlreadyExists)))
+                    })
                 }
             }
         }
