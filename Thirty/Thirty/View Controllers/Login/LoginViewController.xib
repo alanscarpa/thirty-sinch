@@ -36,7 +36,7 @@
                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="PASSWORD" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kXW-fK-onW">
-                    <rect key="frame" x="47" y="385.5" width="281" height="45"/>
+                    <rect key="frame" x="47" y="364" width="281" height="45"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="25"/>
                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
@@ -49,7 +49,7 @@
                     </constraints>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="buu-1t-FSh">
-                    <rect key="frame" x="0.0" y="480.5" width="375" height="55"/>
+                    <rect key="frame" x="0.0" y="459" width="375" height="55"/>
                     <color key="backgroundColor" red="0.63921568630000003" green="0.40000000000000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="55" id="PXD-Be-YHc"/>
@@ -67,7 +67,7 @@
             <constraints>
                 <constraint firstItem="buu-1t-FSh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="DHt-aC-R4k"/>
                 <constraint firstItem="kXW-fK-onW" firstAttribute="centerX" secondItem="hkv-mZ-SXf" secondAttribute="centerX" id="E9J-1J-1DL"/>
-                <constraint firstItem="kXW-fK-onW" firstAttribute="top" secondItem="hkv-mZ-SXf" secondAttribute="bottom" constant="29.5" id="FO8-z1-Ss4"/>
+                <constraint firstItem="kXW-fK-onW" firstAttribute="top" secondItem="hkv-mZ-SXf" secondAttribute="bottom" constant="8" id="FO8-z1-Ss4"/>
                 <constraint firstItem="kXW-fK-onW" firstAttribute="height" secondItem="hkv-mZ-SXf" secondAttribute="height" id="LXL-E6-nCW"/>
                 <constraint firstItem="buu-1t-FSh" firstAttribute="top" secondItem="kXW-fK-onW" secondAttribute="bottom" constant="50" id="PkK-J8-EtS"/>
                 <constraint firstItem="hkv-mZ-SXf" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Ur7-QS-rZd"/>

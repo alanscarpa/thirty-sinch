@@ -57,19 +57,22 @@ class FirebaseManager {
     }
     
     func createNewUser(user: User, completion: @escaping (Result<Void>) -> Void) {
-        // STEP 1 - First we make sure the username is available
-        databaseRef.child("users").child(user.username).observeSingleEvent(of: .value, with: { snapshot in
-            if snapshot.exists() {
-                completion(.Failure(THError(errorType: .usernameAlreadyExists)))
+        // STEP 1 - First we create our user and sign in because sign in required to access DB
+        FIRAuth.auth()?.createUser(withEmail: user.email, password: user.password) { [weak self] (fbUser, error) in
+            if let error = error {
+                completion(.Failure(error))
             } else {
-                // STEP 2 - First we create our user
-                FIRAuth.auth()?.createUser(withEmail: user.email, password: user.password) { (fbUser, error) in
-                    if let error = error {
-                        completion(.Failure(error))
+                // STEP 2 - Make sure the username is available
+                self?.databaseRef.child("users").child(user.username).observeSingleEvent(of: .value, with: { snapshot in
+                    if snapshot.exists() {
+                        // Delete our user from DB is username already exists
+                        fbUser?.delete(completion: { error in
+                            completion(.Failure(error ?? THError(errorType: .usernameAlreadyExists)))
+                        })
                     } else {
                         // STEP 3 - Then we add details to user which allows a username sign-in
                         if let fbUser = fbUser {
-                            self.databaseRef.child("users")
+                            self?.databaseRef.child("users")
                                 .child(user.username)
                                 .setValue(["phone-number": user.phoneNumber,
                                            "uid": fbUser.uid,
@@ -84,32 +87,41 @@ class FirebaseManager {
                             completion(.Failure(THError(errorType: .blankFBUserReturned)))
                         }
                     }
+                }) { (error) in
+                    completion(.Failure(error))
                 }
             }
-        }) { (error) in
-            completion(.Failure(error))
         }
-        
     }
     
     func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
-        databaseRef.child("users").child(username).observeSingleEvent(of: .value, with: { snapshot in
-            guard snapshot.exists() else {
-                completion(.Failure(THError(errorType: .usernameDoesNotExist)))
-                return
-            }
-            let value = snapshot.value as? NSDictionary
-            if let email = value?["email"] as? String {
-                FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
-                    if let error = error {
-                        completion(.Failure(error))
+        FIRAuth.auth()?.signInAnonymously { [weak self] (anonymousUser, error) in
+            self?.databaseRef.child("users").child(username).observeSingleEvent(of: .value, with: { snapshot in
+                anonymousUser?.delete(completion: { deletionError in
+                    if let deletionError = deletionError {
+                        completion(.Failure(deletionError))
                     } else {
-                        completion(.Success())
+                        guard snapshot.exists() else {
+                            completion(.Failure(THError(errorType: .usernameDoesNotExist)))
+                            return
+                        }
+                        let value = snapshot.value as? NSDictionary
+                        if let email = value?["email"] as? String {
+                            FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
+                                if let error = error {
+                                    completion(.Failure(error))
+                                } else {
+                                    completion(.Success())
+                                }
+                            }
+                        }
                     }
-                }
+                })
+            }) { (error) in
+                anonymousUser?.delete(completion: { deletionError in
+                    completion(.Failure(deletionError ?? error))
+                })
             }
-        }) { (error) in
-            completion(.Failure(error))
         }
     }
 }
