@@ -30,12 +30,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerCl
         // TODO: Add PW field and check for accuracy
         // TODO: add loading spinner
         // TODO: Check for username in Firebase, grab email, and then log in with associated email
-        if let userId = usernameTextField.text, !userId.isEmpty {
+        if let userId = usernameTextField.text, let password = passwordTextField.text, !userId.isEmpty, !password.isEmpty {
             THSpinner.showSpinnerOnView(view)
-            UserManager.shared.userId = usernameTextField.text
-            SinchManager.shared.initializeWithUserId(userId)
+            FirebaseManager.shared.logInUserWithUsername(userId, password: password) { [weak self] result in
+                THSpinner.dismiss()
+                switch result {
+                case .Success(_):
+                    print("suc")
+                    UserManager.shared.userId = self?.usernameTextField.text
+                    SinchManager.shared.initializeWithUserId(userId)
+                case .Failure(let error):
+                    let errorInfo = THErrorHandler.errorInfoFromError(error)
+                    let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description)
+                    self?.present(alert, animated: true, completion: nil)
+                }
+            }
         } else {
-            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username.")
+            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username and password.")
             present(alert, animated: true, completion: nil)
         }
     }

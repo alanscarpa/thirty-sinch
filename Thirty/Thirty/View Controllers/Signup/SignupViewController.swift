@@ -70,7 +70,8 @@ class SignupViewController: UIViewController, UITextFieldDelegate, SinchManagerC
                 SinchManager.shared.initializeWithUserId(user.username)
             case .Failure(let error):
                 THSpinner.dismiss()
-                self.present(UIAlertController.createSimpleAlert(withTitle: "Error Signing Up", message: error.localizedDescription), animated: true, completion: nil)
+                let errorInfo = THErrorHandler.errorInfoFromError(error)
+                self.present(UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description), animated: true, completion: nil)
             }
         }
     }

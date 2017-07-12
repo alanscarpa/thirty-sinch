@@ -6,21 +6,37 @@
 //  Copyright © 2017 Thirty. All rights reserved.
 //
 
+class THErrorHandler {
+    class func errorInfoFromError(_ error: Error) -> (title: String, description: String) {
+        if let customError = error as? THError {
+            return (customError.title, customError.description)
+        } else {
+            return ("Error", error.localizedDescription)
+        }
+
+    }
+}
+
 struct THError: Error {
-    var localizedTitle: String
-    var localizedDescription: String
+    var title: String
+    var description: String
     var code: Int
     
     init(errorType: THErrorType) {
         switch errorType {
         case .blankFBUserReturned:
-            localizedTitle = ""
-            localizedDescription = ""
+            title = "Blank User Error"
+            description = "Unable to get your user info.  Please try again."
             code = 001
+        case .usernameDoesNotExist:
+            title = "Username Does Not Exist"
+            description = "Incorrect username.  Please try again."
+            code = 002
         }
     }
 }
 
 enum THErrorType {
     case blankFBUserReturned
+    case usernameDoesNotExist
 }

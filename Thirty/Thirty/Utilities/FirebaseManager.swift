@@ -83,27 +83,21 @@ class FirebaseManager {
         }
     }
     
-//    func getCurrentUserImageURLs(completion: @escaping (Result<Void>) -> Void) {
-//        guard let userID = FIRAuth.auth()?.currentUser?.uid else { return }
-//        databaseRef.child("users").child(userID).child("images").observeSingleEvent(of: .value, with: { (snapshot) in
-//            guard snapshot.exists() else {
-//                completion(.Success(nil))
-//                return
-//            }
-//            let allValues = snapshot.value as! NSDictionary
-//            for (key, value) in allValues {
-//                let valueDictionary = value as! NSDictionary
-//                let urlString = valueDictionary["downloadURL"] as? String ?? ""
-//                let dateDouble = valueDictionary["date"] as? Double ?? 0
-//                
-//                let url = URL(string: urlString)
-//                let date = Date(timeIntervalSince1970: TimeInterval(dateDouble))
-//                let imageObject = FBImageData(url: url, databaseKey: key as! String, date: date, image: nil)
-//                imageObjects.append(imageObject)
-//            }
-//            completion(.Success(imageObjects))
-//        }) { (error) in
-//            completion(.Failure(error))
-//        }
-//    }
+    func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
+        databaseRef.child("users").child(username).observeSingleEvent(of: .value, with: { snapshot in
+            guard snapshot.exists() else {
+                completion(.Failure(THError(errorType: .usernameDoesNotExist)))
+                return
+            }
+            let value = snapshot.value as? NSDictionary
+            if let email = value?["email"] as? String {
+                FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
+                    // ...
+                }
+                completion(.Success())
+            }
+        }) { (error) in
+            completion(.Failure(error))
+        }
+    }
 }
