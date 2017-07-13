@@ -23,7 +23,20 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     weak var clientDelegate: SinchManagerClientDelegate?
     weak var callClientDelegate: SinchManagerCallClientDelegate?
     
-    var client: SINClient?
+    fileprivate var client: SINClient?
+    
+    var clientIsStarted: Bool {
+        return client?.isStarted() ?? false
+    }
+    
+    var clientAudioController: SINAudioController? {
+        return client?.audioController()
+    }
+    
+    var clientVideoController: SINVideoController? {
+        return client?.videoController()
+    }
+    
     // TODO: change to production when ready
     let push = Sinch.managedPush(with: SINAPSEnvironment.development)
     
@@ -48,6 +61,12 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     
     func managedPush(_ managedPush: SINManagedPush!, didReceiveIncomingPushWithPayload payload: [AnyHashable : Any]!, forType pushType: String!) {
         handleRemoteNotification(userInfo: payload)
+    }
+    
+    // MARK: - SINClient
+    
+    func callUserWithId(_ id: String) -> SINCall? {
+        return client?.call().callUserVideo(withId: id)
     }
     
     // MARK: - SINClientDelegate
