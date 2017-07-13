@@ -18,8 +18,8 @@
 		4500C7881E4E92C200AF54AA /* WelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7861E4E92C200AF54AA /* WelcomeViewController.xib */; };
 		4500C78B1E4E9EEA00AF54AA /* SinchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78A1E4E9EEA00AF54AA /* SinchManager.swift */; };
 		4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */; };
-		4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78F1E527AFF00AF54AA /* HomeViewController.swift */; };
-		4500C7921E527AFF00AF54AA /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7901E527AFF00AF54AA /* HomeViewController.xib */; };
+		4500C7911E527AFF00AF54AA /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */; };
+		4500C7921E527AFF00AF54AA /* HomeTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */; };
 		4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7941E5286E000AF54AA /* CallViewController.swift */; };
 		4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7951E5286E000AF54AA /* CallViewController.xib */; };
 		4527AF111EC010D8003920DA /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45635E401EC0089B0011096C /* PushKit.framework */; };
@@ -58,8 +58,8 @@
 		4500C7861E4E92C200AF54AA /* WelcomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WelcomeViewController.xib; sourceTree = "<group>"; };
 		4500C78A1E4E9EEA00AF54AA /* SinchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinchManager.swift; sourceTree = "<group>"; };
 		4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Thirty.swift"; sourceTree = "<group>"; };
-		4500C78F1E527AFF00AF54AA /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		4500C7901E527AFF00AF54AA /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
+		4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTableViewController.xib; sourceTree = "<group>"; };
 		4500C7941E5286E000AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		4500C7951E5286E000AF54AA /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		4530A9001F0331500039D303 /* leaguespartan-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "leaguespartan-bold.ttf"; sourceTree = "<group>"; };
@@ -217,8 +217,8 @@
 		4500C78E1E527ADA00AF54AA /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				4500C78F1E527AFF00AF54AA /* HomeViewController.swift */,
-				4500C7901E527AFF00AF54AA /* HomeViewController.xib */,
+				4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */,
+				4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -351,7 +351,7 @@
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
 				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
-				4500C7921E527AFF00AF54AA /* HomeViewController.xib in Resources */,
+				4500C7921E527AFF00AF54AA /* HomeTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,7 +417,7 @@
 				4530A9111F05B7F20039D303 /* Result.swift in Sources */,
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
 				4530A9181F05CF9E0039D303 /* JHSpinnerView+Thirty.swift in Sources */,
-				4500C7911E527AFF00AF54AA /* HomeViewController.swift in Sources */,
+				4500C7911E527AFF00AF54AA /* HomeTableViewController.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */,
 				4530A9141F05BA3D0039D303 /* User.swift in Sources */,
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,

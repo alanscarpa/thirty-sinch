@@ -66,11 +66,11 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
     }
     
     func goToHomeVC() {
-        rootNavigationController.setViewControllers([WelcomeViewController(), HomeViewController()], animated: true)
+        rootNavigationController.setViewControllers([WelcomeViewController(), HomeTableViewController()], animated: true)
     }
     
     func pushHomeVC() {
-        rootNavigationController.pushViewController(HomeViewController(), animated: true)
+        rootNavigationController.pushViewController(HomeTableViewController(), animated: true)
     }
     
     func pushCallVCWithCall(_ call: SINCall) {
