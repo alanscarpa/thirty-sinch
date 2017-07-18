@@ -10,8 +10,11 @@ import UIKit
 
 class HomeTableViewController: UITableViewController {
 
+    let mockData = [User]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let user1 = User(username: "alan", email: "a@g.com", phoneNumber: "111111111", password: "")
     }
     
     override func viewWillAppear(_ animated: Bool) {

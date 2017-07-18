@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         setUpRemoteNotificationsForApplication(application)
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
-        UINavigationBar.appearance().tintColor = UIColor.thirtyBlue
+        UINavigationBar.appearance().barTintColor = UIColor.thirtyBlue
         
         FIRApp.configure()
         
