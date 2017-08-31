@@ -13,6 +13,8 @@ class UserManager {
     private init(){}
 
     let UserIdKey = "UserIdKey"
+    let UsernameKey = "UsernameKey"
+    let UserPasswordKey = "UserPasswordKey"
     
     var userId: String? {
         get {
@@ -20,6 +22,26 @@ class UserManager {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: UserIdKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    var currentUserUsername: String? {
+        get {
+            return UserDefaults.standard.string(forKey: UsernameKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: UsernameKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    var currentUserPassword: String? {
+        get {
+            return UserDefaults.standard.string(forKey: UserPasswordKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: UserPasswordKey)
             UserDefaults.standard.synchronize()
         }
     }

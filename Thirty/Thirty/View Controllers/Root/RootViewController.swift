@@ -41,9 +41,20 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
         
         rootNavigationController.view.frame = super.view.frame
         
-        if let userId = UserManager.shared.userId {
-            SinchManager.shared.clientDelegate = self
-            SinchManager.shared.initializeWithUserId(userId)
+        if let username = UserManager.shared.currentUserUsername,
+            let password = UserManager.shared.currentUserPassword,
+            let userId = UserManager.shared.userId {
+            FirebaseManager.shared.logInUserWithUsername(username, password: password, completion: { [weak self] result in
+                switch result {
+                case .Success(_):
+                    SinchManager.shared.clientDelegate = self
+                    // Once initialized, delegate call takes us to HomeVC
+                    SinchManager.shared.initializeWithUserId(userId)
+                case .Failure(let error):
+                    // TODO: Present failure pop up
+                    self?.goToWelcomeVC()
+                }
+            })
         } else {
             goToWelcomeVC()
         }

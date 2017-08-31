@@ -38,6 +38,8 @@
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CC7091E57CDB00087FAAD /* ringback.wav */; };
 		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
+		457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */; };
+		457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +81,8 @@
 		454CC7091E57CDB00087FAAD /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
 		454CC70E1E57D4F60087FAAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		45635E401EC0089B0011096C /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
+		457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -217,6 +221,7 @@
 		4500C78E1E527ADA00AF54AA /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				457A9ABC1F57C056004FC8D1 /* Search */,
 				4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */,
 				4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */,
 			);
@@ -256,6 +261,15 @@
 				4530A9131F05BA3D0039D303 /* User.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		457A9ABC1F57C056004FC8D1 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */,
+				457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
@@ -343,6 +357,7 @@
 				4500C7881E4E92C200AF54AA /* WelcomeViewController.xib in Resources */,
 				4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */,
 				454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */,
+				457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */,
 				4500C77B1E4D463400AF54AA /* incoming.wav in Resources */,
 				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
@@ -418,6 +433,7 @@
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
 				4530A9181F05CF9E0039D303 /* JHSpinnerView+Thirty.swift in Sources */,
 				4500C7911E527AFF00AF54AA /* HomeTableViewController.swift in Sources */,
+				457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */,
 				4530A9141F05BA3D0039D303 /* User.swift in Sources */,
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,

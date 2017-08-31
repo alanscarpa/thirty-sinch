@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        FIRApp.configure()
+
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.rootViewController = RootViewController.shared
         window!.makeKeyAndVisible()
@@ -29,8 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
         UINavigationBar.appearance().barTintColor = UIColor.thirtyBlue
-        
-        FIRApp.configure()
         
         return true
     }

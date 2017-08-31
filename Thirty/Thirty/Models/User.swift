@@ -9,10 +9,10 @@
 import Foundation
 
 struct User {
-    var username: String
-    var email: String
-    var phoneNumber: String
-    var password: String
+    var username: String = ""
+    var email: String = ""
+    var phoneNumber: String = ""
+    var password: String = ""
     var userNameLowercased: String {
         return username.lowercased()
     }

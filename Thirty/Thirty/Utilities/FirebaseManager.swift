@@ -50,6 +50,8 @@ class FirebaseManager {
     func signOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
         do {
             try FIRAuth.auth()?.signOut()
+            UserManager.shared.currentUserUsername = nil
+            UserManager.shared.currentUserPassword = nil
             completion(.Success())
         } catch {
             completion(.Failure(error))
@@ -81,6 +83,8 @@ class FirebaseManager {
                                             if let error = error {
                                                 completion(.Failure(error))
                                             } else {
+                                                UserManager.shared.currentUserUsername = user.username
+                                                UserManager.shared.currentUserPassword = user.password
                                                 completion(.Success())
                                             }
                                 })
@@ -115,6 +119,10 @@ class FirebaseManager {
                                 if let error = error {
                                     completion(.Failure(error))
                                 } else {
+                                    
+                                    // TODO: Get entire profile and set user.
+                                    UserManager.shared.currentUserUsername = username
+                                    UserManager.shared.currentUserPassword = password
                                     completion(.Success())
                                 }
                             }
@@ -141,5 +149,20 @@ class FirebaseManager {
         }) { (error) in
             completion(.Failure(error))
         }
+    }
+    
+    func addUserAsFriend(username: String, completion: @escaping (Result<Void>) -> Void) {
+        guard let currentUsername = UserManager.shared.currentUserUsername?.lowercased() else {
+            return completion(.Failure(THError.init(errorType: .noCurrentUser)))
+        }
+        databaseRef.child("friends")
+            .child(currentUsername)
+            .setValue([username.lowercased(): true], withCompletionBlock: { (error, ref) in
+                        if let error = error {
+                            completion(.Failure(error))
+                        } else {
+                            completion(.Success())
+                        }
+            })
     }
 }

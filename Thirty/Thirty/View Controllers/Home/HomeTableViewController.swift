@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
+class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate {
 
     let searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
@@ -25,6 +25,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         definesPresentationContext = true
         
         tableView.tableHeaderView = searchController.searchBar
+        
+        tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +56,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
             switch result {
             case .Success(let user):
+                // TODO: Dont populate if user is currentUsername
                 self?.searchResults = [user]
                 self?.tableView.reloadData()
             case .Failure(let error):
@@ -69,8 +72,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = searchResults[indexPath.row].username
+        let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
+        cell.usernameLabel.text = searchResults[indexPath.row].username
+        cell.delegate = self
         return cell
     }
     
@@ -78,6 +82,21 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+    }
+    
+    // MARK: SearchResultTableViewCellDelegate
+    
+    func addButtonWasTapped(sender: SearchResultTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: sender) else { return }
+        let tappedUser = searchResults[indexPath.row]
+        FirebaseManager.shared.addUserAsFriend(username: tappedUser.username) { [weak self] result in
+            switch result {
+            case .Success(_):
+                self?.resetTableView()
+            case .Failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 
     // MARK: - Actions

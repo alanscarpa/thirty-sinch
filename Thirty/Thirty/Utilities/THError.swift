@@ -36,6 +36,10 @@ struct THError: Error {
             title = "Username Already Exists"
             description = "That username is already taken.  Please try another."
             code = 003
+        case .noCurrentUser:
+            title = "No Current User"
+            description = "You've been logged out.  Please log in."
+            code = 003
         }
     }
 }
@@ -44,4 +48,5 @@ enum THErrorType {
     case blankFBUserReturned
     case usernameDoesNotExist
     case usernameAlreadyExists
+    case noCurrentUser
 }
