@@ -62,25 +62,37 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        isSearching = true
         // This fires when user taps "x" and clears search field.
         if searchText.isEmpty { resetTableView() }
     }
     
     func searchForContactWithString(_ query: String) {
         isSearching = true
-        FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
-            switch result {
-            case .Success(let user):
-                // TODO: Dont populate if user is currentUsername
-                if let user = user {
-                    self?.searchResults = [user]
-                } else {
-                    // TODO: Show "no user" cell
-                    self?.searchResults = []
+        guard query != UserManager.shared.currentUserUsername else {
+            tableView.reloadData()
+            return
+        }
+        if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.username == query }).first {
+            searchResults = [alreadyFriendedUser]
+            // Hacky way of hiding add button when reloading data.  Faster than querying entire contacts array for each cell though.
+            isSearching = false
+            tableView.reloadData()
+        } else {
+            FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
+                switch result {
+                case .Success(let user):
+                    // TODO: Dont populate if user is currentUsername
+                    if let user = user {
+                        self?.searchResults = [user]
+                    } else {
+                        // TODO: Show "no user" cell
+                        self?.searchResults = []
+                    }
+                    self?.tableView.reloadData()
+                case .Failure(let error):
+                    print(error.localizedDescription)
                 }
-                self?.tableView.reloadData()
-            case .Failure(let error):
-                print(error.localizedDescription)
             }
         }
     }
@@ -93,13 +105,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-        if isSearching {
-            cell.usernameLabel.text = searchResults[indexPath.row].username
-            cell.addButton.isHidden = false
-        } else {
-            cell.usernameLabel.text = UserManager.shared.contacts[indexPath.row].username
-            cell.addButton.isHidden = true
-        }
+        cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
+            UserManager.shared.contacts[indexPath.row].username
+        cell.addButton.isHidden = isSearching ? false : true
         cell.delegate = self
         return cell
     }
