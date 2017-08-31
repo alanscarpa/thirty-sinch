@@ -73,9 +73,10 @@ class FirebaseManager {
                         // STEP 3 - Then we add details to user which allows a username sign-in
                         if let fbUser = fbUser {
                             self?.databaseRef.child("users")
-                                .child(user.username)
+                                .child(user.username.lowercased())
                                 .setValue(["phone-number": user.phoneNumber,
                                            "uid": fbUser.uid,
+                                           "display-name": user.username,
                                            "email": user.email], withCompletionBlock: { (error, ref) in
                                             if let error = error {
                                                 completion(.Failure(error))
@@ -128,12 +129,15 @@ class FirebaseManager {
         }
     }
     
-    func searchForUserWithUsername(_ username: String, completion: @escaping (Result<String>) -> Void) {
+    func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User>) -> Void) {
         databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
-            // Get user value
             let value = snapshot.value as? NSDictionary
+            let displayName = value?["display-name"] as? String ?? ""
             let email = value?["email"] as? String ?? ""
-            completion(.Success("BLAHBLAH"))
+            let phoneNumber = value?["phone-number"] as? String ?? ""
+            
+            let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "")
+            completion(.Success(user))
         }) { (error) in
             completion(.Failure(error))
         }

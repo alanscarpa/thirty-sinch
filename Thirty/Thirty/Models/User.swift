@@ -13,5 +13,8 @@ struct User {
     var email: String
     var phoneNumber: String
     var password: String
+    var userNameLowercased: String {
+        return username.lowercased()
+    }
 }
 

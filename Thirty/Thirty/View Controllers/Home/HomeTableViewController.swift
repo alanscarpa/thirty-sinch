@@ -13,7 +13,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     let searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
     
-    let mockData = [User]()
+    var searchResults = [User]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func updateSearchResults(for searchController: UISearchController) {
         //if !searchController.isActive { resetTableView() }
-        print("updateSearchResults")
     }
     
     // MARK: - UISearchBarDelegate
@@ -48,18 +47,36 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         //if searchText.isEmpty { resetTableView() }
-        print("textDidChange")
     }
     
     func searchForContactWithString(_ query: String) {
-        FirebaseManager.shared.searchForUserWithUsername(query) { result in
+        FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
             switch result {
-            case .Success(_):
-                print("REFRESHTABLEVIEW")
+            case .Success(let user):
+                self?.searchResults = [user]
+                self?.tableView.reloadData()
             case .Failure(let error):
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    // MARK: - TableViewDataSource
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchResults.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = searchResults[indexPath.row].username
+        return cell
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
 
     // MARK: - Actions
