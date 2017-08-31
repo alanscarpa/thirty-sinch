@@ -8,18 +8,51 @@
 
 import UIKit
 
-class HomeTableViewController: UITableViewController {
+class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
 
+    let searchController = UISearchController(searchResultsController: nil)
+    var isSearching = false
+    
     let mockData = [User]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let user1 = User(username: "alan", email: "a@g.com", phoneNumber: "111111111", password: "")
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        definesPresentationContext = true
+        
+        tableView.tableHeaderView = searchController.searchBar
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
+    }
+    
+    // MARK: - UISearchResultsUpdating
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        //if !searchController.isActive { resetTableView() }
+        print("updateSearchResults")
+    }
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchQuery = searchBar.text else { return }
+        searchForContactWithString(searchQuery)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //if searchText.isEmpty { resetTableView() }
+        print("textDidChange")
+    }
+    
+    func searchForContactWithString(_ query: String) {
+        print(query)
     }
 
     // MARK: - Actions
