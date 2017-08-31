@@ -63,7 +63,7 @@ class FirebaseManager {
                 completion(.Failure(error))
             } else {
                 // STEP 2 - Make sure the username is available
-                self?.databaseRef.child("users").child(user.username).observeSingleEvent(of: .value, with: { snapshot in
+                self?.databaseRef.child("users").child(user.username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
                     if snapshot.exists() {
                         // Delete our user from DB if username already exists
                         fbUser?.delete(completion: { error in
@@ -99,7 +99,7 @@ class FirebaseManager {
     
     func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
         FIRAuth.auth()?.signInAnonymously { [weak self] (anonymousUser, error) in
-            self?.databaseRef.child("users").child(username).observeSingleEvent(of: .value, with: { snapshot in
+            self?.databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
                 anonymousUser?.delete(completion: { deletionError in
                     if let deletionError = deletionError {
                         completion(.Failure(deletionError))
@@ -125,6 +125,17 @@ class FirebaseManager {
                     completion(.Failure(deletionError ?? error))
                 })
             }
+        }
+    }
+    
+    func searchForUserWithUsername(_ username: String, completion: @escaping (Result<String>) -> Void) {
+        databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
+            // Get user value
+            let value = snapshot.value as? NSDictionary
+            let email = value?["email"] as? String ?? ""
+            completion(.Success("BLAHBLAH"))
+        }) { (error) in
+            completion(.Failure(error))
         }
     }
 }

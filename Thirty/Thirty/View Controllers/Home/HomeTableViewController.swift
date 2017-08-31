@@ -52,7 +52,14 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     func searchForContactWithString(_ query: String) {
-        print(query)
+        FirebaseManager.shared.searchForUserWithUsername(query) { result in
+            switch result {
+            case .Success(_):
+                print("REFRESHTABLEVIEW")
+            case .Failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 
     // MARK: - Actions
