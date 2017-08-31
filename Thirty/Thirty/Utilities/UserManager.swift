@@ -45,4 +45,6 @@ class UserManager {
             UserDefaults.standard.synchronize()
         }
     }
+    
+    var contacts = [User]()
 }

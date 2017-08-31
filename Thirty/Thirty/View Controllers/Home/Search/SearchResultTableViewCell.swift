@@ -15,7 +15,7 @@ protocol SearchResultsTableViewCellDelegate: class {
 class SearchResultTableViewCell: UITableViewCell {
 
     @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var addButton: NSLayoutConstraint!
+    @IBOutlet weak var addButton: UIButton!
     
     weak var delegate: SearchResultsTableViewCellDelegate?
     

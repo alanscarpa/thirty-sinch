@@ -17,7 +17,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        getContacts()
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
@@ -32,6 +32,20 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
+    }
+    
+    // MARK: - Setup
+    
+    func getContacts() {
+        FirebaseManager.shared.getContacts { [weak self] result in
+            switch result {
+            case .Success(let user):
+                self?.tableView.reloadData()
+            case .Failure(let error):
+                // TODO: Present error
+                print(error.localizedDescription)
+            }
+        }
     }
     
     // MARK: - UISearchResultsUpdating
@@ -68,12 +82,18 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - TableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        return searchResults.isEmpty ? UserManager.shared.contacts.count : searchResults.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-        cell.usernameLabel.text = searchResults[indexPath.row].username
+        if searchResults.isEmpty {
+            cell.usernameLabel.text = UserManager.shared.contacts[indexPath.row].username
+            cell.addButton.isHidden = true
+        } else {
+            cell.usernameLabel.text = searchResults[indexPath.row].username
+            cell.addButton.isHidden = false
+        }
         cell.delegate = self
         return cell
     }
@@ -81,7 +101,19 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        guard searchResults.isEmpty else { return }
+        let username = UserManager.shared.contacts[indexPath.row].username
+        guard SinchManager.shared.clientIsStarted else {
+            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Problem with call client. Please try again.")
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        if let call = SinchManager.shared.callUserWithId(username) {
+            RootViewController.shared.pushCallVCWithCall(call)
+        } else {
+            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter the username of who you want to call.")
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     // MARK: SearchResultTableViewCellDelegate
@@ -92,29 +124,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         FirebaseManager.shared.addUserAsFriend(username: tappedUser.username) { [weak self] result in
             switch result {
             case .Success(_):
+                UserManager.shared.contacts.append(tappedUser)
                 self?.resetTableView()
             case .Failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
-
-    // MARK: - Actions
-    
-//    @IBAction func callButtonTapped() {
-//        guard SinchManager.shared.clientIsStarted else {
-//            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Problem with call client. Please try again.")
-//            present(alert, animated: true, completion: nil)
-//            return
-//        }
-//        if let calleeId = calleeTextField.text, !calleeId.isEmpty,
-//            let call = SinchManager.shared.callUserWithId(calleeId) {
-//                RootViewController.shared.pushCallVCWithCall(call)
-//        } else {
-//            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter the username of who you want to call.")
-//            present(alert, animated: true, completion: nil)
-//        }
-//    }
     
     // MARK: - UIResponder
     

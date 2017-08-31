@@ -41,7 +41,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="addButton" destination="OQ5-t4-y20" id="LlY-Yd-NSp"/>
+                <outlet property="addButton" destination="VQM-9X-nhG" id="QEP-S8-d7j"/>
                 <outlet property="usernameLabel" destination="Mcq-oc-IRD" id="kTV-OG-DzN"/>
             </connections>
         </tableViewCell>

@@ -165,4 +165,24 @@ class FirebaseManager {
                         }
             })
     }
+    
+    func getContacts(completion: @escaping (Result<Void>) -> Void) {
+        guard let currentUsername = UserManager.shared.currentUserUsername?.lowercased() else {
+            return completion(.Failure(THError.init(errorType: .noCurrentUser)))
+        }
+        databaseRef.child("friends").child(currentUsername).observeSingleEvent(of: .value, with: { snapshot in
+            let value = snapshot.value as? NSDictionary
+            // TODO: Get display-name somehow
+            if let usernames = value?.allKeys as? [String] {
+                for username in usernames {
+                    var user = User()
+                    user.username = username
+                    UserManager.shared.contacts.append(user)
+                }
+            }
+            completion(.Success())
+        }) { (error) in
+            completion(.Failure(error))
+        }
+    }
 }
