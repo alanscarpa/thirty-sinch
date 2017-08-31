@@ -35,7 +35,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
-        //if !searchController.isActive { resetTableView() }
+        if !searchController.isActive { resetTableView() }
     }
     
     // MARK: - UISearchBarDelegate
@@ -46,7 +46,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        //if searchText.isEmpty { resetTableView() }
+        // This fires when user taps "x" and clears search field.
+        if searchText.isEmpty { resetTableView() }
     }
     
     func searchForContactWithString(_ query: String) {
@@ -104,6 +105,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         if touch?.view?.isKind(of: UITextField.self) == false {
             view.endEditing(true)
         }
+    }
+    
+    // MARK: - Helpers
+    
+    func resetTableView() {
+        searchResults = []
+        tableView.reloadData()
     }
     
 }
