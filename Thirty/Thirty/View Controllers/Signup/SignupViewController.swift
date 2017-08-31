@@ -21,6 +21,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate, SinchManagerC
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .thPrimaryPurple
         SinchManager.shared.clientDelegate = self
     }
     

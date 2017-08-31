@@ -28,7 +28,7 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
+        view.backgroundColor = .thPrimaryPurple
         
         SinchManager.shared.callClientDelegate = self
         
@@ -37,6 +37,7 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
         rootNavigationController.willMove(toParentViewController: self)
         addChildViewController(rootNavigationController)
         view.addSubview(rootNavigationController.view)
+        rootNavigationController.view.backgroundColor = .thPrimaryPurple
         rootNavigationController.didMove(toParentViewController: self)
         
         rootNavigationController.view.frame = super.view.frame

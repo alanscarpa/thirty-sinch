@@ -88,7 +88,8 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
         let notification = SINLocalNotification()
         notification.alertAction = "Answer"
-        notification.alertBody = "Incoming call from \(call.remoteUserId)"
+        // TODO: remoteUserId should be display name.
+        notification.alertBody = "Incoming call from \(call.remoteUserId ?? "")"
         return notification
     }
     

@@ -15,6 +15,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerCl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .thPrimaryPurple
         SinchManager.shared.clientDelegate = self
         usernameTextField.delegate = self
         passwordTextField.delegate = self

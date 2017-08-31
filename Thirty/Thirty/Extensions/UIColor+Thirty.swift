@@ -9,12 +9,9 @@
 import UIKit
 
 extension UIColor {
-    static var thirtyBlue: UIColor {
-        return UIColor(colorLiteralRed: 31.0 / 255.0, green: 184.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
-    }
     
     static var thPrimaryPurple: UIColor {
-        return UIColor(colorLiteralRed: 101.0 / 255.0, green: 0.0 / 255.0, blue: 225.0 / 255.0, alpha: 1)
+        return UIColor(colorLiteralRed: 65.0 / 255.0, green: 21.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
     }
     
     static var thSecondaryPurple: UIColor {

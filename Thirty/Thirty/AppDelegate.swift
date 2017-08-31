@@ -23,14 +23,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.rootViewController = RootViewController.shared
         window!.makeKeyAndVisible()
+        window!.backgroundColor = .thPrimaryPurple
         
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
         setUpRemoteNotificationsForApplication(application)
-        
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.thirtyBlue]
-        
+                
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().barTintColor = .thPrimaryPurple
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)

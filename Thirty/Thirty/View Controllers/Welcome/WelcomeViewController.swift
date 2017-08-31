@@ -12,6 +12,7 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .thPrimaryPurple
     }
     
     override func viewWillAppear(_ animated: Bool) {
