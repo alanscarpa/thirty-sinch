@@ -67,11 +67,17 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     func searchForContactWithString(_ query: String) {
+        isSearching = true
         FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
             switch result {
             case .Success(let user):
                 // TODO: Dont populate if user is currentUsername
-                self?.searchResults = [user]
+                if let user = user {
+                    self?.searchResults = [user]
+                } else {
+                    // TODO: Show "no user" cell
+                    self?.searchResults = []
+                }
                 self?.tableView.reloadData()
             case .Failure(let error):
                 print(error.localizedDescription)
@@ -82,17 +88,17 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - TableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.isEmpty ? UserManager.shared.contacts.count : searchResults.count
+        return isSearching ? searchResults.count : UserManager.shared.contacts.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-        if searchResults.isEmpty {
-            cell.usernameLabel.text = UserManager.shared.contacts[indexPath.row].username
-            cell.addButton.isHidden = true
-        } else {
+        if isSearching {
             cell.usernameLabel.text = searchResults[indexPath.row].username
             cell.addButton.isHidden = false
+        } else {
+            cell.usernameLabel.text = UserManager.shared.contacts[indexPath.row].username
+            cell.addButton.isHidden = true
         }
         cell.delegate = self
         return cell
@@ -146,6 +152,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func resetTableView() {
         searchResults = []
+        isSearching = false
         tableView.reloadData()
     }
     

@@ -137,15 +137,17 @@ class FirebaseManager {
         }
     }
     
-    func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User>) -> Void) {
+    func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {
         databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
-            let value = snapshot.value as? NSDictionary
-            let displayName = value?["display-name"] as? String ?? ""
-            let email = value?["email"] as? String ?? ""
-            let phoneNumber = value?["phone-number"] as? String ?? ""
-            
-            let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "")
-            completion(.Success(user))
+            if let value = snapshot.value as? NSDictionary {
+                let displayName = value["display-name"] as? String ?? ""
+                let email = value["email"] as? String ?? ""
+                let phoneNumber = value["phone-number"] as? String ?? ""
+                let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "")
+                completion(.Success(user))
+            } else {
+                completion(.Success(nil))
+            }
         }) { (error) in
             completion(.Failure(error))
         }
