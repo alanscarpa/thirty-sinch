@@ -17,6 +17,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         getContacts()
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -25,7 +26,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         definesPresentationContext = true
         
         tableView.tableHeaderView = searchController.searchBar
-        
+        // TODO: undo this when search is re-enabled and users are adding friends again and searching.
+        tableView.tableHeaderView?.isHidden = true
         tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
     }
     

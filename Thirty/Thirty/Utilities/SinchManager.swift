@@ -38,7 +38,8 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     }
     
     // TODO: change to production when ready
-    let push = Sinch.managedPush(with: SINAPSEnvironment.development)
+    // try _isDebugAssertConfiguration() to assert is debug
+    let push = Sinch.managedPush(with: .production)
     
     // TODO: Verify password on Firebase before initializing
     func initializeWithUserId(_ userId: String) {

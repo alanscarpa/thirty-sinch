@@ -172,11 +172,13 @@ class FirebaseManager {
         guard let currentUsername = UserManager.shared.currentUserUsername?.lowercased() else {
             return completion(.Failure(THError.init(errorType: .noCurrentUser)))
         }
-        databaseRef.child("friends").child(currentUsername).observeSingleEvent(of: .value, with: { snapshot in
+        // TODO: Change "users" back to ("friends").child(currentUsername)
+        databaseRef.child("users").observeSingleEvent(of: .value, with: { snapshot in
             let value = snapshot.value as? NSDictionary
             // TODO: Get display-name somehow
             if let usernames = value?.allKeys as? [String] {
                 for username in usernames {
+                    guard username != currentUsername else { continue }
                     var user = User()
                     user.username = username
                     UserManager.shared.contacts.append(user)
