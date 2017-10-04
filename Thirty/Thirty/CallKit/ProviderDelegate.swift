@@ -50,7 +50,7 @@ class ProviderDelegate: NSObject {
             }
             
             // 4.
-            completion?(error as? NSError)
+            completion?(error as NSError?)
         }
     }
 }

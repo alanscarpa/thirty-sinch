@@ -41,7 +41,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     func getContacts() {
         FirebaseManager.shared.getContacts { [weak self] result in
             switch result {
-            case .Success(let user):
+            case .Success(_):
                 self?.tableView.reloadData()
             case .Failure(let error):
                 // TODO: Present error

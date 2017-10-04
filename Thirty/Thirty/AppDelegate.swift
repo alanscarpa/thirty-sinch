@@ -16,6 +16,12 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
+    static var shared: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    // CallKit
+    let callManager = CallManager()
+    lazy var providerDelegate: ProviderDelegate = ProviderDelegate(callManager: self.callManager)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FIRApp.configure()
@@ -39,6 +45,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
+    // MARK: - CallKit
+    
+    func displayIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false, completion: ((NSError?) -> Void)?) {
+        providerDelegate.reportIncomingCall(uuid: uuid, handle: handle, hasVideo: hasVideo, completion: completion)
+    }
+    
     // MARK: - UNUserNotificationCenterDelegate
     
     @available(iOS 10.0, *)
@@ -50,30 +62,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: - Notifications
     
     func setUpRemoteNotificationsForApplication(_ application: UIApplication) {
-        if !application.isRegisteredForRemoteNotifications {
-            if #available(iOS 10.0, *) {
-                let center = UNUserNotificationCenter.current()
-                center.delegate = self
-                center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
-                    if granted {
-                        application.registerForRemoteNotifications()
-                    } else {
-                        // TODO: Present screen asking to turn on notifications
-                    }
-                })
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+        options: authOptions) { authorized, error in
+            // TODO: Handle error
+            if let error = error {
+                print(error)
+            } else if authorized {
+                // No-op
+                print("remote notifications authorized")
             } else {
-                let notificationSettings = UIUserNotificationSettings(types: [.badge, .alert, .sound], categories: nil)
-                application.registerUserNotificationSettings(notificationSettings)
+                // TODO: Handle denied pushes
+                print("denied")
             }
         }
-    }
-    
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        if notificationSettings.types != .none {
-            application.registerForRemoteNotifications()
-        } else {
-            // TODO: Present screen asking to turn on notifications
-        }
+        application.registerForRemoteNotifications()
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

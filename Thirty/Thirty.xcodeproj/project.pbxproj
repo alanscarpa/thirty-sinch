@@ -40,6 +40,7 @@
 		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
 		457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */; };
 		457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */; };
+		4580E1B61F845DDC00ED6666 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E1B51F845DDC00ED6666 /* Audio.swift */; };
 		45F42ED91F845B4800916D50 /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F42ED81F845B4800916D50 /* ProviderDelegate.swift */; };
 		45F42EDC1F845C5700916D50 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F42EDB1F845C5700916D50 /* Call.swift */; };
 		45F42EDE1F845C7A00916D50 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F42EDD1F845C7A00916D50 /* CallManager.swift */; };
@@ -86,6 +87,7 @@
 		45635E401EC0089B0011096C /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
+		4580E1B51F845DDC00ED6666 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		45F42ED81F845B4800916D50 /* ProviderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderDelegate.swift; sourceTree = "<group>"; };
 		45F42EDB1F845C5700916D50 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		45F42EDD1F845C7A00916D50 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				45F42ED81F845B4800916D50 /* ProviderDelegate.swift */,
 				45F42EDB1F845C5700916D50 /* Call.swift */,
 				45F42EDD1F845C7A00916D50 /* CallManager.swift */,
+				4580E1B51F845DDC00ED6666 /* Audio.swift */,
 			);
 			path = CallKit;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 			files = (
 				4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */,
 				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
+				4580E1B61F845DDC00ED6666 /* Audio.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
 				45F42EDE1F845C7A00916D50 /* CallManager.swift in Sources */,
 				4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */,
