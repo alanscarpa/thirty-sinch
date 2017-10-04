@@ -40,6 +40,9 @@
 		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
 		457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */; };
 		457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */; };
+		45F42ED91F845B4800916D50 /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F42ED81F845B4800916D50 /* ProviderDelegate.swift */; };
+		45F42EDC1F845C5700916D50 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F42EDB1F845C5700916D50 /* Call.swift */; };
+		45F42EDE1F845C7A00916D50 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F42EDD1F845C7A00916D50 /* CallManager.swift */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +86,9 @@
 		45635E401EC0089B0011096C /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
+		45F42ED81F845B4800916D50 /* ProviderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderDelegate.swift; sourceTree = "<group>"; };
+		45F42EDB1F845C5700916D50 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
+		45F42EDD1F845C7A00916D50 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,6 +138,7 @@
 				454CC7061E5532870087FAAD /* Thirty.entitlements */,
 				4500C75E1E4BDD5A00AF54AA /* AppDelegate.swift */,
 				4530A9121F05B9E80039D303 /* Models */,
+				45F42EDA1F845C4600916D50 /* CallKit */,
 				4500C7891E4E9EBD00AF54AA /* Utilities */,
 				4500C7811E4E924800AF54AA /* Extensions */,
 				4500C77D1E4E8EE800AF54AA /* View Controllers */,
@@ -270,6 +277,16 @@
 				457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		45F42EDA1F845C4600916D50 /* CallKit */ = {
+			isa = PBXGroup;
+			children = (
+				45F42ED81F845B4800916D50 /* ProviderDelegate.swift */,
+				45F42EDB1F845C5700916D50 /* Call.swift */,
+				45F42EDD1F845C7A00916D50 /* CallManager.swift */,
+			);
+			path = CallKit;
 			sourceTree = "<group>";
 		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
@@ -428,6 +445,7 @@
 				4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */,
 				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
+				45F42EDE1F845C7A00916D50 /* CallManager.swift in Sources */,
 				4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */,
 				4530A9111F05B7F20039D303 /* Result.swift in Sources */,
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
@@ -439,8 +457,10 @@
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,
 				4500C78B1E4E9EEA00AF54AA /* SinchManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
+				45F42ED91F845B4800916D50 /* ProviderDelegate.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
 				454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */,
+				45F42EDC1F845C5700916D50 /* Call.swift in Sources */,
 				4530A9161F05C59D0039D303 /* THError.swift in Sources */,
 				4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */,
 			);
@@ -578,7 +598,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thirty/Thirty.entitlements;
 				DEVELOPMENT_TEAM = 98E8SVTQ29;
 				INFOPLIST_FILE = Thirty/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirty.Thirty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -597,7 +617,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thirty/Thirty.entitlements;
 				DEVELOPMENT_TEAM = 98E8SVTQ29;
 				INFOPLIST_FILE = Thirty/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirty.Thirty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
