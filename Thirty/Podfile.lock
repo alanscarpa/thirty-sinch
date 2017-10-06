@@ -36,6 +36,7 @@ PODS:
   - IQKeyboardManagerSwift (4.0.9)
   - JHSpinner (0.1.3)
   - SinchRTC (3.11.1)
+  - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - Firebase/Auth
@@ -44,6 +45,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - JHSpinner
   - SinchRTC
+  - SwiftyJSON
 
 SPEC CHECKSUMS:
   Firebase: 4b66b5b59c43edac745b87f0c87e42cdd0279c13
@@ -57,7 +59,8 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: 2eefe6c429b86aa08bfbc1b5c891164d754adf91
   JHSpinner: c066311c964f8fbce023c6d229e38c558a8bbf42
   SinchRTC: ee4da1a6f08d8093813c06d90cf6fbb32068f893
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 0ffa65f523cfb1803429590743b4b16bd62b2426
+PODFILE CHECKSUM: 4a203fdb6a710e1a32fe8fdad7dc0116db35b5bc
 
 COCOAPODS: 1.2.1

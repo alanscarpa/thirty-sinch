@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 protocol SinchManagerClientDelegate: class {
     func sinchClientDidStart()
@@ -75,8 +76,9 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     // MARK: - SINManagedPushDelegate
     
     func managedPush(_ managedPush: SINManagedPush!, didReceiveIncomingPushWithPayload payload: [AnyHashable : Any]!, forType pushType: String!) {
-        displayIncomingCall(uuid: UUID(), handle: "what") { (error) in
-            print(error)
+        displayIncomingCall(uuid: UUID(), handle: JSON(payload)["aps"]["alert"]["loc-args"][0].string ?? "Incoming 30!") { (error) in
+            // todo: handle error
+            print(error?.localizedDescription ?? "")
         }
         // TODO: maybe undo?
         //handleRemoteNotification(userInfo: payload)

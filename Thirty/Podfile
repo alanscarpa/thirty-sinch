@@ -12,5 +12,6 @@ target 'Thirty' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'JHSpinner'
+  pod 'SwiftyJSON'
   
 end
