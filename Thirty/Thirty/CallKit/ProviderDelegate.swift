@@ -26,20 +26,20 @@ class ProviderDelegate: NSObject {
     
     // 4.
     static var providerConfiguration: CXProviderConfiguration {
-        let providerConfiguration = CXProviderConfiguration(localizedName: "Hotline")
+        let providerConfiguration = CXProviderConfiguration(localizedName: "30")
         
         providerConfiguration.supportsVideo = true
         providerConfiguration.maximumCallsPerCallGroup = 1
-        providerConfiguration.supportedHandleTypes = [.phoneNumber]
+        providerConfiguration.supportedHandleTypes = [.generic]
         
         return providerConfiguration
     }
     
-    func reportIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false, completion: ((NSError?) -> Void)?) {
+    func reportIncomingCall(uuid: UUID, handle: String, completion: ((NSError?) -> Void)?) {
         // 1.
         let update = CXCallUpdate()
-        update.remoteHandle = CXHandle(type: .phoneNumber, value: handle)
-        update.hasVideo = hasVideo
+        update.remoteHandle = CXHandle(type: .generic, value: handle)
+        update.hasVideo = true
         
         // 2.
         provider.reportNewIncomingCall(with: uuid, update: update) { error in

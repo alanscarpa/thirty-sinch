@@ -35,7 +35,7 @@ PODS:
   - GTMSessionFetcher/Core (1.1.9)
   - IQKeyboardManagerSwift (4.0.9)
   - JHSpinner (0.1.3)
-  - SinchRTC (3.11.0)
+  - SinchRTC (3.11.1)
 
 DEPENDENCIES:
   - Firebase/Auth
@@ -56,7 +56,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
   IQKeyboardManagerSwift: 2eefe6c429b86aa08bfbc1b5c891164d754adf91
   JHSpinner: c066311c964f8fbce023c6d229e38c558a8bbf42
-  SinchRTC: 68b940110104f8ccc7a42076e5ee75450d2e3456
+  SinchRTC: ee4da1a6f08d8093813c06d90cf6fbb32068f893
 
 PODFILE CHECKSUM: 0ffa65f523cfb1803429590743b4b16bd62b2426
 

@@ -23,7 +23,7 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     weak var clientDelegate: SinchManagerClientDelegate?
     weak var callClientDelegate: SinchManagerCallClientDelegate?
     
-    fileprivate var client: SINClient?
+    var client: SINClient?
     
     var clientIsStarted: Bool {
         return client?.isStarted() ?? false
@@ -39,7 +39,21 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     
     // TODO: change to production when ready
     // try _isDebugAssertConfiguration() to assert is debug
+    #if DEBUG
+    let push = Sinch.managedPush(with: .development)
+    #else
     let push = Sinch.managedPush(with: .production)
+    #endif
+    
+    // CallKit
+    let callManager = CallManager()
+    lazy var providerDelegate: ProviderDelegate = ProviderDelegate(callManager: self.callManager)
+    
+    // MARK: - CallKit
+    
+    func displayIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false, completion: ((NSError?) -> Void)?) {
+        providerDelegate.reportIncomingCall(uuid: uuid, handle: handle, completion: completion)
+    }
     
     // TODO: Verify password on Firebase before initializing
     func initializeWithUserId(_ userId: String) {
@@ -54,14 +68,18 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         client?.startListeningOnActiveConnection()
         
         push?.delegate = self
-        push?.setDesiredPushTypeAutomatically()
-        push?.setDisplayName("\(userId) wants to 30. Tap to answer!")
+        push?.setDesiredPushType(SINPushTypeVoIP)
+        push?.setDisplayName("\(userId) wants to 30!")
     }
     
     // MARK: - SINManagedPushDelegate
     
     func managedPush(_ managedPush: SINManagedPush!, didReceiveIncomingPushWithPayload payload: [AnyHashable : Any]!, forType pushType: String!) {
-        handleRemoteNotification(userInfo: payload)
+        displayIncomingCall(uuid: UUID(), handle: "what") { (error) in
+            print(error)
+        }
+        // TODO: maybe undo?
+        //handleRemoteNotification(userInfo: payload)
     }
     
     // MARK: - SINClient

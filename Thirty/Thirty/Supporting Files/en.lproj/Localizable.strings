@@ -9,4 +9,7 @@
 // TODO: Check that push banner looks right
 // https://www.sinch.com/docs/video/ios/
 
-SIN_INCOMING_CALL_DISPLAY_NAME = "Incoming 30 from %@";
+SIN_INCOMING_CALL = "Incoming call";
+SIN_INCOMING_CALL_DISPLAY_NAME = "Incoming call from %@";
+SIN_INCOMING_IM = "Incoming message";
+SIN_INCOMING_IM_DISPLAY_NAME = "Incoming message from %@";

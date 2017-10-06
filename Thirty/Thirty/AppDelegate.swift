@@ -13,15 +13,12 @@ import IQKeyboardManagerSwift
 import Firebase
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, PKPushRegistryDelegate {
 
     var window: UIWindow?
     static var shared: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
-    // CallKit
-    let callManager = CallManager()
-    lazy var providerDelegate: ProviderDelegate = ProviderDelegate(callManager: self.callManager)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FIRApp.configure()
@@ -45,15 +42,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
-    // MARK: - CallKit
+    func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, forType type: PKPushType) {
+        SinchManager.shared.client?.registerPushNotificationData(pushCredentials.token)
+    }
     
-    func displayIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false, completion: ((NSError?) -> Void)?) {
-        providerDelegate.reportIncomingCall(uuid: uuid, handle: handle, hasVideo: hasVideo, completion: completion)
+    func pushRegistry(_ registry: PKPushRegistry,
+                      didReceiveIncomingPushWith payload: PKPushPayload,
+                      for type: PKPushType,
+                      completion: @escaping () -> Void) {
+        print("huh")
     }
     
     // MARK: - UNUserNotificationCenterDelegate
     
-    @available(iOS 10.0, *)
+    // Called when presenting notification in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        completionHandler([.alert])
+//        if RootViewController.shared.conversationIdOfCurrentlyOpenedChat == conversationId {
+//            completionHandler([])
+//        } else {
+//            completionHandler([.alert])
+//        }
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void) {
         let userInfo = response.notification.request.content.userInfo
         SinchManager.shared.push?.application(UIApplication.shared, didReceiveRemoteNotification: userInfo)
@@ -81,6 +93,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+        //register for voip notifications
+        let voipRegistry = PKPushRegistry(queue: DispatchQueue.main)
+        voipRegistry.desiredPushTypes = Set([PKPushType.voIP])
+        voipRegistry.delegate = self
+        
         SinchManager.shared.push?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
     
