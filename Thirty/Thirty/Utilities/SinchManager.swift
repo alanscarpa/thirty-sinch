@@ -38,15 +38,12 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         return client?.videoController()
     }
     
-    // TODO: change to production when ready
-    // try _isDebugAssertConfiguration() to assert is debug
     #if DEBUG
     let push = Sinch.managedPush(with: .development)
     #else
     let push = Sinch.managedPush(with: .production)
     #endif
     
-    // CallKit
     let callManager = CallManager()
     lazy var providerDelegate: ProviderDelegate = ProviderDelegate(callManager: self.callManager)
     
@@ -72,10 +69,12 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         push?.setDesiredPushType(SINPushTypeVoIP)
         push?.setDisplayName("\(userId) wants to 30!")
     }
-    
+        
     // MARK: - SINManagedPushDelegate
     
     func managedPush(_ managedPush: SINManagedPush!, didReceiveIncomingPushWithPayload payload: [AnyHashable : Any]!, forType pushType: String!) {
+        // TODO: if app is open, don't do this.
+        guard UIApplication.shared.applicationState != .active else { return }
         displayIncomingCall(uuid: UUID(), handle: JSON(payload)["aps"]["alert"]["loc-args"][0].string ?? "Incoming 30!") { (error) in
             // todo: handle error
             print(error?.localizedDescription ?? "")
