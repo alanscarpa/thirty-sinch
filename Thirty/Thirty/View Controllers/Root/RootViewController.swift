@@ -53,6 +53,7 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
                     SinchManager.shared.initializeWithUserId(userId)
                 case .Failure(let error):
                     // TODO: Present failure pop up
+                    print(error.localizedDescription)
                     self?.goToWelcomeVC()
                 }
             })

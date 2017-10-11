@@ -25,8 +25,8 @@ import CallKit
 
 class CallManager {
     
+    private let callController = CXCallController()
     var callsChangedHandler: (() -> Void)?
-    
     private(set) var calls = [Call]()
     
     func callWithUUID(uuid: UUID) -> Call? {
@@ -54,6 +54,22 @@ class CallManager {
     func removeAllCalls() {
         calls.removeAll()
         callsChangedHandler?()
+    }
+    
+    func end(call: Call) {
+        let endCallAction = CXEndCallAction(call: call.uuid)
+        let transaction = CXTransaction(action: endCallAction)
+        requestTransaction(transaction)
+    }
+    
+    private func requestTransaction(_ transaction: CXTransaction) {
+        callController.request(transaction) { error in
+            if let error = error {
+                print("Error requesting transaction: \(error)")
+            } else {
+                print("Requested transaction successfully")
+            }
+        }
     }
 }
 
