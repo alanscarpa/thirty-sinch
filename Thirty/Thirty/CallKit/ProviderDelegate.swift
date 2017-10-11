@@ -45,12 +45,9 @@ class ProviderDelegate: NSObject {
 
 extension ProviderDelegate: CXProviderDelegate {
     func providerDidReset(_ provider: CXProvider) {
-        stopAudio()
-        
         for call in callManager.calls {
             call.end()
         }
-        
         callManager.removeAllCalls()
     }
     
@@ -66,6 +63,9 @@ extension ProviderDelegate: CXProviderDelegate {
         }
         call.answer()
         action.fulfill()
+        
+        let transaction = CXTransaction(action: CXEndCallAction(call: action.callUUID))
+        callManager.requestTransaction(transaction)
     }
     
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {

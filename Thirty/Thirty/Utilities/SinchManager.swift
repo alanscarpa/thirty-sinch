@@ -74,6 +74,10 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     
     func managedPush(_ managedPush: SINManagedPush!, didReceiveIncomingPushWithPayload payload: [AnyHashable : Any]!, forType pushType: String!) {
         guard UIApplication.shared.applicationState != .active else { return }
+        if let userId = UserManager.shared.userId, client == nil {
+            initializeWithUserId(userId)
+        }
+        _ = client?.relayRemotePushNotificationPayload(JSON(payload)["sin"].string ?? "")
         displayIncomingCall(uuid: UUID(), handle: JSON(payload)["aps"]["alert"]["loc-args"][0].string ?? "Incoming 30!") { (error) in
             // todo: handle error
             print(error?.localizedDescription ?? "")
@@ -100,14 +104,6 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     
     func client(_ client: SINCallClient!, didReceiveIncomingCall call: SINCall!) {
         callClientDelegate?.sinchClientDidReceiveIncomingCall(call)
-    }
-    
-    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
-        let notification = SINLocalNotification()
-        notification.alertAction = "Answer"
-        // TODO: remoteUserId should be display name.
-        notification.alertBody = "Incoming call from \(call.remoteUserId ?? "")"
-        return notification
     }
     
     // MARK: - Helpers

@@ -45,6 +45,12 @@ class CallManager {
         callsChangedHandler?()
     }
     
+    func end(call: Call) {
+        let endCallAction = CXEndCallAction(call: call.uuid)
+        let transaction = CXTransaction(action: endCallAction)
+        requestTransaction(transaction)
+    }
+    
     func remove(call: Call) {
         guard let index = calls.index(where: { $0 === call }) else { return }
         calls.remove(at: index)
@@ -56,13 +62,7 @@ class CallManager {
         callsChangedHandler?()
     }
     
-    func end(call: Call) {
-        let endCallAction = CXEndCallAction(call: call.uuid)
-        let transaction = CXTransaction(action: endCallAction)
-        requestTransaction(transaction)
-    }
-    
-    private func requestTransaction(_ transaction: CXTransaction) {
+    func requestTransaction(_ transaction: CXTransaction) {
         callController.request(transaction) { error in
             if let error = error {
                 print("Error requesting transaction: \(error)")
