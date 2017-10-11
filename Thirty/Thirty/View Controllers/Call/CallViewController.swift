@@ -44,10 +44,8 @@ class CallViewController: UIViewController, SINCallDelegate {
             audioController?.startPlayingSoundFile(callingSoundPath, loop: true)
         }
         
-        if call?.details.isVideoOffered == true {
-            if let localView = videoController?.localView() {
-                localVideoView.addSubview(localView)
-            }
+        if let localView = videoController?.localView() {
+            localVideoView.addSubview(localView)
         }
     }
     

@@ -107,6 +107,7 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     }
     
     func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
+        // TODO: probably delete entire funciton
         let notification = SINLocalNotification()
         notification.alertAction = "Answer"
         notification.alertBody = "Incoming call from \(call.remoteUserId)"
