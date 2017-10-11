@@ -45,7 +45,7 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     #endif
     
     let callManager = CallManager()
-    lazy var providerDelegate: ProviderDelegate = ProviderDelegate(callManager: self.callManager)
+    var providerDelegate: ProviderDelegate = ProviderDelegate(callManager: self.callManager)
     
     // MARK: - CallKit
     
@@ -77,6 +77,8 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         if let userId = UserManager.shared.userId, client == nil {
             initializeWithUserId(userId)
         }
+       
+        
         _ = client?.relayRemotePushNotificationPayload(JSON(payload)["sin"].string ?? "")
         displayIncomingCall(uuid: UUID(), handle: JSON(payload)["aps"]["alert"]["loc-args"][0].string ?? "Incoming 30!") { (error) in
             // todo: handle error
@@ -108,6 +110,7 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     
     func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
         // TODO: probably delete entire funciton
+        SinchCallManager.shared.currentCall = call
         let notification = SINLocalNotification()
         notification.alertAction = "Answer"
         notification.alertBody = "Incoming call from \(call.remoteUserId)"

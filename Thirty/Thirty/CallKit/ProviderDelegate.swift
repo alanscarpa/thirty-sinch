@@ -13,6 +13,7 @@ class ProviderDelegate: NSObject {
     
     fileprivate let callManager: CallManager
     fileprivate let provider: CXProvider
+    var isPerformingAnswerProcess = false
     
     init(callManager: CallManager) {
         self.callManager = callManager
@@ -56,20 +57,20 @@ extension ProviderDelegate: CXProviderDelegate {
     }
     
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
-        print("tapped answer button")
         guard let call = callManager.callWithUUID(uuid: action.callUUID) else {
             action.fail()
             return
         }
+        isPerformingAnswerProcess = true
         call.answer()
         action.fulfill()
         
+        // This stops the green bar from being at top of phone.
         let transaction = CXTransaction(action: CXEndCallAction(call: action.callUUID))
         callManager.requestTransaction(transaction)
     }
     
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
-        print("tapped end button")
         guard let call = callManager.callWithUUID(uuid: action.callUUID) else {
             action.fail()
             return
@@ -77,5 +78,7 @@ extension ProviderDelegate: CXProviderDelegate {
         call.end()
         action.fulfill()
         callManager.remove(call: call)
+//        if !isPerformingAnswerProcess { SinchCallManager.shared.currentCall?.hangup() }
+//        isPerformingAnswerProcess = false
     }
 }
