@@ -80,6 +80,8 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     func call(_ call: SINCall!, shouldSendPushNotifications pushPairs: [Any]!) {
+        print(call)
+        print(pushPairs)
         // TODO: not sure what this is for. maybe multiple accoutns on 1 device?
     }
     

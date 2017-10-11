@@ -106,6 +106,13 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         callClientDelegate?.sinchClientDidReceiveIncomingCall(call)
     }
     
+    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
+        let notification = SINLocalNotification()
+        notification.alertAction = "Answer"
+        notification.alertBody = "Incoming call from \(call.remoteUserId)"
+        return notification
+    }
+        
     // MARK: - Helpers
     
     func handleRemoteNotification(userInfo: Dictionary<AnyHashable, Any>) {
