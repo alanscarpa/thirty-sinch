@@ -11,9 +11,8 @@ import CallKit
 
 class ProviderDelegate: NSObject {
     
-    fileprivate let callManager: CallManager
+    fileprivate weak var callManager: CallManager?
     fileprivate let provider: CXProvider
-    var isPerformingAnswerProcess = false
     
     init(callManager: CallManager) {
         self.callManager = callManager
@@ -37,7 +36,7 @@ class ProviderDelegate: NSObject {
         provider.reportNewIncomingCall(with: uuid, update: update) { error in
             if error == nil {
                 let call = Call(uuid: uuid, handle: handle)
-                self.callManager.add(call: call)
+                self.callManager?.add(call: call)
             }
             completion?(error as NSError?)
         }
@@ -46,10 +45,12 @@ class ProviderDelegate: NSObject {
 
 extension ProviderDelegate: CXProviderDelegate {
     func providerDidReset(_ provider: CXProvider) {
-        for call in callManager.calls {
-            call.end()
+        if let calls = callManager?.calls {
+            for call in calls {
+                call.end()
+            }
         }
-        callManager.removeAllCalls()
+        callManager?.removeAllCalls()
     }
     
     func providerDidBegin(_ provider: CXProvider) {
@@ -57,28 +58,27 @@ extension ProviderDelegate: CXProviderDelegate {
     }
     
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
-        guard let call = callManager.callWithUUID(uuid: action.callUUID) else {
+        guard let call = callManager?.callWithUUID(uuid: action.callUUID) else {
             action.fail()
             return
         }
-        isPerformingAnswerProcess = true
         call.answer()
         action.fulfill()
         
         // This stops the green bar from being at top of phone.
         let transaction = CXTransaction(action: CXEndCallAction(call: action.callUUID))
-        callManager.requestTransaction(transaction)
+        callManager?.requestTransaction(transaction)
     }
     
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
-        guard let call = callManager.callWithUUID(uuid: action.callUUID) else {
+        guard let call = callManager?.callWithUUID(uuid: action.callUUID) else {
             action.fail()
             return
         }
+        // THIS BREAKS THE APP - NEED TO FIGURE OUT CURRENT CALL
+        SinchCallManager.shared.currentCall?.hangup()
         call.end()
         action.fulfill()
-        callManager.remove(call: call)
-//        if !isPerformingAnswerProcess { SinchCallManager.shared.currentCall?.hangup() }
-//        isPerformingAnswerProcess = false
+        callManager?.remove(call: call)
     }
 }

@@ -43,16 +43,7 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     #else
     let push = Sinch.managedPush(with: .production)
     #endif
-    
-    let callManager = CallManager()
-    var providerDelegate: ProviderDelegate = ProviderDelegate(callManager: self.callManager)
-    
-    // MARK: - CallKit
-    
-    func displayIncomingCall(uuid: UUID, handle: String, hasVideo: Bool = false, completion: ((NSError?) -> Void)?) {
-        providerDelegate.reportIncomingCall(uuid: uuid, handle: handle, completion: completion)
-    }
-    
+        
     // TODO: Verify password on Firebase before initializing
     func initializeWithUserId(_ userId: String) {
         // TODO: Changehost to env host
@@ -77,12 +68,12 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         if let userId = UserManager.shared.userId, client == nil {
             initializeWithUserId(userId)
         }
-       
-        
         _ = client?.relayRemotePushNotificationPayload(JSON(payload)["sin"].string ?? "")
-        displayIncomingCall(uuid: UUID(), handle: JSON(payload)["aps"]["alert"]["loc-args"][0].string ?? "Incoming 30!") { (error) in
-            // todo: handle error
-            print(error?.localizedDescription ?? "")
+        CallManager.shared.providerDelegate.reportIncomingCall(uuid: UUID(), handle: JSON(payload)["aps"]["alert"]["loc-args"][0].string ?? "Incoming 30!") { (error) in
+            if let error = error {
+                // todo: handle error
+                print(error.localizedDescription)
+            }
         }
     }
     
@@ -109,7 +100,6 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     }
     
     func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
-        // TODO: probably delete entire funciton
         SinchCallManager.shared.currentCall = call
         let notification = SINLocalNotification()
         notification.alertAction = "Answer"

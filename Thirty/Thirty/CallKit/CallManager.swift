@@ -24,10 +24,13 @@ import Foundation
 import CallKit
 
 class CallManager {
+    static let shared = CallManager()
+    private init(){}
     
     private let callController = CXCallController()
     var callsChangedHandler: (() -> Void)?
     private(set) var calls = [Call]()
+    lazy var providerDelegate = ProviderDelegate(callManager: self)
     
     func callWithUUID(uuid: UUID) -> Call? {
         guard let index = calls.index(where: { $0.uuid == uuid }) else {
