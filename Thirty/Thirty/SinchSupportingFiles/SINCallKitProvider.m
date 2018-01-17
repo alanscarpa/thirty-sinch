@@ -46,10 +46,11 @@ static CXCallEndedReason SINGetCallEndedReason(SINCallEndCause cause) {
     _acDelegate = [[AudioContollerDelegate alloc] init];
     _client.audioController.delegate = _acDelegate;
     _calls = [NSMutableDictionary dictionary];
-    CXProviderConfiguration *config = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Sinch"];
+    CXProviderConfiguration *config = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Thirty"];
     config.maximumCallGroups = 1;
     config.maximumCallsPerCallGroup = 1;
-
+    config.supportsVideo = true;
+      
     _provider = [[CXProvider alloc] initWithConfiguration:config];
     [_provider setDelegate:self queue:nil];
   }

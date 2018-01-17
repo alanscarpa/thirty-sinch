@@ -98,13 +98,14 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         callKitProvider.reportNewIncomingCall(call)
     }
     
-    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
-        let notification = SINLocalNotification()
-        notification.alertAction = "Answer"
-        // TODO: remoteUserId should be display name.
-        notification.alertBody = "Incoming call from \(call.remoteUserId ?? "")"
-        return notification
-    }
+// Removed because using CallKit instead of Push Notification for call
+//    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
+//        let notification = SINLocalNotification()
+//        notification.alertAction = "Answer"
+//        // TODO: remoteUserId should be display name.
+//        notification.alertBody = "Incoming call from \(call.remoteUserId ?? "")"
+//        return notification
+//    }
     
     // MARK: - Helpers
     
