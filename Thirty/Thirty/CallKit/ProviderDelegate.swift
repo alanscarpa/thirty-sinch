@@ -75,10 +75,12 @@ extension ProviderDelegate: CXProviderDelegate {
             action.fail()
             return
         }
-        // THIS BREAKS THE APP - NEED TO FIGURE OUT CURRENT CALL
+        RootViewController.shared.pushCallVCWithCall(SinchCallManager.shared.currentCall!)
+        action.fulfill()
+         //THIS BREAKS THE APP SOMEWHERE
         SinchCallManager.shared.currentCall?.hangup()
         call.end()
-        action.fulfill()
+        
         callManager?.remove(call: call)
     }
 }
