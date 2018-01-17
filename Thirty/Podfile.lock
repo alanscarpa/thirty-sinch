@@ -33,8 +33,8 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.9)
-  - IQKeyboardManagerSwift (4.0.9)
-  - JHSpinner (0.1.3)
+  - IQKeyboardManagerSwift (5.0.7)
+  - JHSpinner (0.2.1)
   - SinchRTC (3.12.3)
   - SwiftyJSON (4.0.0)
 
@@ -56,8 +56,8 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: b9eedd6846fb5e1f0f7279e1deaa7a7e4cf8392e
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
-  IQKeyboardManagerSwift: 2eefe6c429b86aa08bfbc1b5c891164d754adf91
-  JHSpinner: c066311c964f8fbce023c6d229e38c558a8bbf42
+  IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
+  JHSpinner: bf7cc91a7e0ccad6336d2b0a3429dd34e7325e65
   SinchRTC: d0114589145c6779e30589119042ad7efc6b42cf
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 

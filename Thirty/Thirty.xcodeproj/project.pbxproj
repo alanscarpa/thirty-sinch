@@ -129,6 +129,7 @@
 		4500C75D1E4BDD5A00AF54AA /* Thirty */ = {
 			isa = PBXGroup;
 			children = (
+				4538A65A200F332800613DA5 /* SinchSupportingFiles */,
 				454CC7061E5532870087FAAD /* Thirty.entitlements */,
 				4500C75E1E4BDD5A00AF54AA /* AppDelegate.swift */,
 				4530A9121F05B9E80039D303 /* Models */,
@@ -261,6 +262,13 @@
 				4530A9131F05BA3D0039D303 /* User.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		4538A65A200F332800613DA5 /* SinchSupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SinchSupportingFiles;
 			sourceTree = "<group>";
 		};
 		457A9ABC1F57C056004FC8D1 /* Search */ = {
@@ -604,7 +612,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thirty/Thirty.entitlements;
 				DEVELOPMENT_TEAM = 98E8SVTQ29;
 				INFOPLIST_FILE = Thirty/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirty.Thirty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -624,7 +632,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thirty/Thirty.entitlements;
 				DEVELOPMENT_TEAM = 98E8SVTQ29;
 				INFOPLIST_FILE = Thirty/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thirty.Thirty;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -23,6 +23,7 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     weak var clientDelegate: SinchManagerClientDelegate?
     weak var callClientDelegate: SinchManagerCallClientDelegate?
     
+    
     fileprivate var client: SINClient?
     
     var clientIsStarted: Bool {
