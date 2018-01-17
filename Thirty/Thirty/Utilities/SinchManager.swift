@@ -23,7 +23,7 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     weak var clientDelegate: SinchManagerClientDelegate?
     weak var callClientDelegate: SinchManagerCallClientDelegate?
     
-    let callKitProvider = SINCallKitProvider()
+    var callKitProvider = SINCallKitProvider()
     
     fileprivate var client: SINClient?
     
@@ -60,6 +60,10 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         push?.delegate = self
         push?.setDesiredPushTypeAutomatically()
         push?.setDisplayName("\(userId) wants to 30. Tap to answer!")
+        
+        if let client = client {
+            callKitProvider = SINCallKitProvider.init(client: client)
+        }
     }
     
     // MARK: - SINManagedPushDelegate
@@ -88,6 +92,10 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
     
     func client(_ client: SINCallClient!, didReceiveIncomingCall call: SINCall!) {
         callClientDelegate?.sinchClientDidReceiveIncomingCall(call)
+    }
+    
+    func client(_ client: SINCallClient!, willReceiveIncomingCall call: SINCall!) {
+        callKitProvider.reportNewIncomingCall(call)
     }
     
     func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
