@@ -52,7 +52,7 @@ class FirebaseManager {
             try FIRAuth.auth()?.signOut()
             UserManager.shared.currentUserUsername = nil
             UserManager.shared.currentUserPassword = nil
-            completion(.Success())
+            completion(.Success)
         } catch {
             completion(.Failure(error))
         }
@@ -85,7 +85,7 @@ class FirebaseManager {
                                             } else {
                                                 UserManager.shared.currentUserUsername = user.username
                                                 UserManager.shared.currentUserPassword = user.password
-                                                completion(.Success())
+                                                completion(.Success)
                                             }
                                 })
                         } else {
@@ -123,7 +123,7 @@ class FirebaseManager {
                                     // TODO: Get entire profile and set user.
                                     UserManager.shared.currentUserUsername = username
                                     UserManager.shared.currentUserPassword = password
-                                    completion(.Success())
+                                    completion(.Success)
                                 }
                             }
                         }
@@ -163,7 +163,7 @@ class FirebaseManager {
                         if let error = error {
                             completion(.Failure(error))
                         } else {
-                            completion(.Success())
+                            completion(.Success)
                         }
             })
     }
@@ -184,7 +184,7 @@ class FirebaseManager {
                     UserManager.shared.contacts.append(user)
                 }
             }
-            completion(.Success())
+            completion(.Success)
         }) { (error) in
             completion(.Failure(error))
         }

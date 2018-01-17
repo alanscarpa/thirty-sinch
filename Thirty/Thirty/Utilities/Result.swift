@@ -36,3 +36,9 @@ extension Result {
         return error
     }
 }
+
+extension Result where T == Void {
+    static var Success: Result {
+        return .Success(())
+    }
+}

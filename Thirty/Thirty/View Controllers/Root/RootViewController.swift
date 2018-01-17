@@ -52,6 +52,7 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
                     // Once initialized, delegate call takes us to HomeVC
                     SinchManager.shared.initializeWithUserId(userId)
                 case .Failure(let error):
+                    print(error.localizedDescription)
                     // TODO: Present failure pop up
                     self?.goToWelcomeVC()
                 }

@@ -95,7 +95,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate, SinchManagerC
         if let email = emailTextField.text,
             let username = usernameTextField.text,
             let phoneNumber = phoneNumberTextField.text,
-            let password = passwordTextField.text, password.characters.count >= 6, passwordTextField.text == confirmPasswordTextField.text {
+            let password = passwordTextField.text, password.count >= 6, passwordTextField.text == confirmPasswordTextField.text {
             return (email, password, username, phoneNumber)
         }
         return nil

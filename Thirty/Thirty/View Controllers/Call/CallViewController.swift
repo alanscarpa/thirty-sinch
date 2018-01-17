@@ -96,7 +96,7 @@ class CallViewController: UIViewController, SINCallDelegate {
     
     // MARK: - Call Handling
     
-    func updateTime() {
+    @objc func updateTime() {
         guard let timeRemainingString = timeRemainingLabel.text else { return }
         guard var timeRemaining = Int(timeRemainingString) else { return }
         timeRemaining = timeRemaining - 1
