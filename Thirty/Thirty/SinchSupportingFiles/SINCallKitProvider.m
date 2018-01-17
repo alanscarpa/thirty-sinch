@@ -50,6 +50,7 @@ static CXCallEndedReason SINGetCallEndedReason(SINCallEndCause cause) {
     config.maximumCallGroups = 1;
     config.maximumCallsPerCallGroup = 1;
     config.supportsVideo = true;
+    config.supportedHandleTypes = [NSSet setWithArray:@[@1]];
       
     _provider = [[CXProvider alloc] initWithConfiguration:config];
     [_provider setDelegate:self queue:nil];
@@ -60,7 +61,7 @@ static CXCallEndedReason SINGetCallEndedReason(SINCallEndCause cause) {
 - (void)reportNewIncomingCall:(id<SINCall>)call {
   CXCallUpdate *update = [[CXCallUpdate alloc] init];
   update.remoteHandle = [[CXHandle alloc] initWithType:CXHandleTypeGeneric value:call.remoteUserId];
-
+    update.hasVideo = true;
   [_provider reportNewIncomingCallWithUUID:[[NSUUID alloc] initWithUUIDString:call.callId]
                                     update:update
                                 completion:^(NSError *_Nullable error) {
