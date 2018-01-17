@@ -78,6 +78,8 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         return client?.call().callUserVideo(withId: id)
     }
     
+    
+    
     // MARK: - SINClientDelegate
     
     func clientDidStart(_ client: SINClient!) {
@@ -98,7 +100,7 @@ class SinchManager: NSObject, SINManagedPushDelegate, SINClientDelegate, SINCall
         callKitProvider.reportNewIncomingCall(call)
     }
     
-// Removed because using CallKit instead of Push Notification for call
+ //Removed because using CallKit instead of Push Notification for call
 //    func client(_ client: SINCallClient!, localNotificationForIncomingCall call: SINCall!) -> SINLocalNotification! {
 //        let notification = SINLocalNotification()
 //        notification.alertAction = "Answer"

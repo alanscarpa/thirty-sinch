@@ -33,6 +33,7 @@ static CXCallEndedReason SINGetCallEndedReason(SINCallEndCause cause) {
   AudioContollerDelegate *_acDelegate;
   NSMutableDictionary<NSUUID *, id<SINCall>> *_calls;
   BOOL _muted;
+
 }
 @end
 
@@ -125,6 +126,8 @@ static CXCallEndedReason SINGetCallEndedReason(SINCallEndCause cause) {
   id<SINCall> call = [_calls objectForKey:action.callUUID];
   if (!call) {
     NSLog(@"WARNING: No call found for (%@)", action.callUUID);
+  } else {
+      [_client.callClient.delegate client:_client.callClient didReceiveIncomingCall:call];
   }
   return call;
 }
