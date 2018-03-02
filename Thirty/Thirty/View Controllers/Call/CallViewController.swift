@@ -59,7 +59,7 @@ class CallViewController: UIViewController, SINCallDelegate {
     // MARK: - SINCallDelegate
     
     func callDidAddVideoTrack(_ call: SINCall!) {
-        if let remoteView = videoController?.remoteView() {
+        if let remoteView = videoController?.remoteView(), let remoteVideoView = remoteVideoView {
             remoteVideoView.addSubview(remoteView)
             timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
         }

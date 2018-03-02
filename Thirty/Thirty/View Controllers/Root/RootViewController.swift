@@ -96,6 +96,7 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
     // MARK: - SinchManagerCallClientDelegate
     
     func sinchClientDidReceiveIncomingCall(_ call: SINCall) {
+        // This is called when user taps "Thirty Button"
         pushCallVCWithCall(call)
     }
     

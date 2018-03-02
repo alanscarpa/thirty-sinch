@@ -50,7 +50,7 @@ static CXCallEndedReason SINGetCallEndedReason(SINCallEndCause cause) {
     CXProviderConfiguration *config = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Thirty"];
     config.maximumCallGroups = 1;
     config.maximumCallsPerCallGroup = 1;
-    config.supportsVideo = true;
+    config.supportsVideo = false;
     config.supportedHandleTypes = [NSSet setWithArray:@[@1]];
       
     _provider = [[CXProvider alloc] initWithConfiguration:config];
