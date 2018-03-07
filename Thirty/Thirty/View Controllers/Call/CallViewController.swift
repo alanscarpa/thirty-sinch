@@ -26,6 +26,7 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     var timer = Timer()
+    var callIsAnswered = false
     
     // MARK: - View Lifecycle
     
@@ -59,6 +60,8 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     func answerCall() {
+        guard callIsAnswered == false else { return }
+        callIsAnswered = true
         if let remoteView = videoController?.remoteView(), let remoteVideoView = remoteVideoView {
             audioController?.stopPlayingSoundFile()
             remoteVideoView.addSubview(remoteView)
