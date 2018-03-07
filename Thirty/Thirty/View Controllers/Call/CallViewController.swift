@@ -51,6 +51,25 @@ class CallViewController: UIViewController, SINCallDelegate {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if call?.direction == .incoming {
+            answerCall()
+        }
+    }
+    
+    func answerCall() {
+        if let remoteView = videoController?.remoteView(), let remoteVideoView = remoteVideoView {
+            audioController?.stopPlayingSoundFile()
+            remoteVideoView.addSubview(remoteView)
+            answerCallButton.isHidden = true
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+            if call?.direction == .incoming {
+                call?.answer()
+            }
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         timer.invalidate()
@@ -59,10 +78,7 @@ class CallViewController: UIViewController, SINCallDelegate {
     // MARK: - SINCallDelegate
     
     func callDidAddVideoTrack(_ call: SINCall!) {
-        if let remoteView = videoController?.remoteView(), let remoteVideoView = remoteVideoView {
-            remoteVideoView.addSubview(remoteView)
-            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
-        }
+        
     }
     
     func callDidProgress(_ call: SINCall!) {
@@ -70,9 +86,9 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     func callDidEstablish(_ call: SINCall!) {
-        // TODO: Maybe start timer here?
         print("++++++++ CALL DID ESTABLISH  ++++++++++")
-        audioController?.stopPlayingSoundFile()
+        //guard call.state != .established else { return }
+        answerCall()
     }
     
     func callDidEnd(_ call: SINCall!) {
@@ -87,8 +103,7 @@ class CallViewController: UIViewController, SINCallDelegate {
     // MARK: - Actions
     
     @IBAction func answerCallButtonTapped() {
-        answerCallButton.isHidden = true
-        call?.answer()
+        answerCall()
     }
     
     @IBAction func cancelButtonTapped() {
@@ -108,6 +123,13 @@ class CallViewController: UIViewController, SINCallDelegate {
     }
     
     func endCall() {
-        call?.hangup()
+        if let audioController = audioController {
+            audioController.stopPlayingSoundFile()
+        }
+        if let call = call {
+            call.hangup()
+        } else {
+            RootViewController.shared.popViewController()
+        }
     }
 }

@@ -50,8 +50,10 @@ static CXCallEndedReason SINGetCallEndedReason(SINCallEndCause cause) {
     CXProviderConfiguration *config = [[CXProviderConfiguration alloc] initWithLocalizedName:@"Thirty"];
     config.maximumCallGroups = 1;
     config.maximumCallsPerCallGroup = 1;
-    config.supportsVideo = false;
-    config.supportedHandleTypes = [NSSet setWithArray:@[@1]];
+    config.supportsVideo = true;
+    config.supportedHandleTypes = [NSSet setWithArray:@[@0]];
+    UIImage *callkitIcon = [UIImage imageNamed:@"callkitIcon"];
+    config.iconTemplateImageData = UIImagePNGRepresentation(callkitIcon);
       
     _provider = [[CXProvider alloc] initWithConfiguration:config];
     [_provider setDelegate:self queue:nil];
@@ -117,6 +119,10 @@ static CXCallEndedReason SINGetCallEndedReason(SINCallEndCause cause) {
   }
 }
 #pragma mark - CXProviderDelegate
+
+- (BOOL)provider:(CXProvider *)provider executeTransaction:(CXTransaction *)transaction {
+    return true;
+}
 
 - (void)provider:(CXProvider *)provider didActivateAudioSession:(AVAudioSession *)audioSession {
   [_client.callClient provider:provider didActivateAudioSession:audioSession];
