@@ -13,12 +13,6 @@ import Alamofire
 
 class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipantDelegate, TVIVideoViewDelegate, CXProviderDelegate {
     
-    // MARK: -
-    func providerDidReset(_ provider: CXProvider) {
-        //
-    }
-    
-
     @IBOutlet weak var remoteVideoView: TVIVideoView!
     @IBOutlet weak var localVideoView: TVIVideoView!
     @IBOutlet weak var remoteUserLabel: UILabel!
@@ -29,6 +23,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var caller = ""
     var timer = Timer()
     var tokenGeneratorAddress = "https://php-ios.herokuapp.com/token.php"
+    var callHasEnded = false
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
      */
@@ -49,7 +44,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var callKitCallController: CXCallController?
     var callKitCompletionHandler: ((Bool)->Swift.Void?)? = nil
 
-    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -96,7 +90,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     private func connectToRoom() {
         let currentUsername = UserManager.shared.currentUserUsername!
-        let parameters: Parameters = ["identity": currentUsername, "room": caller]
+        let roomName = PlatformUtils.isSimulator ? "alanscarpa" : caller
+        let parameters: Parameters = ["identity": currentUsername, "room": roomName]
         // Generate access token
         Alamofire.request(tokenGeneratorAddress, parameters: parameters).validate().response { [weak self] response in
             if let error = response.error {
@@ -125,6 +120,12 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         return connectOptions
     }
     
+    // MARK: - CXProviderDelegate
+    
+    func providerDidReset(_ provider: CXProvider) {
+        //
+    }
+    
     // MARK: - TVIRoomDelegate
     
     func didConnect(to room: TVIRoom) {
@@ -138,7 +139,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         print("Number of connected Participants \(remoteParticipants.count)")
         // Start timer if callee is joining the room and is the 2nd participant
         if remoteParticipants.count == 1 {
-            answerCall()
+            remoteParticipant = remoteParticipants.first
+            remoteParticipant?.delegate = self
         }
     }
     
@@ -152,7 +154,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             self.remoteParticipant?.delegate = self
         }
         logMessage(messageText: "Participant \(participant.identity) connected with \(participant.remoteAudioTracks.count) audio and \(participant.remoteVideoTracks.count) video tracks")
-        answerCall()
     }
     
     func room(_ room: TVIRoom, participantDidDisconnect participant: TVIRemoteParticipant) {
@@ -173,6 +174,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         
         if (remoteParticipant == participant) {
             videoTrack.addRenderer(remoteVideoView)
+            answerCall()
         }
     }
     
@@ -188,9 +190,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         if (remoteParticipant == participant) {
             videoTrack.removeRenderer(remoteVideoView)
             remoteVideoView.removeFromSuperview()
+            endCall()
         }
     }
-    
     
     // MARK: - TVIVideoViewDelegate
         
@@ -212,14 +214,17 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         timeRemaining = timeRemaining - 1
         timeRemainingLabel.text = String(timeRemaining)
         if timeRemaining == 0 {
+            timer.invalidate()
             endCall()
         }
     }
     
     func endCall() {
-        // To disconnect from a Room, we call:
-        room?.disconnect()
-        RootViewController.shared.popViewController()
+        if !callHasEnded {
+            callHasEnded = true
+            RootViewController.shared.popViewController()
+            room?.disconnect()
+        }
     }
     
     // MARK: - Actions
