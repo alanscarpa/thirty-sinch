@@ -13,5 +13,6 @@ target 'Thirty' do
   pod 'JHSpinner'
   pod 'SwiftyJSON'
   pod 'TwilioVideo', '~> 1.0'
+  pod 'Alamofire', '~> 4.7'
   
 end

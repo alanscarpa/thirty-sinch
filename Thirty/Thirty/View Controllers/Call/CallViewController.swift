@@ -9,6 +9,7 @@
 import UIKit
 import TwilioVideo
 import CallKit
+import Alamofire
 
 class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDelegate, TVIVideoViewDelegate {
 
@@ -57,20 +58,30 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
         } else {
             print("Couldn't create TVICameraCapturer or TVILocalVideoTrack")
         }
-
-        // Create room
-        let connectOptions = TVIConnectOptions.init(token: accessToken) { [weak self] builder in
-            builder.roomName = "test room"
-            // Will share audio with users in room
-            if let audioTrack = self?.localAudioTrack {
-                builder.audioTracks = [audioTrack]
-            }
-            // Will share video with users in room
-            if let videoTrack = self?.localVideoTrack {
-                builder.videoTracks = [videoTrack]
+        
+        let userName = "simulator"
+        let parameters: Parameters = ["identity": "alan", "room": userName]
+        
+        Alamofire.request("https://php-ios.herokuapp.com/token.php", parameters: parameters).response { [weak self] response in
+            if let data = response.data, let accessToken = String(data: data, encoding: .utf8) {
+                self?.accessToken = accessToken
+                // Create room
+                let connectOptions = TVIConnectOptions.init(token: self!.accessToken) { [weak self] builder in
+                    builder.roomName = userName
+                    // Will share audio with users in room
+                    if let audioTrack = self?.localAudioTrack {
+                        builder.audioTracks = [audioTrack]
+                    }
+                    // Will share video with users in room
+                    if let videoTrack = self?.localVideoTrack {
+                        builder.videoTracks = [videoTrack]
+                    }
+                }
+                self?.room = TwilioVideo.connect(with: connectOptions, delegate: self)
             }
         }
-        room = TwilioVideo.connect(with: connectOptions, delegate: self)
+
+        
     }
     
     // MARK: - TVIRoomDelegate
@@ -99,6 +110,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
     
     func room(_ room: TVIRoom, participantDidDisconnect participant: TVIParticipant) {
         print ("Participant \(participant.identity) has left Room \(room.name)")
+        endCall()
     }
     
     // MARK: - TVIParticipantDelegate
