@@ -82,8 +82,9 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.pushViewController(HomeTableViewController(), animated: true)
     }
     
-    func pushCallVC() {
+    func pushCallVC(caller: String) {
         let callVC = CallViewController()
+        callVC.caller = caller
         rootNavigationController.pushViewController(callVC, animated: true)
     }
     

@@ -19,9 +19,10 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
     @IBOutlet weak var answerCallButton: UIButton!
     @IBOutlet weak var timeRemainingLabel: UILabel!
     
+    // This will be the room name
+    var caller = ""
     var timer = Timer()
     
-    var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTS2RkNGYxNWQ1ZTc5ZTc0OTE4ZTU3ZjdjMGMxMWM2Y2RmLTE1MjA0NzUyMjUiLCJpc3MiOiJTS2RkNGYxNWQ1ZTc5ZTc0OTE4ZTU3ZjdjMGMxMWM2Y2RmIiwic3ViIjoiQUMxY2I1NzZjNDg4ZjY1ZWEyZjk3MTRjZjI1ZTA0MGExYSIsImV4cCI6MTUyMDQ3ODgyNSwiZ3JhbnRzIjp7ImlkZW50aXR5IjoiYmxhaGhoIiwidmlkZW8iOnsicm9vbSI6InRlc3Qgcm9vbSJ9fX0.Fb-SCIHm6OFfWjHzZAEhB-7kAv-HKxZoFIuxsRTJ8mM"
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
      */
@@ -59,15 +60,12 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
             print("Couldn't create TVICameraCapturer or TVILocalVideoTrack")
         }
         
-        let userName = "simulator"
-        let parameters: Parameters = ["identity": "alan", "room": userName]
-        
+        let parameters: Parameters = ["identity": UserManager.shared.currentUserUsername!, "room": caller]
         Alamofire.request("https://php-ios.herokuapp.com/token.php", parameters: parameters).response { [weak self] response in
             if let data = response.data, let accessToken = String(data: data, encoding: .utf8) {
-                self?.accessToken = accessToken
                 // Create room
-                let connectOptions = TVIConnectOptions.init(token: self!.accessToken) { [weak self] builder in
-                    builder.roomName = userName
+                let connectOptions = TVIConnectOptions.init(token: accessToken) { [weak self] builder in
+                    builder.roomName = self?.caller
                     // Will share audio with users in room
                     if let audioTrack = self?.localAudioTrack {
                         builder.audioTracks = [audioTrack]
@@ -106,6 +104,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
     func room(_ room: TVIRoom, participantDidConnect participant: TVIParticipant) {
         print ("Participant \(participant.identity) has joined Room \(room.name)")
         participant.delegate = self
+        answerCall()
     }
     
     func room(_ room: TVIRoom, participantDidDisconnect participant: TVIParticipant) {
