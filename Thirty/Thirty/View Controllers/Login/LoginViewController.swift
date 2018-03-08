@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerClientDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -16,7 +16,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerCl
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
-        SinchManager.shared.clientDelegate = self
         usernameTextField.delegate = self
         passwordTextField.delegate = self
     }
@@ -33,13 +32,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerCl
         if let userId = usernameTextField.text, let password = passwordTextField.text, !userId.isEmpty, !password.isEmpty {
             THSpinner.showSpinnerOnView(view)
             FirebaseManager.shared.logInUserWithUsername(userId, password: password) { [weak self] result in
+                THSpinner.dismiss()
                 switch result {
                 case .Success(_):
-                    // Spinner dismissed in delegate call of successful Sinch client initializtion
                     UserManager.shared.userId = self?.usernameTextField.text
-                    SinchManager.shared.initializeWithUserId(userId)
                 case .Failure(let error):
-                    THSpinner.dismiss()
                     let errorInfo = THErrorHandler.errorInfoFromError(error)
                     let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description)
                     self?.present(alert, animated: true, completion: nil)
@@ -72,17 +69,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, SinchManagerCl
         if touch?.view?.isKind(of: UITextField.self) == false {
             view.endEditing(true)
         }
-    }
-    
-    // MARK: - SinchManagerClientDelegate
-    
-    func sinchClientDidStart() {
-        THSpinner.dismiss()
-        RootViewController.shared.goToHomeVC()
-    }
-    
-    func sinchClientDidFailWithError(_ error: Error) {
-        present(UIAlertController.createSimpleAlert(withTitle: "Error Starting Sinch", message: error.localizedDescription), animated: true, completion: nil)
     }
 
 }

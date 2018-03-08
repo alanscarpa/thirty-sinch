@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RootViewController: UIViewController, UINavigationControllerDelegate, SinchManagerClientDelegate, SinchManagerCallClientDelegate {
+class RootViewController: UIViewController, UINavigationControllerDelegate {
     
     static let shared = RootViewController()
     
@@ -30,8 +30,6 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
         
-        SinchManager.shared.callClientDelegate = self
-        
         rootNavigationController.setNavigationBarHidden(true, animated: false)
         rootNavigationController.delegate = self
         rootNavigationController.willMove(toParentViewController: self)
@@ -48,9 +46,7 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
             FirebaseManager.shared.logInUserWithUsername(username, password: password, completion: { [weak self] result in
                 switch result {
                 case .Success(_):
-                    SinchManager.shared.clientDelegate = self
-                    // Once initialized, delegate call takes us to HomeVC
-                    SinchManager.shared.initializeWithUserId(userId)
+                    self?.goToHomeVC()
                 case .Failure(let error):
                     print(error.localizedDescription)
                     // TODO: Present failure pop up
@@ -86,28 +82,9 @@ class RootViewController: UIViewController, UINavigationControllerDelegate, Sinc
         rootNavigationController.pushViewController(HomeTableViewController(), animated: true)
     }
     
-    func pushCallVCWithCall(_ call: SINCall) {
+    func pushCallVC() {
         let callVC = CallViewController()
-        callVC.call = call
         rootNavigationController.pushViewController(callVC, animated: true)
-    }
-
-    
-    // MARK: - SinchManagerCallClientDelegate
-    
-    func sinchClientDidReceiveIncomingCall(_ call: SINCall) {
-        // This is called when user taps "Thirty Button"
-        pushCallVCWithCall(call)
-    }
-    
-    // MARK: - SinchManagerClientDelegate
-    
-    func sinchClientDidStart() {
-        goToHomeVC()
-    }
-    
-    func sinchClientDidFailWithError(_ error: Error) {
-        present(UIAlertController.createSimpleAlert(withTitle: "Error Starting Sinch", message: error.localizedDescription), animated: true, completion: nil)
     }
     
 }

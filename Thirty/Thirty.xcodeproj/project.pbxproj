@@ -16,15 +16,12 @@
 		4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */; };
 		4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7851E4E92C200AF54AA /* WelcomeViewController.swift */; };
 		4500C7881E4E92C200AF54AA /* WelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7861E4E92C200AF54AA /* WelcomeViewController.xib */; };
-		4500C78B1E4E9EEA00AF54AA /* SinchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78A1E4E9EEA00AF54AA /* SinchManager.swift */; };
 		4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */; };
 		4500C7911E527AFF00AF54AA /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */; };
 		4500C7921E527AFF00AF54AA /* HomeTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */; };
 		4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7941E5286E000AF54AA /* CallViewController.swift */; };
 		4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7951E5286E000AF54AA /* CallViewController.xib */; };
 		4527AF111EC010D8003920DA /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45635E401EC0089B0011096C /* PushKit.framework */; };
-		452D2BF3200F367200453CF9 /* SINCallKitProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 452D2BEB200F367100453CF9 /* SINCallKitProvider.m */; };
-		452D2BF4200F367200453CF9 /* AudioControllerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 452D2BEF200F367200453CF9 /* AudioControllerDelegate.m */; };
 		4530A9011F0331500039D303 /* leaguespartan-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9001F0331500039D303 /* leaguespartan-bold.ttf */; };
 		4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9031F033DDD0039D303 /* LoginViewController.swift */; };
 		4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9041F033DDD0039D303 /* LoginViewController.xib */; };
@@ -60,16 +57,11 @@
 		4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Thirty.swift"; sourceTree = "<group>"; };
 		4500C7851E4E92C200AF54AA /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		4500C7861E4E92C200AF54AA /* WelcomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WelcomeViewController.xib; sourceTree = "<group>"; };
-		4500C78A1E4E9EEA00AF54AA /* SinchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinchManager.swift; sourceTree = "<group>"; };
 		4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Thirty.swift"; sourceTree = "<group>"; };
 		4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTableViewController.xib; sourceTree = "<group>"; };
 		4500C7941E5286E000AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		4500C7951E5286E000AF54AA /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
-		452D2BEB200F367100453CF9 /* SINCallKitProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SINCallKitProvider.m; sourceTree = "<group>"; };
-		452D2BED200F367100453CF9 /* AudioControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioControllerDelegate.h; sourceTree = "<group>"; };
-		452D2BEF200F367200453CF9 /* AudioControllerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioControllerDelegate.m; sourceTree = "<group>"; };
-		452D2BF2200F367200453CF9 /* SINCallKitProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SINCallKitProvider.h; sourceTree = "<group>"; };
 		4530A9001F0331500039D303 /* leaguespartan-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "leaguespartan-bold.ttf"; sourceTree = "<group>"; };
 		4530A9031F033DDD0039D303 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4530A9041F033DDD0039D303 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -135,7 +127,6 @@
 		4500C75D1E4BDD5A00AF54AA /* Thirty */ = {
 			isa = PBXGroup;
 			children = (
-				4538A65A200F332800613DA5 /* SinchSupportingFiles */,
 				454CC7061E5532870087FAAD /* Thirty.entitlements */,
 				4500C75E1E4BDD5A00AF54AA /* AppDelegate.swift */,
 				4530A9121F05B9E80039D303 /* Models */,
@@ -216,7 +207,6 @@
 			isa = PBXGroup;
 			children = (
 				454CC7021E54FEAD0087FAAD /* Keys.swift */,
-				4500C78A1E4E9EEA00AF54AA /* SinchManager.swift */,
 				454CC7071E568F640087FAAD /* UserManager.swift */,
 				4530A90E1F05B7A80039D303 /* FirebaseManager.swift */,
 				4530A9101F05B7F20039D303 /* Result.swift */,
@@ -268,17 +258,6 @@
 				4530A9131F05BA3D0039D303 /* User.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		4538A65A200F332800613DA5 /* SinchSupportingFiles */ = {
-			isa = PBXGroup;
-			children = (
-				452D2BED200F367100453CF9 /* AudioControllerDelegate.h */,
-				452D2BEF200F367200453CF9 /* AudioControllerDelegate.m */,
-				452D2BF2200F367200453CF9 /* SINCallKitProvider.h */,
-				452D2BEB200F367100453CF9 /* SINCallKitProvider.m */,
-			);
-			path = SinchSupportingFiles;
 			sourceTree = "<group>";
 		};
 		457A9ABC1F57C056004FC8D1 /* Search */ = {
@@ -466,12 +445,9 @@
 				4530A9181F05CF9E0039D303 /* JHSpinnerView+Thirty.swift in Sources */,
 				4500C7911E527AFF00AF54AA /* HomeTableViewController.swift in Sources */,
 				457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */,
-				452D2BF4200F367200453CF9 /* AudioControllerDelegate.m in Sources */,
 				4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */,
-				452D2BF3200F367200453CF9 /* SINCallKitProvider.m in Sources */,
 				4530A9141F05BA3D0039D303 /* User.swift in Sources */,
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,
-				4500C78B1E4E9EEA00AF54AA /* SinchManager.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
 				454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */,

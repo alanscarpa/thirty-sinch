@@ -11,7 +11,7 @@ import Firebase
 import FirebaseDatabase
 import JHSpinner
 
-class SignupViewController: UIViewController, UITextFieldDelegate, SinchManagerClientDelegate {
+class SignupViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -22,7 +22,6 @@ class SignupViewController: UIViewController, UITextFieldDelegate, SinchManagerC
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
-        SinchManager.shared.clientDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,29 +63,15 @@ class SignupViewController: UIViewController, UITextFieldDelegate, SinchManagerC
         let user = User(username: credentials.username, email: credentials.email, phoneNumber: credentials.phoneNumber, password: credentials.password)
         THSpinner.showSpinnerOnView(view)
         FirebaseManager.shared.createNewUser(user: user) { result in
+            THSpinner.dismiss()
             switch result {
             case .Success(_):
-                // Spinner is dismissed when initialization is successful
                 UserManager.shared.userId = user.username
-                SinchManager.shared.initializeWithUserId(user.username)
             case .Failure(let error):
-                THSpinner.dismiss()
                 let errorInfo = THErrorHandler.errorInfoFromError(error)
                 self.present(UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description), animated: true, completion: nil)
             }
         }
-    }
-    
-    // MARK: - SinchManagerClientDelegate
-    
-    func sinchClientDidStart() {
-        THSpinner.dismiss()
-        RootViewController.shared.goToHomeVC()
-    }
-    
-    func sinchClientDidFailWithError(_ error: Error) {
-        THSpinner.dismiss()
-        present(UIAlertController.createSimpleAlert(withTitle: "Error Starting Sinch", message: error.localizedDescription), animated: true, completion: nil)
     }
     
     // MARK: - Helpers

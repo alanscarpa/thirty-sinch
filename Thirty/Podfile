@@ -6,7 +6,6 @@ target 'Thirty' do
   use_frameworks!
 
   # Pods for Thirty
-  pod 'SinchRTC'
   pod 'IQKeyboardManagerSwift'
   pod 'Firebase/Core' 
   pod 'Firebase/Auth'

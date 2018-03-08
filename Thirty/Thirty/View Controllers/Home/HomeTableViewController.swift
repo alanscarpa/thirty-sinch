@@ -120,17 +120,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard searchResults.isEmpty else { return }
         let username = UserManager.shared.contacts[indexPath.row].username
-        guard SinchManager.shared.clientIsStarted else {
-            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Problem with call client. Please try again.")
-            present(alert, animated: true, completion: nil)
-            return
-        }
-        if let call = SinchManager.shared.callUserWithId(username) {
-            RootViewController.shared.pushCallVCWithCall(call)
-        } else {
-            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter the username of who you want to call.")
-            present(alert, animated: true, completion: nil)
-        }
+        // TODO: Need to open room and make call
+        RootViewController.shared.pushCallVC()
     }
     
     // MARK: SearchResultTableViewCellDelegate

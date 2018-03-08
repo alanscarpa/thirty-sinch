@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void) {
         let userInfo = response.notification.request.content.userInfo
-        SinchManager.shared.push?.application(UIApplication.shared, didReceiveRemoteNotification: userInfo)
+
     }
     
     // MARK: - Notifications
@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        SinchManager.shared.push?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        SinchManager.shared.push?.application(application, didReceiveRemoteNotification: userInfo)
+
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
