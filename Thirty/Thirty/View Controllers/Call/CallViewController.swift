@@ -53,6 +53,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
             self.localVideoTrack = videoTrack
             self.camera = camera
             self.view.addSubview(renderer)
+            renderer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.flipCamera)))
         } else {
             print("Couldn't create TVICameraCapturer or TVILocalVideoTrack")
         }
@@ -166,5 +167,16 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
         // To disconnect from a Room, we call:
         room?.disconnect()
         RootViewController.shared.popViewController()
+    }
+    
+    // Select between the front and (wide) back camera.
+    @objc func flipCamera() {
+        if let camera = camera {
+            if (camera.source == .frontCamera) {
+                camera.selectSource(.backCameraWide)
+            } else {
+                camera.selectSource(.frontCamera)
+            }
+        }
     }
 }
