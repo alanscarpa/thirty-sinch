@@ -20,7 +20,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
     
     var timer = Timer()
     
-    var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTS2RkNGYxNWQ1ZTc5ZTc0OTE4ZTU3ZjdjMGMxMWM2Y2RmLTE1MjA0NzAxODciLCJpc3MiOiJTS2RkNGYxNWQ1ZTc5ZTc0OTE4ZTU3ZjdjMGMxMWM2Y2RmIiwic3ViIjoiQUMxY2I1NzZjNDg4ZjY1ZWEyZjk3MTRjZjI1ZTA0MGExYSIsImV4cCI6MTUyMDQ3Mzc4NywiZ3JhbnRzIjp7ImlkZW50aXR5Ijoic2ltdWxhdG9yIiwidmlkZW8iOnsicm9vbSI6InRlc3Qgcm9vbSJ9fX0.NThqvOFoZyif6PJ3RhM0dB61DjNsEkGqNLR0SlhPpNU"
+    var accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTS2RkNGYxNWQ1ZTc5ZTc0OTE4ZTU3ZjdjMGMxMWM2Y2RmLTE1MjA0NzUyMjUiLCJpc3MiOiJTS2RkNGYxNWQ1ZTc5ZTc0OTE4ZTU3ZjdjMGMxMWM2Y2RmIiwic3ViIjoiQUMxY2I1NzZjNDg4ZjY1ZWEyZjk3MTRjZjI1ZTA0MGExYSIsImV4cCI6MTUyMDQ3ODgyNSwiZ3JhbnRzIjp7ImlkZW50aXR5IjoiYmxhaGhoIiwidmlkZW8iOnsicm9vbSI6InRlc3Qgcm9vbSJ9fX0.Fb-SCIHm6OFfWjHzZAEhB-7kAv-HKxZoFIuxsRTJ8mM"
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
      */
@@ -84,6 +84,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
         // Connected participants
         let participants = room.participants;
         print("Number of connected Participants \(participants.count)")
+    }
+    
+    
+    func room(_ room: TVIRoom, didDisconnectWithError error: Error?) {
+        print("Disconnected from room \(room.name)")
     }
     
     func room(_ room: TVIRoom, participantDidConnect participant: TVIParticipant) {
@@ -158,6 +163,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIParticipantDeleg
     }
     
     func endCall() {
+        // To disconnect from a Room, we call:
+        room?.disconnect()
         RootViewController.shared.popViewController()
     }
 }
