@@ -12,5 +12,6 @@ target 'Thirty' do
   pod 'Firebase/Database'
   pod 'JHSpinner'
   pod 'SwiftyJSON'
-
+  pod 'TwilioVideo', '~> 1.0'
+  
 end
