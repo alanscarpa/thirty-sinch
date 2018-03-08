@@ -48,6 +48,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        remoteVideoView.delegate = self
+        remoteVideoView.alpha = 0
         setUpCallKit()
         startLocalPreviewVideo()
         connectToRoom()
@@ -195,6 +197,13 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     // MARK: - TVIVideoViewDelegate
+    
+    func videoViewDidReceiveData(_ view: TVIVideoView) {
+        // First frame has been rendered; this prevents the brief black screen that appears first
+        UIView.animate(withDuration: 2.0) {
+            self.remoteVideoView.alpha = 1
+        }
+    }
         
     func videoView(_ view: TVIVideoView, videoDimensionsDidChange dimensions: CMVideoDimensions) {
         print("The dimensions of the video track changed to: \(dimensions.width)x\(dimensions.height)")
