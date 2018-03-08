@@ -37,7 +37,7 @@ PODS:
   - IQKeyboardManagerSwift (5.0.7)
   - JHSpinner (0.2.1)
   - SwiftyJSON (4.0.0)
-  - TwilioVideo (1.3.11)
+  - TwilioVideo (2.0.0-beta2)
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
@@ -47,7 +47,7 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - JHSpinner
   - SwiftyJSON
-  - TwilioVideo (~> 1.0)
+  - TwilioVideo (= 2.0.0-beta2)
 
 SPEC CHECKSUMS:
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
@@ -62,8 +62,8 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
   JHSpinner: bf7cc91a7e0ccad6336d2b0a3429dd34e7325e65
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
-  TwilioVideo: 52f7b8088ee715c1d05b7b15c4d07a875f16fadc
+  TwilioVideo: 7965c10c6cd24fd7fa291f5d96d130b1f6ce4da4
 
-PODFILE CHECKSUM: ba2f0afa341cb0a620e677dc76b61addc4c0660a
+PODFILE CHECKSUM: 1efadf77e4ab5742d92b2cdac843dc849e56eeb8
 
-COCOAPODS: 1.4.0.beta.2
+COCOAPODS: 1.4.0
