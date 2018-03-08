@@ -45,14 +45,28 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var remoteParticipant: TVIRemoteParticipant?
     
     // CallKit components
-    let callKitProvider: CXProvider
-    let callKitCallController: CXCallController
+    var callKitProvider: CXProvider?
+    var callKitCallController: CXCallController?
     var callKitCompletionHandler: ((Bool)->Swift.Void?)? = nil
 
     
     // MARK: - View Lifecycle
     
-    required init?(coder aDecoder: NSCoder) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setUpCallKit()
+        startLocalPreviewVideo()
+        connectToRoom()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer.invalidate()
+    }
+    
+    // MARK: - Setup
+    
+    private func setUpCallKit() {
         let configuration = CXProviderConfiguration(localizedName: "CallKit Quickstart")
         configuration.maximumCallGroups = 1
         configuration.maximumCallsPerCallGroup = 1
@@ -64,28 +78,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         callKitProvider = CXProvider(configuration: configuration)
         callKitCallController = CXCallController()
         
-        super.init(coder: aDecoder)
-        
-        callKitProvider.setDelegate(self, queue: nil)
+        callKitProvider?.setDelegate(self, queue: nil)
     }
-    
-    deinit {
-        // CallKit has an odd API contract where the developer must call invalidate or the CXProvider is leaked.
-        callKitProvider.invalidate()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        startLocalPreviewVideo()
-        connectToRoom()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        timer.invalidate()
-    }
-    
-    // MARK: - Setup
     
     private func startLocalPreviewVideo() {
         // Create a video track with the capturer.
