@@ -43,7 +43,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     // CallKit components
     var callKitProvider: CXProvider?
-    var callKitCallController: CXCallController?
+    var callKitCallController = CXCallController()
     var callKitCompletionHandler: ((Bool)->Swift.Void?)? = nil
 
     // MARK: - View Lifecycle
@@ -74,9 +74,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         }
         
         callKitProvider = CXProvider(configuration: configuration)
-        callKitCallController = CXCallController()
-        
-        callKitProvider?.setDelegate(self, queue: nil)
+        callKitProvider!.setDelegate(self, queue: nil)
     }
     
     func prepareLocalMedia() {
@@ -132,6 +130,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     private func defaultConnectOptionsWithAccessToken(_ accessToken: String) -> TVIConnectOptions {
         let connectOptions = TVIConnectOptions.init(token: accessToken) { [weak self] builder in
             builder.roomName = self?.roomName
+            builder.uuid = self?.callee.uuid
             // Will share audio with users in room
             if let audioTrack = self?.localAudioTrack {
                 builder.audioTracks = [audioTrack]
@@ -161,15 +160,15 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             remoteParticipant?.delegate = self
         }
         
-        let cxObserver = callKitCallController?.callObserver
-        let calls = cxObserver?.calls
+        let cxObserver = callKitCallController.callObserver
+        let calls = cxObserver.calls
         // Let the call provider know that the outgoing call has connected
-        if let uuid = room.uuid, let call = calls?.first(where:{$0.uuid == uuid}) {
+        if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
             if call.isOutgoing {
                 callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
             }
         }
-        self.callKitCompletionHandler!(true)
+        self.callKitCompletionHandler?(true)
     }
     
     func room(_ room: TVIRoom, didDisconnectWithError error: Error?) {
@@ -188,7 +187,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func room(_ room: TVIRoom, didFailToConnectWithError error: Error) {
         logMessage(messageText: "Failed to connect to room with error: \(error.localizedDescription)")
         
-        callKitCompletionHandler!(false)
+        callKitCompletionHandler?(false)
         self.room = nil
     }
     

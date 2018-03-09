@@ -16,10 +16,8 @@ extension CallViewController : CXProviderDelegate {
     
     func providerDidReset(_ provider: CXProvider) {
         logMessage(messageText: "providerDidReset:")
-        
         // AudioDevice is enabled by default
         self.audioDevice.isEnabled = true
-        
         room?.disconnect()
     }
     
@@ -29,7 +27,6 @@ extension CallViewController : CXProviderDelegate {
     
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         logMessage(messageText: "provider:didActivateAudioSession:")
-        
         self.audioDevice.isEnabled = true
     }
     
@@ -92,11 +89,9 @@ extension CallViewController : CXProviderDelegate {
     
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
         NSLog("provider:performEndCallAction:")
-        
         // AudioDevice is enabled by default
         self.audioDevice.isEnabled = true
         room?.disconnect()
-        
         action.fulfill()
     }
     
@@ -108,15 +103,12 @@ extension CallViewController : CXProviderDelegate {
     
     func provider(_ provider: CXProvider, perform action: CXSetHeldCallAction) {
         NSLog("provier:performSetHeldCallAction:")
-        
-        let cxObserver = callKitCallController?.callObserver
-        let calls = cxObserver?.calls
-        
-        guard let call = calls?.first(where:{$0.uuid == action.callUUID}) else {
+        let cxObserver = callKitCallController.callObserver
+        let calls = cxObserver.calls
+        guard let call = calls.first(where:{$0.uuid == action.callUUID}) else {
             action.fail()
             return
         }
-        
         if call.isOnHold {
             holdCall(onHold: false)
         } else {
@@ -137,7 +129,7 @@ extension CallViewController {
         
         let transaction = CXTransaction(action: startCallAction)
         
-        callKitCallController?.request(transaction)  { error in
+        callKitCallController.request(transaction)  { error in
             if let error = error {
                 NSLog("StartCallAction transaction request failed: \(error.localizedDescription)")
                 return
@@ -148,7 +140,6 @@ extension CallViewController {
     
     func reportIncomingCall(uuid: UUID, roomName: String?, completion: ((NSError?) -> Void)? = nil) {
         let callHandle = CXHandle(type: .generic, value: roomName ?? "")
-        
         let callUpdate = CXCallUpdate()
         callUpdate.remoteHandle = callHandle
         callUpdate.supportsDTMF = false
@@ -171,7 +162,7 @@ extension CallViewController {
         let endCallAction = CXEndCallAction(call: uuid)
         let transaction = CXTransaction(action: endCallAction)
         
-        callKitCallController?.request(transaction) { error in
+        callKitCallController.request(transaction) { error in
             if let error = error {
                 NSLog("EndCallAction transaction request failed: \(error.localizedDescription).")
                 return
@@ -232,7 +223,7 @@ extension CallViewController {
         
         logMessage(messageText: "Attempting to connect to room \(String(describing: roomName))")
                 
-        self.callKitCompletionHandler = completionHandler
+        callKitCompletionHandler = completionHandler
     }
 }
 

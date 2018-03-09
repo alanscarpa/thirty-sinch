@@ -44,7 +44,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
-        print(pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined())
+        if type == PKPushType.voIP {
+            let tokenData = pushCredentials.token
+            let voipPushToken = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
+            print(voipPushToken)
+            //TODO: send token to server
+        }
     }
     
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
