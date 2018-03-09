@@ -22,6 +22,9 @@
 		4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7941E5286E000AF54AA /* CallViewController.swift */; };
 		4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7951E5286E000AF54AA /* CallViewController.xib */; };
 		45100BAE2051DE2A0000B254 /* PlatformUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BAD2051DE2A0000B254 /* PlatformUtils.swift */; };
+		45100BB020520DF50000B254 /* CallViewController+CallKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BAF20520DF50000B254 /* CallViewController+CallKit.swift */; };
+		45100BB2205211630000B254 /* TokenUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BB1205211630000B254 /* TokenUtils.swift */; };
+		45100BB42052119A0000B254 /* TwilioSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BB32052119A0000B254 /* TwilioSettings.swift */; };
 		4527AF111EC010D8003920DA /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45635E401EC0089B0011096C /* PushKit.framework */; };
 		4530A9011F0331500039D303 /* leaguespartan-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4530A9001F0331500039D303 /* leaguespartan-bold.ttf */; };
 		4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9031F033DDD0039D303 /* LoginViewController.swift */; };
@@ -64,6 +67,9 @@
 		4500C7941E5286E000AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		4500C7951E5286E000AF54AA /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		45100BAD2051DE2A0000B254 /* PlatformUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformUtils.swift; sourceTree = "<group>"; };
+		45100BAF20520DF50000B254 /* CallViewController+CallKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CallViewController+CallKit.swift"; sourceTree = "<group>"; };
+		45100BB1205211630000B254 /* TokenUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenUtils.swift; sourceTree = "<group>"; };
+		45100BB32052119A0000B254 /* TwilioSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioSettings.swift; sourceTree = "<group>"; };
 		4530A9001F0331500039D303 /* leaguespartan-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "leaguespartan-bold.ttf"; sourceTree = "<group>"; };
 		4530A9031F033DDD0039D303 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4530A9041F033DDD0039D303 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -210,6 +216,8 @@
 			children = (
 				454CC7021E54FEAD0087FAAD /* Keys.swift */,
 				45100BAD2051DE2A0000B254 /* PlatformUtils.swift */,
+				45100BB1205211630000B254 /* TokenUtils.swift */,
+				45100BB32052119A0000B254 /* TwilioSettings.swift */,
 				454CC7071E568F640087FAAD /* UserManager.swift */,
 				4530A90E1F05B7A80039D303 /* FirebaseManager.swift */,
 				4530A9101F05B7F20039D303 /* Result.swift */,
@@ -233,6 +241,7 @@
 			children = (
 				4500C7941E5286E000AF54AA /* CallViewController.swift */,
 				4500C7951E5286E000AF54AA /* CallViewController.xib */,
+				45100BAF20520DF50000B254 /* CallViewController+CallKit.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -443,10 +452,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45100BB42052119A0000B254 /* TwilioSettings.swift in Sources */,
 				45100BAE2051DE2A0000B254 /* PlatformUtils.swift in Sources */,
 				4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */,
+				45100BB020520DF50000B254 /* CallViewController+CallKit.swift in Sources */,
 				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
+				45100BB2205211630000B254 /* TokenUtils.swift in Sources */,
 				4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */,
 				4530A9111F05B7F20039D303 /* Result.swift in Sources */,
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
