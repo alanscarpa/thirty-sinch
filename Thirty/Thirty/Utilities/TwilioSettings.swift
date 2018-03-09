@@ -41,5 +41,5 @@ class TwilioSettings: NSObject {
     }
     
     // MARK: Shared Instance
-    static let shared = Settings()
+    static let shared = TwilioSettings()
 }

@@ -79,7 +79,8 @@ class FirebaseManager {
                                 .setValue(["phone-number": user.phoneNumber,
                                            "uid": fbUser.uid,
                                            "display-name": user.username,
-                                           "email": user.email], withCompletionBlock: { (error, ref) in
+                                           "email": user.email,
+                                           "uuid": user.uuid.uuidString], withCompletionBlock: { (error, ref) in
                                             if let error = error {
                                                 completion(.Failure(error))
                                             } else {
@@ -103,6 +104,7 @@ class FirebaseManager {
     }
     
     func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
+        // TODO: if user logs in with email, it crashes because invalid characters
         FIRAuth.auth()?.signInAnonymously { [weak self] (anonymousUser, error) in
             self?.databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
                 anonymousUser?.delete(completion: { deletionError in
@@ -119,7 +121,8 @@ class FirebaseManager {
                                 if let error = error {
                                     completion(.Failure(error))
                                 } else {
-                                    
+                                    self?.databaseRef.child("users")
+                                        .child(username.lowercased()).updateChildValues(["uuid": UUID().uuidString])
                                     // TODO: Get entire profile and set user.
                                     UserManager.shared.currentUserUsername = username
                                     UserManager.shared.currentUserPassword = password

@@ -36,6 +36,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 switch result {
                 case .Success(_):
                     UserManager.shared.userId = self?.usernameTextField.text
+                    RootViewController.shared.goToHomeVC()
                 case .Failure(let error):
                     let errorInfo = THErrorHandler.errorInfoFromError(error)
                     let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description)

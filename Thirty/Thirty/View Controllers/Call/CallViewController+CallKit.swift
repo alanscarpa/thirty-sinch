@@ -81,7 +81,7 @@ extension CallViewController : CXProviderDelegate {
         // Configure the AVAudioSession by executign the audio device's `block`.
         self.audioDevice.block()
         
-        performRoomConnect(uuid: action.callUUID, roomName: caller) { (success) in
+        performRoomConnect(uuid: action.callUUID, roomName: roomName) { (success) in
             if (success) {
                 action.fulfill(withDateConnected: Date())
             } else {
@@ -110,9 +110,9 @@ extension CallViewController : CXProviderDelegate {
         NSLog("provier:performSetHeldCallAction:")
         
         let cxObserver = callKitCallController?.callObserver
-        let calls = cxObserver.calls
+        let calls = cxObserver?.calls
         
-        guard let call = calls.first(where:{$0.uuid == action.callUUID}) else {
+        guard let call = calls?.first(where:{$0.uuid == action.callUUID}) else {
             action.fail()
             return
         }

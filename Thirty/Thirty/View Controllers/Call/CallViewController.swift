@@ -20,11 +20,12 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     @IBOutlet weak var timeRemainingLabel: UILabel!
     
     // This will also be the room name
-    var caller = ""
+    var callee = User()
     var timer = Timer()
     var tokenGeneratorAddress = "https://php-ios.herokuapp.com/token.php"
     var accessToken = ""
     var callHasEnded = false
+    let roomName = PlatformUtils.isSimulator ? "alanscarpa" : UserManager.shared.currentUserUsername!
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
      */
@@ -112,7 +113,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     private func connectToRoom() {
         let currentUsername = UserManager.shared.currentUserUsername!
-        let roomName = PlatformUtils.isSimulator ? "alanscarpa" : caller
+        performStartCallAction(uuid: callee.uuid, roomName: roomName)
         let parameters: Parameters = ["identity": currentUsername, "room": roomName]
         // Generate access token
         Alamofire.request(tokenGeneratorAddress, parameters: parameters).validate().response { [weak self] response in
@@ -130,7 +131,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     private func defaultConnectOptionsWithAccessToken(_ accessToken: String) -> TVIConnectOptions {
         let connectOptions = TVIConnectOptions.init(token: accessToken) { [weak self] builder in
-            builder.roomName = self?.caller
+            builder.roomName = self?.roomName
             // Will share audio with users in room
             if let audioTrack = self?.localAudioTrack {
                 builder.audioTracks = [audioTrack]
@@ -296,6 +297,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     // MARK: - Helpers
+    
+    func holdCall(onHold: Bool) {
+        localAudioTrack?.isEnabled = !onHold
+        localVideoTrack?.isEnabled = !onHold
+    }
     
     func logMessage(messageText: String) {
         NSLog(messageText)
