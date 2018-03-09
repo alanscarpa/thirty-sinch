@@ -146,7 +146,8 @@ class FirebaseManager {
                 let displayName = value["display-name"] as? String ?? ""
                 let email = value["email"] as? String ?? ""
                 let phoneNumber = value["phone-number"] as? String ?? ""
-                let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "")
+                let uuid = UUID(uuidString: value["uuid"] as! String)
+                let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "", uuid: uuid!)
                 completion(.Success(user))
             } else {
                 completion(.Success(nil))
@@ -184,6 +185,9 @@ class FirebaseManager {
                     guard username != currentUsername else { continue }
                     var user = User()
                     user.username = username
+                    if let uuidString = (value?[username] as? NSDictionary)?["uuid"] as? String {
+                        user.uuid = UUID(uuidString: uuidString)!
+                    }
                     UserManager.shared.contacts.append(user)
                 }
             }

@@ -13,7 +13,7 @@ import IQKeyboardManagerSwift
 import Firebase
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, PKPushRegistryDelegate {
 
     var window: UIWindow?
     
@@ -36,8 +36,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().tintColor = .white
         
+        let registry = PKPushRegistry(queue: nil)
+        registry.delegate = self
+        registry.desiredPushTypes = [PKPushType.voIP]
+        
         return true
     }
+    
+    func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
+        print(pushCredentials.token.map { String(format: "%02.2hhx", $0) }.joined())
+    }
+    
+    func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
+       print(payload)
+    }
+
     
     // MARK: - UNUserNotificationCenterDelegate
     

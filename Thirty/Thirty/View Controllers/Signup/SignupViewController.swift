@@ -60,7 +60,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             return
         }
         // TODO: refactor credentials + User
-        let user = User(username: credentials.username, email: credentials.email, phoneNumber: credentials.phoneNumber, password: credentials.password)
+        let user = User(username: credentials.username, email: credentials.email, phoneNumber: credentials.phoneNumber, password: credentials.password, uuid: credentials.uuid)
         THSpinner.showSpinnerOnView(view)
         FirebaseManager.shared.createNewUser(user: user) { result in
             THSpinner.dismiss()
@@ -76,12 +76,12 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Helpers
     
-    private func validSignupCredentials() -> (email: String, password: String, username: String, phoneNumber: String)? {
+    private func validSignupCredentials() -> (email: String, password: String, username: String, phoneNumber: String, uuid: UUID)? {
         if let email = emailTextField.text,
             let username = usernameTextField.text,
             let phoneNumber = phoneNumberTextField.text,
             let password = passwordTextField.text, password.count >= 6, passwordTextField.text == confirmPasswordTextField.text {
-            return (email, password, username, phoneNumber)
+            return (email, password, username, phoneNumber, UUID())
         }
         return nil
     }
