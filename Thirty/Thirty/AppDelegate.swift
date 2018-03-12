@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FIRApp.configure()
+        CallManager.shared.configure()
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.rootViewController = RootViewController.shared
@@ -53,7 +54,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
-       print(payload)
+        if payload.type == .voIP {
+            print(payload.dictionaryPayload)
+            //CallManager.shared.reportIncomingCall(uuid: <#T##UUID#>, roomName: <#T##String?#>)
+        }
     }
 
     

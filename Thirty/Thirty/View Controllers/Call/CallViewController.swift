@@ -11,7 +11,7 @@ import TwilioVideo
 import CallKit
 import Alamofire
 
-class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipantDelegate, TVIVideoViewDelegate, TVICameraCapturerDelegate {
+class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipantDelegate, TVIVideoViewDelegate, TVICameraCapturerDelegate, CallManagerDelegate {
     
     @IBOutlet weak var remoteVideoView: TVIVideoView!
     @IBOutlet weak var localVideoView: TVIVideoView!
@@ -22,8 +22,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     // This will also be the room name
     var callee = User()
     var timer = Timer()
-    var tokenGeneratorAddress = "https://php-ios.herokuapp.com/token.php"
-    var accessToken = ""
     var callHasEnded = false
     let roomName = PlatformUtils.isSimulator ? "alanscarpa" : UserManager.shared.currentUserUsername!
     /**
@@ -31,20 +29,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
      */
     var room: TVIRoom?
     var camera: TVICameraCapturer?
-    /**
-     * We will create an audio device and manage it's lifecycle in response to CallKit events.
-     */
-    var audioDevice: TVIDefaultAudioDevice = TVIDefaultAudioDevice()
     // Create an audio track
     var localAudioTrack = TVILocalAudioTrack()
     // Create a Capturer to provide content for the video track
     var localVideoTrack : TVILocalVideoTrack?
     var remoteParticipant: TVIRemoteParticipant?
-    
-    // CallKit components
-    var callKitProvider: CXProvider?
-    var callKitCallController = CXCallController()
-    var callKitCompletionHandler: ((Bool)->Swift.Void?)? = nil
 
     // MARK: - View Lifecycle
     
@@ -52,7 +41,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         super.viewDidLoad()
         remoteVideoView.delegate = self
         remoteVideoView.alpha = 0
-        setUpCallKit()
         startLocalPreviewVideo()
         connectToRoom()
     }
@@ -63,19 +51,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     // MARK: - Setup
-    
-    private func setUpCallKit() {
-        let configuration = CXProviderConfiguration(localizedName: "CallKit Quickstart")
-        configuration.maximumCallGroups = 1
-        configuration.maximumCallsPerCallGroup = 1
-        configuration.supportsVideo = true
-        if let callKitIcon = UIImage(named: "callkitIcon") {
-            configuration.iconTemplateImageData = UIImagePNGRepresentation(callKitIcon)
-        }
-        
-        callKitProvider = CXProvider(configuration: configuration)
-        callKitProvider!.setDelegate(self, queue: nil)
-    }
     
     func prepareLocalMedia() {
         // We will share local audio and video when we connect to the Room.
@@ -111,16 +86,15 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     private func connectToRoom() {
         let currentUsername = UserManager.shared.currentUserUsername!
-        performStartCallAction(uuid: callee.uuid, roomName: roomName)
         let parameters: Parameters = ["identity": currentUsername, "room": roomName]
         // Generate access token
-        Alamofire.request(tokenGeneratorAddress, parameters: parameters).validate().response { [weak self] response in
+        Alamofire.request(TokenUtils.tokenGeneratorAddress, parameters: parameters).validate().response { [weak self] response in
             if let error = response.error {
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to generate access token.  \(error.localizedDescription)")
                 self?.present(alertVC, animated: true, completion: nil)
             } else if let data = response.data, let accessToken = String(data: data, encoding: .utf8) {
                 // Create room and connect
-                self?.accessToken = accessToken
+                TokenUtils.accessToken = accessToken
                 let connectOptions = self?.defaultConnectOptionsWithAccessToken(accessToken)
                 self?.room = TwilioVideo.connect(with: connectOptions!, delegate: self)
             }
@@ -147,6 +121,12 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     func didConnect(to room: TVIRoom) {
         print("Did connect to Room")
+        CallManager.shared.performStartCallAction(uuid: callee.uuid, roomName: roomName) { [weak self] error in
+            if let error = error {
+               let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)
+                self?.endCall()
+            }
+        }
         // The Local Participant
         if let localParticipant = room.localParticipant {
             print("Local identity \(localParticipant.identity)")
@@ -160,20 +140,20 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             remoteParticipant?.delegate = self
         }
         
-        let cxObserver = callKitCallController.callObserver
+        let cxObserver = CallManager.shared.callKitCallController.callObserver
         let calls = cxObserver.calls
         // Let the call provider know that the outgoing call has connected
         if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
             if call.isOutgoing {
-                callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
+                CallManager.shared.callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
             }
         }
-        self.callKitCompletionHandler?(true)
+        CallManager.shared.callKitCompletionHandler?(true)
     }
     
     func room(_ room: TVIRoom, didDisconnectWithError error: Error?) {
         print("Disconnected from room \(room.name)")
-        callKitCompletionHandler = nil
+        CallManager.shared.callKitCompletionHandler = nil
     }
     
     func room(_ room: TVIRoom, participantDidConnect participant: TVIRemoteParticipant) {
@@ -187,7 +167,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func room(_ room: TVIRoom, didFailToConnectWithError error: Error) {
         logMessage(messageText: "Failed to connect to room with error: \(error.localizedDescription)")
         
-        callKitCompletionHandler?(false)
+        CallManager.shared.callKitCompletionHandler?(false)
         self.room = nil
     }
     
@@ -247,6 +227,16 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     func cameraCapturer(_ capturer: TVICameraCapturer, didStartWith source: TVICameraCaptureSource) {
         localVideoView.shouldMirror = (source == .frontCamera)
+    }
+    
+    // MARK: - Call Manager Delegate
+    
+    func callDidEnd() {
+        endCall()
+    }
+    
+    func callIsOnHold(_ onHold: Bool) {
+        holdCall(onHold: onHold)
     }
     
     // MARK: - Call Handling
