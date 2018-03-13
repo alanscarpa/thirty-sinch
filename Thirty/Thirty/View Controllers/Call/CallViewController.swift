@@ -10,6 +10,7 @@ import UIKit
 import TwilioVideo
 import CallKit
 import Alamofire
+import JHSpinner
 
 class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipantDelegate, TVIVideoViewDelegate, TVICameraCapturerDelegate, CallManagerDelegate {
     
@@ -24,8 +25,10 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     // This will also be the room name
     var calleeDeviceToken = ""
     var call: Call?
+    // TODO: Fix this - incorporate into call.  This is quick lazy fix.
+    let defaultUUUID = UUID()
     var uuid: UUID {
-        return call?.uuid ?? UUID()
+        return call?.uuid ?? defaultUUUID
     }
     var roomName: String {
         return call?.direction == .incoming ? call!.roomName : UserManager.shared.currentUserUsername!
@@ -55,6 +58,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         super.viewWillAppear(animated)
         startLocalPreviewVideo()
         connectToRoom()
+        THSpinner.showSpinnerOnView(view)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -218,7 +222,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         
         if (remoteParticipant == participant) {
             videoTrack.addRenderer(remoteVideoView)
-            answerCall()
         }
     }
     
@@ -241,7 +244,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     // MARK: - TVIVideoViewDelegate
     
     func videoViewDidReceiveData(_ view: TVIVideoView) {
-        // First frame has been rendered; this prevents the brief black screen that appears first
+        // First frame has been rendered; this prevents the brief black screen that appears first and is only called once
+        answerCall()
         UIView.animate(withDuration: 2.0) {
             self.remoteVideoView.alpha = 1
         }
@@ -271,6 +275,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     // MARK: - Call Handling
     
     func answerCall() {
+        THSpinner.dismiss()
         answerCallButton.isHidden = true
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
