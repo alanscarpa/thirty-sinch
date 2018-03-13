@@ -56,11 +56,10 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func reportIncomingCall(uuid: UUID, roomName: String?, completion: ((Error?) -> Void)? = nil) {
-        let callHandle = CXHandle(type: .generic, value: roomName ?? "")
         let callUpdate = CXCallUpdate()
-        callUpdate.remoteHandle = callHandle
+        callUpdate.localizedCallerName = roomName
         callUpdate.supportsDTMF = false
-        callUpdate.supportsHolding = true
+        callUpdate.supportsHolding = false
         callUpdate.supportsGrouping = false
         callUpdate.supportsUngrouping = false
         callUpdate.hasVideo = true
