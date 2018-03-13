@@ -89,6 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             personHandle = startVideoCallIntent.contacts?[0].personHandle
         }
         if let personHandle = personHandle {
+            guard CallManager.shared.call == nil else { return true }
             let call = Call(uuid: UUID(), roomName: UserManager.shared.currentUserUsername!, callee: personHandle.value!, direction: .outgoing)
             RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: call)
         }
@@ -109,7 +110,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             center.delegate = self
             center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
                 if granted {
-                    application.registerForRemoteNotifications()
+                    DispatchQueue.main.async {
+                        application.registerForRemoteNotifications()
+                    }
                 } else {
                     // TODO: Present screen asking to turn on notifications
                 }

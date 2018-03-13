@@ -45,7 +45,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     // Create a Capturer to provide content for the video track
     var localVideoTrack : TVILocalVideoTrack?
     var remoteParticipant: TVIRemoteParticipant?
-
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -117,6 +117,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                 TokenUtils.accessToken = accessToken
                 let connectOptions = self?.defaultConnectOptionsWithAccessToken(accessToken)
                 self?.room = TwilioVideo.connect(with: connectOptions!, delegate: self)
+                TwilioVideo.setLogLevel(.all)
             }
         }
     }
@@ -133,8 +134,26 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             if let videoTrack = self?.localVideoTrack {
                 builder.videoTracks = [videoTrack]
             }
+            
         }
         return connectOptions
+    }
+    
+    // MARK: - TVIRemoteParticipantDelegate
+    
+    func failedToSubscribe(toVideoTrack publication: TVIRemoteVideoTrackPublication, error: Error, for participant: TVIRemoteParticipant) {
+        print(error.localizedDescription)
+        endCall()
+    }
+    
+    func failedToSubscribe(toAudioTrack publication: TVIRemoteAudioTrackPublication, error: Error, for participant: TVIRemoteParticipant) {
+        print(error.localizedDescription)
+        endCall()
+    }
+    
+    func failedToSubscribe(toDataTrack publication: TVIRemoteDataTrackPublication, error: Error, for participant: TVIRemoteParticipant) {
+        print(error.localizedDescription)
+        endCall()
     }
     
     // MARK: - TVIRoomDelegate
