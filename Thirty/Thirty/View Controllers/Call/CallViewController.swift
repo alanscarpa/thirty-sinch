@@ -58,7 +58,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         super.viewWillAppear(animated)
         startLocalPreviewVideo()
         connectToRoom()
-        THSpinner.showSpinnerOnView(view, text: "CALLING", preventUserInteraction: false)
+        let spinnerText: String? = call?.direction == .incoming ? nil : "CALLING"
+        THSpinner.showSpinnerOnView(view, text: spinnerText, preventUserInteraction: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
