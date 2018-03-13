@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             personHandle = startVideoCallIntent.contacts?[0].personHandle
         }
         if let personHandle = personHandle {
-            let call = Call(uuid: UUID(), roomName: personHandle.value!, direction: .outgoing)
+            let call = Call(uuid: UUID(), roomName: UserManager.shared.currentUserUsername!, callee: personHandle.value!, direction: .outgoing)
             RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: call)
         }
         return true

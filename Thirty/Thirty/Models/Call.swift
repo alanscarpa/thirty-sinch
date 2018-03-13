@@ -16,5 +16,6 @@ enum CallDirection {
 struct Call {
     var uuid = UUID()
     var roomName = ""
+    var callee = ""
     var direction = CallDirection.incoming
 }

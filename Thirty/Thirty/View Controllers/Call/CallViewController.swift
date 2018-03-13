@@ -146,7 +146,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             remoteParticipant = room.remoteParticipants.first
             remoteParticipant?.delegate = self
         } else {
-            CallManager.shared.performStartCallAction(uuid: uuid, roomName: roomName) { [weak self] error in
+            CallManager.shared.performStartCallAction(uuid: uuid, calleeHandle: call!.callee) { [weak self] error in
                 if let error = error {
                     let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)
                     self?.present(alertVC, animated: true, completion: nil)
@@ -187,14 +187,14 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             } else {
                 print("successfully sent voIP push")
                 print(response.data?.debugDescription ?? "")
-                let cxObserver = CallManager.shared.callKitCallController.callObserver
-                let calls = cxObserver.calls
-                // Let the call provider know that the outgoing call has connected
-                if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
-                    if call.isOutgoing {
-                        CallManager.shared.callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
-                    }
-                }
+//                let cxObserver = CallManager.shared.callKitCallController.callObserver
+//                let calls = cxObserver.calls
+//                // Let the call provider know that the outgoing call has connected
+//                if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
+//                    if call.isOutgoing {
+//                        CallManager.shared.callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
+//                    }
+//                }
                 CallManager.shared.callKitCompletionHandler?(true)
             }
         }

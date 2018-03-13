@@ -46,8 +46,8 @@ class CallManager: NSObject, CXProviderDelegate {
     
     // MARK -
     
-    func performStartCallAction(uuid: UUID, roomName: String?, completion: @escaping ((Error?) -> Void)) {
-        let callHandle = CXHandle(type: .generic, value: roomName ?? "")
+    func performStartCallAction(uuid: UUID, calleeHandle: String?, completion: @escaping ((Error?) -> Void)) {
+        let callHandle = CXHandle(type: .generic, value: calleeHandle ?? "")
         let startCallAction = CXStartCallAction(call: uuid, handle: callHandle)
         startCallAction.isVideo = true
         let transaction = CXTransaction(action: startCallAction)
@@ -70,7 +70,7 @@ class CallManager: NSObject, CXProviderDelegate {
             if let error = error {
                 print(error.localizedDescription)
             } else {
-                self?.call = Call(uuid: uuid, roomName: roomName ?? "", direction: .incoming)
+                self?.call = Call(uuid: uuid, roomName: roomName ?? "", callee: UserManager.shared.currentUserUsername!, direction: .incoming)
             }
             completion?(error)
         }
