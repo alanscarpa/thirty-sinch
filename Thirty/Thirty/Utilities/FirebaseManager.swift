@@ -80,7 +80,7 @@ class FirebaseManager {
                                            "uid": fbUser.uid,
                                            "display-name": user.username,
                                            "email": user.email,
-                                           "uuid": user.uuid.uuidString], withCompletionBlock: { (error, ref) in
+                                           "device-token": user.deviceToken], withCompletionBlock: { (error, ref) in
                                             if let error = error {
                                                 completion(.Failure(error))
                                             } else {
@@ -121,8 +121,10 @@ class FirebaseManager {
                                 if let error = error {
                                     completion(.Failure(error))
                                 } else {
-                                    self?.databaseRef.child("users")
-                                        .child(username.lowercased()).updateChildValues(["uuid": UUID().uuidString])
+                                    if !TokenUtils.deviceToken.isEmpty {
+                                        self?.databaseRef.child("users")
+                                            .child(username.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
+                                    }
                                     // TODO: Get entire profile and set user.
                                     UserManager.shared.currentUserUsername = username
                                     UserManager.shared.currentUserPassword = password
@@ -146,8 +148,8 @@ class FirebaseManager {
                 let displayName = value["display-name"] as? String ?? ""
                 let email = value["email"] as? String ?? ""
                 let phoneNumber = value["phone-number"] as? String ?? ""
-                let uuid = UUID(uuidString: value["uuid"] as! String)
-                let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "", uuid: uuid!)
+                let deviceToken = value["device-token"] as? String ?? ""
+                let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "", deviceToken: deviceToken)
                 completion(.Success(user))
             } else {
                 completion(.Success(nil))
@@ -185,8 +187,8 @@ class FirebaseManager {
                     guard username != currentUsername else { continue }
                     var user = User()
                     user.username = username
-                    if let uuidString = (value?[username] as? NSDictionary)?["uuid"] as? String {
-                        user.uuid = UUID(uuidString: uuidString)!
+                    if let deviceToken = (value?[username] as? NSDictionary)?["device-token"] as? String {
+                        user.deviceToken = deviceToken
                     }
                     UserManager.shared.contacts.append(user)
                 }

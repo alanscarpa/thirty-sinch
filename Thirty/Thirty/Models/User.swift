@@ -16,6 +16,6 @@ struct User {
     var userNameLowercased: String {
         return username.lowercased()
     }
-    var uuid: UUID = UUID()
+    var deviceToken: String = ""
 }
 

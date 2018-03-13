@@ -181,17 +181,15 @@ class CallManager: NSObject, CXProviderDelegate {
 
         // Configure the AVAudioSession by executign the audio device's `block`.
         self.audioDevice.block()
-//
-//        callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
-//
-//        performRoomConnect(uuid: action.callUUID, roomName: action.handle.value) { (success) in
-//            if (success) {
-//                provider.reportOutgoingCall(with: action.callUUID, connectedAt: Date())
-//                action.fulfill()
-//            } else {
-//                action.fail()
-//            }
-//        }
+        callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
+        performRoomConnect(uuid: action.callUUID, roomName: action.handle.value) { (success) in
+            if (success) {
+                provider.reportOutgoingCall(with: action.callUUID, connectedAt: Date())
+                action.fulfill()
+            } else {
+                action.fail()
+            }
+        }
     }
     
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {

@@ -13,6 +13,8 @@ import Alamofire
 
 class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipantDelegate, TVIVideoViewDelegate, TVICameraCapturerDelegate, CallManagerDelegate {
     
+    let simplePushURL = "https://php-ios.herokuapp.com/simplepush.php"
+    
     @IBOutlet weak var remoteVideoView: TVIVideoView!
     @IBOutlet weak var localVideoView: TVIVideoView!
     @IBOutlet weak var remoteUserLabel: UILabel!
@@ -21,9 +23,10 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     // This will also be the room name
     var callee = User()
+    var uuid = UUID()
     var timer = Timer()
     var callHasEnded = false
-    let roomName = PlatformUtils.isSimulator ? "alanscarpa" : UserManager.shared.currentUserUsername!
+    //let roomName = PlatformUtils.isSimulator ? "alanscarpa" : UserManager.shared.currentUserUsername!
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
      */
@@ -86,7 +89,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     private func connectToRoom() {
         let currentUsername = UserManager.shared.currentUserUsername!
-        let parameters: Parameters = ["identity": currentUsername, "room": roomName]
+        let parameters: Parameters = ["identity": currentUsername, "room": currentUsername]
         // Generate access token
         Alamofire.request(TokenUtils.tokenGeneratorAddress, parameters: parameters).validate().response { [weak self] response in
             if let error = response.error {
@@ -103,8 +106,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     private func defaultConnectOptionsWithAccessToken(_ accessToken: String) -> TVIConnectOptions {
         let connectOptions = TVIConnectOptions.init(token: accessToken) { [weak self] builder in
-            builder.roomName = self?.roomName
-            builder.uuid = self?.callee.uuid
+            builder.roomName = UserManager.shared.currentUserUsername!
+            builder.uuid = self?.uuid
             // Will share audio with users in room
             if let audioTrack = self?.localAudioTrack {
                 builder.audioTracks = [audioTrack]
@@ -121,34 +124,49 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     func didConnect(to room: TVIRoom) {
         print("Did connect to Room")
-        CallManager.shared.performStartCallAction(uuid: callee.uuid, roomName: roomName) { [weak self] error in
-            if let error = error {
-               let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)
-                self?.endCall()
-            }
-        }
-        // The Local Participant
         if let localParticipant = room.localParticipant {
             print("Local identity \(localParticipant.identity)")
         }
-        // Connected participants
-        let remoteParticipants = room.remoteParticipants
-        print("Number of connected Participants \(remoteParticipants.count)")
-        // Start timer if callee is joining the room and is the 2nd participant
-        if remoteParticipants.count == 1 {
-            remoteParticipant = remoteParticipants.first
+        // The callee has connected to the room
+        if room.remoteParticipants.count == 1 {
+            remoteParticipant = room.remoteParticipants.first
             remoteParticipant?.delegate = self
-        }
-        
-        let cxObserver = CallManager.shared.callKitCallController.callObserver
-        let calls = cxObserver.calls
-        // Let the call provider know that the outgoing call has connected
-        if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
-            if call.isOutgoing {
-                CallManager.shared.callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
+        } else {
+            CallManager.shared.performStartCallAction(uuid: uuid, roomName: UserManager.shared.currentUserUsername!) { [weak self] error in
+                if let error = error {
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)
+                    self?.present(alertVC, animated: true, completion: nil)
+                    self?.endCall()
+                } else {
+                    guard let strongSelf = self else { return }
+                    let deviceToken = strongSelf.callee.deviceToken
+                    
+                    var parameters: Parameters = ["device_token": deviceToken, "room_name": UserManager.shared.currentUserUsername!, "uuid_string": strongSelf.uuid.uuidString]
+                    #if DEBUG
+                        parameters["dev"] = true
+                    #endif
+                    // Generate access token
+                    Alamofire.request(strongSelf.simplePushURL, method: .post, parameters: parameters).validate().response { [weak self] response in
+                        if let error = response.error {
+                            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to generate access token.  \(error.localizedDescription)")
+                            self?.present(alertVC, animated: true, completion: nil)
+                        } else {
+                            print("successfully sent voIP push")
+                            print(response.data?.debugDescription ?? "")
+                            let cxObserver = CallManager.shared.callKitCallController.callObserver
+                            let calls = cxObserver.calls
+                            // Let the call provider know that the outgoing call has connected
+                            if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
+                                if call.isOutgoing {
+                                    CallManager.shared.callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
+                                }
+                            }
+                            CallManager.shared.callKitCompletionHandler?(true)
+                        }
+                    }
+                }
             }
         }
-        CallManager.shared.callKitCompletionHandler?(true)
     }
     
     func room(_ room: TVIRoom, didDisconnectWithError error: Error?) {
@@ -260,6 +278,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func endCall() {
         if !callHasEnded {
             callHasEnded = true
+            CallManager.shared.performEndCallAction(uuid: uuid)
             RootViewController.shared.popViewController()
             room?.disconnect()
         }

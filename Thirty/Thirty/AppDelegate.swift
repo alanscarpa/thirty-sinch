@@ -49,14 +49,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let tokenData = pushCredentials.token
             let voipPushToken = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
             print(voipPushToken)
+            TokenUtils.deviceToken = voipPushToken
             //TODO: send token to server
         }
     }
     
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
+        print(payload.dictionaryPayload)
         if payload.type == .voIP {
-            print(payload.dictionaryPayload)
-            //CallManager.shared.reportIncomingCall(uuid: <#T##UUID#>, roomName: <#T##String?#>)
+            if let roomName = (payload.dictionaryPayload["info"] as? NSDictionary)?["roomname"] as? String,
+                let uuidString = (payload.dictionaryPayload["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
+                CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
+            }
         }
     }
 
@@ -64,8 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: - UNUserNotificationCenterDelegate
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void) {
-        let userInfo = response.notification.request.content.userInfo
-
+        // let userInfo = response.notification.request.content.userInfo
     }
     
     // MARK: - Notifications
