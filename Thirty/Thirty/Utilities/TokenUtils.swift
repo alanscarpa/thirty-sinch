@@ -12,7 +12,7 @@ struct TokenUtils {
     static var deviceToken = ""
     static var accessToken = ""
     static var tokenGeneratorAddress = "https://php-ios.herokuapp.com/token.php"
-    static func fetchToken(url : String) throws -> String {
+    static func fetchTwilioToken(url : String) throws -> String {
         var token = ""
         let requestURL: URL = URL(string: url)!
         do {

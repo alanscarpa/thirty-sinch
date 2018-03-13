@@ -11,6 +11,7 @@ import UserNotifications
 import PushKit
 import IQKeyboardManagerSwift
 import Firebase
+import Intents
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, PKPushRegistryDelegate {
@@ -68,6 +69,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
             }
         }
+    }
+
+    func application(_ application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
+        // TODO: Maybe show loading screen?
+        return true
+    }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        guard let interaction = userActivity.interaction else {
+            return false
+        }
+        
+        var personHandle: INPersonHandle?
+        
+        if let startVideoCallIntent = interaction.intent as? INStartVideoCallIntent {
+            personHandle = startVideoCallIntent.contacts?[0].personHandle
+        }
+        if let personHandle = personHandle {
+            let call = Call(uuid: UUID(), roomName: personHandle.value!, direction: .outgoing)
+            RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: call)
+        }
+        return true
     }
     
     // MARK: - UNUserNotificationCenterDelegate

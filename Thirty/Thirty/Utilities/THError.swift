@@ -39,7 +39,11 @@ struct THError: Error {
         case .noCurrentUser:
             title = "No Current User"
             description = "You've been logged out.  Please log in."
-            code = 003
+            code = 004
+        case .unableToGetDeviceToken:
+            title = "Unable to get device token."
+            description = "Please try again later."
+            code = 005
         }
     }
 }
@@ -49,4 +53,5 @@ enum THErrorType {
     case usernameDoesNotExist
     case usernameAlreadyExists
     case noCurrentUser
+    case unableToGetDeviceToken
 }

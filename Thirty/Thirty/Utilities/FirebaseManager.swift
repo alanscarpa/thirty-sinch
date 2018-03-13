@@ -198,4 +198,17 @@ class FirebaseManager {
             completion(.Failure(error))
         }
     }
+    
+    func getDeviceTokenForUsername(_ username: String, completion: @escaping (Result<String>) -> Void) {
+        databaseRef.child("users").child(username).observeSingleEvent(of: .value, with: { snapshot in
+            let value = snapshot.value as? NSDictionary
+            if let deviceToken = value?["device-token"] as? String {
+                completion(.Success(deviceToken))
+            } else {
+                completion(.Failure(THError.init(errorType: .unableToGetDeviceToken)))
+            }
+        }) { (error) in
+            completion(.Failure(error))
+        }
+    }
 }

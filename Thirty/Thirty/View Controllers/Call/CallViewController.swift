@@ -146,40 +146,56 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             remoteParticipant = room.remoteParticipants.first
             remoteParticipant?.delegate = self
         } else {
-            CallManager.shared.performStartCallAction(uuid: uuid, roomName: UserManager.shared.currentUserUsername!) { [weak self] error in
+            CallManager.shared.performStartCallAction(uuid: uuid, roomName: roomName) { [weak self] error in
                 if let error = error {
                     let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)
                     self?.present(alertVC, animated: true, completion: nil)
                     self?.endCall()
                 } else {
                     guard let strongSelf = self else { return }
-                    let deviceToken = strongSelf.calleeDeviceToken
-                    
-                    var parameters: Parameters = ["device_token": deviceToken, "room_name": UserManager.shared.currentUserUsername!, "uuid_string": strongSelf.uuid.uuidString]
-                    #if DEBUG
-                        parameters["dev"] = true
-                    #endif
-                    // Generate access token
-                    Alamofire.request(strongSelf.simplePushURL, method: .post, parameters: parameters).validate().response { [weak self] response in
-                        if let error = response.error {
-                            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to generate access token.  \(error.localizedDescription)")
-                            self?.present(alertVC, animated: true, completion: nil)
-                            self?.endCall()
-                        } else {
-                            print("successfully sent voIP push")
-                            print(response.data?.debugDescription ?? "")
-                            let cxObserver = CallManager.shared.callKitCallController.callObserver
-                            let calls = cxObserver.calls
-                            // Let the call provider know that the outgoing call has connected
-                            if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
-                                if call.isOutgoing {
-                                    CallManager.shared.callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
-                                }
+                    var deviceToken = strongSelf.calleeDeviceToken
+                    if !deviceToken.isEmpty {
+                        strongSelf.makeCallWithDeviceToken(deviceToken, toRoom: room)
+                    } else {
+                        FirebaseManager.shared.getDeviceTokenForUsername(strongSelf.roomName) { result in
+                            switch result {
+                            case .Success(let token):
+                                deviceToken = token
+                                strongSelf.makeCallWithDeviceToken(deviceToken, toRoom: room)
+                            case .Failure(let error):
+                                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)
+                                strongSelf.present(alertVC, animated: true, completion: nil)
                             }
-                            CallManager.shared.callKitCompletionHandler?(true)
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    private func makeCallWithDeviceToken(_ deviceToken: String, toRoom room: TVIRoom) {
+        var parameters: Parameters = ["device_token": deviceToken, "room_name": roomName, "uuid_string": uuid.uuidString]
+        #if DEBUG
+            parameters["dev"] = true
+        #endif
+        // Send voIP Push
+        Alamofire.request(simplePushURL, method: .post, parameters: parameters).validate().response { [weak self] response in
+            if let error = response.error {
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to generate access token.  \(error.localizedDescription)")
+                self?.present(alertVC, animated: true, completion: nil)
+                self?.endCall()
+            } else {
+                print("successfully sent voIP push")
+                print(response.data?.debugDescription ?? "")
+                let cxObserver = CallManager.shared.callKitCallController.callObserver
+                let calls = cxObserver.calls
+                // Let the call provider know that the outgoing call has connected
+                if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
+                    if call.isOutgoing {
+                        CallManager.shared.callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
+                    }
+                }
+                CallManager.shared.callKitCompletionHandler?(true)
             }
         }
     }

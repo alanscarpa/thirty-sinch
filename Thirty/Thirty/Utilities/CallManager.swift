@@ -35,6 +35,7 @@ class CallManager: NSObject, CXProviderDelegate {
         configuration.maximumCallGroups = 1
         configuration.maximumCallsPerCallGroup = 1
         configuration.supportsVideo = true
+        configuration.supportedHandleTypes = [.generic]
         if let callKitIcon = UIImage(named: "callkitIcon") {
             configuration.iconTemplateImageData = UIImagePNGRepresentation(callKitIcon)
         }
@@ -56,8 +57,9 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func reportIncomingCall(uuid: UUID, roomName: String?, completion: ((Error?) -> Void)? = nil) {
+        let callHandle = CXHandle(type: .generic, value: roomName ?? "")
         let callUpdate = CXCallUpdate()
-        callUpdate.localizedCallerName = roomName
+        callUpdate.remoteHandle = callHandle
         callUpdate.supportsDTMF = false
         callUpdate.supportsHolding = false
         callUpdate.supportsGrouping = false
