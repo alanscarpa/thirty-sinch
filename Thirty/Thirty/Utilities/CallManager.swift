@@ -84,6 +84,7 @@ class CallManager: NSObject, CXProviderDelegate {
                 print(error.localizedDescription)
             } else {
                 self?.call = Call(uuid: uuid, roomName: roomName ?? "", callee: UserManager.shared.currentUserUsername!, direction: .incoming)
+                RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: self?.call)
             }
             completion?(error)
         }
@@ -128,7 +129,6 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.isEnabled = false;
         // Configure the AVAudioSession by executing the audio device's `block`.
         audioDevice.block()
-        RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: self.call)
         action.fulfill()
     }
     
