@@ -39,7 +39,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     RootViewController.shared.goToHomeVC()
                 case .Failure(let error):
                     let errorInfo = THErrorHandler.errorInfoFromError(error)
-                    let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description)
+                    let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description, handler: nil)
                     self?.present(alert, animated: true, completion: nil)
                 }
             }

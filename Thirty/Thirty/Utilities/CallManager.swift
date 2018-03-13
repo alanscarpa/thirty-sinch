@@ -56,6 +56,19 @@ class CallManager: NSObject, CXProviderDelegate {
         }
     }
     
+    func performEndCallAction(uuid: UUID) {
+        let endCallAction = CXEndCallAction(call: uuid)
+        let transaction = CXTransaction(action: endCallAction)
+        callKitCallController.request(transaction) { [weak self] error in
+            if let error = error {
+                NSLog("EndCallAction transaction request failed: \(error.localizedDescription).")
+                return
+            }
+            self?.call = nil
+            NSLog("EndCallAction transaction request successful")
+        }
+    }
+    
     func reportIncomingCall(uuid: UUID, roomName: String?, completion: ((Error?) -> Void)? = nil) {
         let callHandle = CXHandle(type: .generic, value: roomName ?? "")
         let callUpdate = CXCallUpdate()
@@ -76,20 +89,48 @@ class CallManager: NSObject, CXProviderDelegate {
         }
     }
     
-    func performEndCallAction(uuid: UUID) {
-        let endCallAction = CXEndCallAction(call: uuid)
-        let transaction = CXTransaction(action: endCallAction)
-        callKitCallController.request(transaction) { [weak self] error in
-            if let error = error {
-                NSLog("EndCallAction transaction request failed: \(error.localizedDescription).")
-                return
-            }
-            self?.call = nil
-            NSLog("EndCallAction transaction request successful")
-        }
+    // MARK: - CXProviderDelegate
+    
+    func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
+        print("provider:performStartCallAction:")
+        
+        /*
+         * Configure the audio session, but do not start call audio here, since it must be done once
+         * the audio session has been activated by the system after having its priority elevated.
+         */
+        
+        // Stop the audio unit by setting isEnabled to `false`.
+        audioDevice.isEnabled = false;
+        
+        // Configure the AVAudioSession by executign the audio device's `block`.
+        self.audioDevice.block()
+        callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
+        action.fulfill()
     }
     
-    // MARK: - CXProviderDelegate
+    func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
+        NSLog("provider:performEndCallAction:")
+        // AudioDevice is enabled by default
+        audioDevice.isEnabled = true
+        delegate?.callDidEnd()
+        action.fulfill()
+    }
+    
+    func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
+        print("provider:performAnswerCallAction:")
+        
+        /*
+         * Configure the audio session, but do not start call audio here, since it must be done once
+         * the audio session has been activated by the system after having its priority elevated.
+         */
+        
+        // Stop the audio unit by setting isEnabled to `false`.
+        audioDevice.isEnabled = false;
+        // Configure the AVAudioSession by executing the audio device's `block`.
+        audioDevice.block()
+        RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: self.call)
+        action.fulfill()
+    }
     
     func providerDidReset(_ provider: CXProvider) {
         print("providerDidReset:")
@@ -113,47 +154,6 @@ class CallManager: NSObject, CXProviderDelegate {
     
     func provider(_ provider: CXProvider, timedOutPerforming action: CXAction) {
         print("provider:timedOutPerformingAction:")
-        action.fulfill()
-    }
-    
-    func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
-        print("provider:performStartCallAction:")
-        
-        /*
-         * Configure the audio session, but do not start call audio here, since it must be done once
-         * the audio session has been activated by the system after having its priority elevated.
-         */
-        
-        // Stop the audio unit by setting isEnabled to `false`.
-        audioDevice.isEnabled = false;
-
-        // Configure the AVAudioSession by executign the audio device's `block`.
-        self.audioDevice.block()
-        callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
-        action.fulfill()
-    }
-    
-    func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
-        print("provider:performAnswerCallAction:")
-        
-        /*
-         * Configure the audio session, but do not start call audio here, since it must be done once
-         * the audio session has been activated by the system after having its priority elevated.
-         */
-        
-        // Stop the audio unit by setting isEnabled to `false`.
-        audioDevice.isEnabled = false;
-        // Configure the AVAudioSession by executing the audio device's `block`.
-        audioDevice.block()
-        RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: self.call)
-        action.fulfill()
-    }
-    
-    func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
-        NSLog("provider:performEndCallAction:")
-        // AudioDevice is enabled by default
-        audioDevice.isEnabled = true
-        delegate?.callDidEnd()
         action.fulfill()
     }
     

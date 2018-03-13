@@ -66,7 +66,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if payload.type == .voIP {
             if let roomName = (payload.dictionaryPayload["info"] as? NSDictionary)?["roomname"] as? String,
                 let uuidString = (payload.dictionaryPayload["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
-                CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
+                if roomName != UserManager.shared.currentUserUsername {
+                    CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
+                }
             }
         }
     }

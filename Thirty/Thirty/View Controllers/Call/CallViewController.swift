@@ -52,6 +52,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         super.viewDidLoad()
         remoteVideoView.delegate = self
         remoteVideoView.alpha = 0
+        CallManager.shared.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,7 +108,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         // Generate access token
         Alamofire.request(TokenUtils.tokenGeneratorAddress, parameters: parameters).validate().response { [weak self] response in
             if let error = response.error {
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to generate access token.  \(error.localizedDescription)")
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to generate access token.  \(error.localizedDescription)") { action in
+                    self?.endCall()
+                }
                 self?.present(alertVC, animated: true, completion: nil)
             } else if let data = response.data, let accessToken = String(data: data, encoding: .utf8) {
                 // Create room and connect
@@ -146,27 +149,20 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             remoteParticipant = room.remoteParticipants.first
             remoteParticipant?.delegate = self
         } else {
-            CallManager.shared.performStartCallAction(uuid: uuid, calleeHandle: call!.callee) { [weak self] error in
-                if let error = error {
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)
-                    self?.present(alertVC, animated: true, completion: nil)
-                    self?.endCall()
-                } else {
+            if !calleeDeviceToken.isEmpty {
+                makeCallWithDeviceToken(calleeDeviceToken, toRoom: room)
+            } else {
+                FirebaseManager.shared.getDeviceTokenForUsername(call!.callee) { [weak self] result in
                     guard let strongSelf = self else { return }
-                    var deviceToken = strongSelf.calleeDeviceToken
-                    if !deviceToken.isEmpty {
-                        strongSelf.makeCallWithDeviceToken(deviceToken, toRoom: room)
-                    } else {
-                        FirebaseManager.shared.getDeviceTokenForUsername(strongSelf.roomName) { result in
-                            switch result {
-                            case .Success(let token):
-                                deviceToken = token
-                                strongSelf.makeCallWithDeviceToken(deviceToken, toRoom: room)
-                            case .Failure(let error):
-                                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)
-                                strongSelf.present(alertVC, animated: true, completion: nil)
-                            }
+                    switch result {
+                    case .Success(let token):
+                        strongSelf.calleeDeviceToken = token
+                        strongSelf.makeCallWithDeviceToken(token, toRoom: room)
+                    case .Failure(let error):
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription) { action in
+                            strongSelf.endCall()
                         }
+                        strongSelf.present(alertVC, animated: true, completion: nil)
                     }
                 }
             }
@@ -180,22 +176,24 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         #endif
         // Send voIP Push
         Alamofire.request(simplePushURL, method: .post, parameters: parameters).validate().response { [weak self] response in
+            guard let strongSelf = self else { print("Self not available"); return }
             if let error = response.error {
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to generate access token.  \(error.localizedDescription)")
-                self?.present(alertVC, animated: true, completion: nil)
-                self?.endCall()
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to send call request.  \(error.localizedDescription)") { action in
+                    strongSelf.endCall()
+                }
+                strongSelf.present(alertVC, animated: true, completion: nil)
             } else {
                 print("successfully sent voIP push")
-                print(response.data?.debugDescription ?? "")
-//                let cxObserver = CallManager.shared.callKitCallController.callObserver
-//                let calls = cxObserver.calls
-//                // Let the call provider know that the outgoing call has connected
-//                if let uuid = room.uuid, let call = calls.first(where:{$0.uuid == uuid}) {
-//                    if call.isOutgoing {
-//                        CallManager.shared.callKitProvider?.reportOutgoingCall(with: uuid, connectedAt: nil)
-//                    }
-//                }
-                CallManager.shared.callKitCompletionHandler?(true)
+                CallManager.shared.performStartCallAction(uuid: strongSelf.uuid, calleeHandle: strongSelf.call!.callee) { [weak self] error in
+                    if let error = error {
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in
+                            strongSelf.endCall()
+                        }
+                        self?.present(alertVC, animated: true, completion: nil)
+                    } else {
+                        CallManager.shared.callKitCompletionHandler?(true)
+                    }
+                }
             }
         }
     }
@@ -215,10 +213,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     func room(_ room: TVIRoom, didFailToConnectWithError error: Error) {
-        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Problem Connecting to Chat", message: error.localizedDescription)
+        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Problem Connecting to Chat", message: error.localizedDescription) { [weak self] action in
+            self?.endCall()
+        }
         present(alertVC, animated: true, completion: nil)
         CallManager.shared.callKitCompletionHandler?(false)
-        endCall()
     }
     
     func room(_ room: TVIRoom, participantDidDisconnect participant: TVIRemoteParticipant) {
@@ -311,9 +310,10 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func endCall() {
         if !callHasEnded {
             callHasEnded = true
-            CallManager.shared.performEndCallAction(uuid: uuid)
-            RootViewController.shared.popViewController()
+            THSpinner.dismiss()
             room?.disconnect()
+            RootViewController.shared.popViewController()
+            CallManager.shared.performEndCallAction(uuid: uuid)
         }
     }
     
