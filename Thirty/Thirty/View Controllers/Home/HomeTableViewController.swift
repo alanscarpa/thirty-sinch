@@ -120,7 +120,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard searchResults.isEmpty else { return }
         let user = UserManager.shared.contacts[indexPath.row]
-        RootViewController.shared.pushCallVC(callee: user)
+        RootViewController.shared.pushCallVC(calleeDeviceToken: user.deviceToken, call: nil)
     }
     
     // MARK: SearchResultTableViewCellDelegate
