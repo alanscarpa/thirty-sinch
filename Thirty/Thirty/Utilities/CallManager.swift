@@ -31,7 +31,7 @@ class CallManager: NSObject, CXProviderDelegate {
     weak var delegate: CallManagerDelegate?
     
     func configure() {
-        let configuration = CXProviderConfiguration(localizedName: "THIRTY")
+        let configuration = CXProviderConfiguration(localizedName: "Incoming Thirty")
         configuration.maximumCallGroups = 1
         configuration.maximumCallsPerCallGroup = 1
         configuration.supportsVideo = true

@@ -41,6 +41,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registry.delegate = self
         registry.desiredPushTypes = [PKPushType.voIP]
         
+        if let userInfo = launchOptions?[.remoteNotification] as? [AnyHashable : Any] {
+            if let roomName = (userInfo["info"] as? NSDictionary)?["roomname"] as? String,
+                let uuidString = (userInfo["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
+                CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
+            }
+        }
+        
         return true
     }
     
@@ -48,9 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if type == PKPushType.voIP {
             let tokenData = pushCredentials.token
             let voipPushToken = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
-            print(voipPushToken)
             TokenUtils.deviceToken = voipPushToken
-            //TODO: send token to server
+            // Token is sent to server on login
         }
     }
     
@@ -63,7 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
     }
-
     
     // MARK: - UNUserNotificationCenterDelegate
     
