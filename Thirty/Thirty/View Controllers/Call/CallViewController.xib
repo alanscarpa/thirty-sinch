@@ -18,8 +18,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CallViewController" customModule="Thirty" customModuleProvider="target">
             <connections>
-                <outlet property="answerCallButton" destination="gzb-IT-lWs" id="wFB-yb-koJ"/>
                 <outlet property="callBackgroundImageView" destination="seS-fL-BAi" id="Yuy-Z7-wGb"/>
+                <outlet property="cancelButton" destination="eGt-2Q-r26" id="cuz-0L-byr"/>
                 <outlet property="localVideoView" destination="nZc-U7-ulj" id="PjE-7G-WwO"/>
                 <outlet property="remoteUserLabel" destination="8Ah-Jn-y0d" id="x2p-hQ-qi9"/>
                 <outlet property="remoteVideoView" destination="pkp-zq-p9e" id="aFV-cl-k76"/>
@@ -48,6 +48,12 @@
                         <constraint firstItem="8Ah-Jn-y0d" firstAttribute="centerX" secondItem="pkp-zq-p9e" secondAttribute="centerX" id="KLd-9t-77l"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3h8-LR-Tak">
+                    <rect key="frame" x="166" y="45" width="43" height="59"/>
+                    <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBold" family="Avenir Next Condensed" pointSize="43"/>
+                    <color key="textColor" red="0.53725490200000003" green="0.0" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callBackgroundGradient" translatesAutoresizingMaskIntoConstraints="NO" id="seS-fL-BAi" userLabel="Call Background Gradient Image View">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                 </imageView>
@@ -79,44 +85,16 @@
                         <action selector="cancelButtonTapped" destination="-1" eventType="touchUpInside" id="czr-CB-UoO"/>
                     </connections>
                 </button>
-                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gzb-IT-lWs">
-                    <rect key="frame" x="83" y="299" width="208" height="69"/>
-                    <color key="backgroundColor" red="0.1215686275" green="0.72156862749999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="208" id="2JG-KC-COY"/>
-                        <constraint firstAttribute="width" secondItem="gzb-IT-lWs" secondAttribute="height" multiplier="208:69" id="gfN-SI-vRe"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                    <state key="normal" title="ANSWER CALL">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="8"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="answerCallButtonTapped" destination="-1" eventType="touchUpInside" id="7QJ-oZ-FG4"/>
-                    </connections>
-                </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3h8-LR-Tak">
-                    <rect key="frame" x="166" y="45" width="43" height="59"/>
-                    <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBold" family="Avenir Next Condensed" pointSize="43"/>
-                    <color key="textColor" red="0.53725490200000003" green="0.0" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="trailing" secondItem="esb-ui-Src" secondAttribute="trailing" id="4bz-5b-iZU"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leading" id="BJM-En-AsO"/>
-                <constraint firstItem="gzb-IT-lWs" firstAttribute="centerY" secondItem="pkp-zq-p9e" secondAttribute="centerY" id="OQu-Om-yn1"/>
                 <constraint firstItem="3h8-LR-Tak" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" constant="45" id="PzZ-xT-hDP"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="Qz9-Ym-Ll8"/>
                 <constraint firstItem="nZc-U7-ulj" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leadingMargin" constant="12" id="RjN-Da-5M1"/>
                 <constraint firstAttribute="bottom" secondItem="nZc-U7-ulj" secondAttribute="bottom" constant="12" id="XSB-Qb-qqd"/>
                 <constraint firstItem="seS-fL-BAi" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="b06-q1-tdh"/>
-                <constraint firstItem="gzb-IT-lWs" firstAttribute="centerX" secondItem="pkp-zq-p9e" secondAttribute="centerX" id="cb5-ME-Xoi"/>
                 <constraint firstItem="eGt-2Q-r26" firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" constant="-8" id="gqd-RS-3dd"/>
                 <constraint firstItem="3h8-LR-Tak" firstAttribute="centerX" secondItem="esb-ui-Src" secondAttribute="centerX" id="gu6-44-kXJ"/>
                 <constraint firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" id="hts-QR-ptT"/>
@@ -126,11 +104,6 @@
                 <constraint firstAttribute="trailing" secondItem="seS-fL-BAi" secondAttribute="trailing" id="xax-ew-WDM"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="131.5"/>
-        </view>
-        <view contentMode="scaleToFill" id="4FC-ew-1CZ">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </view>
     </objects>
     <resources>

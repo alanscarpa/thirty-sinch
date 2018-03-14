@@ -19,9 +19,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     @IBOutlet weak var remoteVideoView: TVIVideoView!
     @IBOutlet weak var localVideoView: TVIVideoView!
     @IBOutlet weak var remoteUserLabel: UILabel!
-    @IBOutlet weak var answerCallButton: UIButton!
     @IBOutlet weak var timeRemainingLabel: UILabel!
-    
+    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var callBackgroundImageView: UIImageView!
     // This will also be the room name
     var calleeDeviceToken = ""
@@ -56,6 +55,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         CallManager.shared.delegate = self
         FirebaseManager.shared.delegate = self
         timeRemainingLabel.textColor = .thPrimaryPurple
+        timeRemainingLabel.alpha = 0.5
+        cancelButton.alpha = 0.75
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -281,15 +282,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func videoViewDidReceiveData(_ view: TVIVideoView) {
         // First frame has been rendered; this prevents the brief black screen that appears first and is only called once
         answerCall()
-        UIView.animate(withDuration: 1.0, animations: { [weak self] in
-            self?.remoteVideoView.alpha = 1
-        }) { [weak self] complete in
-            if complete {
-                guard let strongSelf = self else { return }
-                strongSelf.callBackgroundImageView.explode(.chaos, duration: 2) 
-                strongSelf.timer = Timer.scheduledTimer(timeInterval: 1.0, target: strongSelf, selector: #selector(strongSelf.updateTime), userInfo: nil, repeats: true)
-            }
-        }
     }
         
     func videoView(_ view: TVIVideoView, videoDimensionsDidChange dimensions: CMVideoDimensions) {
@@ -322,8 +314,16 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     // MARK: - Call Handling
     
     func answerCall() {
-        THSpinner.dismiss()
-        answerCallButton.isHidden = true
+        UIView.animate(withDuration: 1.0, animations: { [weak self] in
+            self?.remoteVideoView.alpha = 1
+        }) { [weak self] complete in
+            if complete {
+                guard let strongSelf = self else { return }
+                THSpinner.dismiss()
+                strongSelf.callBackgroundImageView.explode(.chaos, duration: 2)
+                strongSelf.timer = Timer.scheduledTimer(timeInterval: 1.0, target: strongSelf, selector: #selector(strongSelf.updateTime), userInfo: nil, repeats: true)
+            }
+        }
     }
     
     @objc func updateTime() {
@@ -331,9 +331,10 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         guard var timeRemaining = Int(timeRemainingString) else { return }
         timeRemaining = timeRemaining - 1
         timeRemainingLabel.text = String(timeRemaining)
-        if timeRemaining <= 10 {
+        if timeRemaining <= 10, timeRemaining > 0 {
             timeRemainingLabel.rotate360Degrees(duration: 0.6, andScaleUp: true)
-        } else if timeRemaining == 0 {
+        }
+        if timeRemaining == 0 {
             timer.invalidate()
             endCall()
         }
@@ -350,10 +351,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     // MARK: - Actions
-    
-    @IBAction func answerCallButtonTapped() {
-        answerCall()
-    }
     
     @IBAction func cancelButtonTapped() {
         endCall()
