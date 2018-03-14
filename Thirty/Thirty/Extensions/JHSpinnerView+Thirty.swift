@@ -15,7 +15,7 @@ class THSpinner {
     private init() {}
     
     class func showSpinnerOnView(_ view: UIView, text: String? = nil, preventUserInteraction: Bool = true) {
-        shared.jhSpinner = JHSpinnerView.showOnView(view, spinnerColor: .white, overlay:.custom(CGSize(width: 200, height: 200), 100), overlayColor: UIColor.thSecondaryPurple, text: text, textColor: .white)
+        shared.jhSpinner = JHSpinnerView.showOnView(view, spinnerColor: .white, overlay:.custom(CGSize(width: 200, height: 200), 100), overlayColor: UIColor.thPrimaryPurple, text: text, textColor: .white)
         guard let spinner = shared.jhSpinner else { return }
         spinner.isUserInteractionEnabled = preventUserInteraction
         view.addSubview(spinner)
