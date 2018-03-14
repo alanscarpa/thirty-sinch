@@ -113,6 +113,9 @@ class CallManager: NSObject, CXProviderDelegate {
         // AudioDevice is enabled by default
         audioDevice.isEnabled = true
         delegate?.callDidEnd()
+        if let call = call {
+            FirebaseManager.shared.declineCall(call)
+        }
         action.fulfill()
     }
     

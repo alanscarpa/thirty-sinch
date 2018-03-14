@@ -59,13 +59,24 @@ class FirebaseManager {
         }
     }
     
-    func createCall(_ call: Call, completion: @escaping (Result<Void>) -> Void) {
+    func declineCall(_ call: Call) {
         let activeCallCallStateRef = databaseRef.child("active-calls").child(call.roomName)
-        activeCallCallStateRef.child("call-state").setValue("pending")
+        activeCallCallStateRef.updateChildValues(["call-state": "declined"])
+    }
+    
+    func createCallStatusForCall(_ call: Call, completion: @escaping (Result<Void>) -> Void) {
+        let activeCallCallStateRef = databaseRef.child("active-calls").child(call.roomName)
+        activeCallCallStateRef.child("call-state").setValue("pending") { (error, ref) in
+            if let error = error {
+                completion(.Failure(error))
+            } else {
+                completion(.Success)
+            }
+        }
         activeCallCallStateRef.child("call-state").observe(.value) { [weak self] snapshot in
-            if let value = snapshot.value as? NSDictionary {
+            if let value = snapshot.value as? String {
                 //let displayName = value["display-name"] as? String ?? ""
-                let callState = CallState(rawValue: value["call-state"] as! String)!
+                let callState = CallState(rawValue: value)!
                 switch callState {
                 case .pending:
                     break
@@ -74,12 +85,10 @@ class FirebaseManager {
                 case .declined:
                     self?.delegate?.callWasDeclinedByCallee?()
                     activeCallCallStateRef.removeValue()
+                    activeCallCallStateRef.child("call-state").removeAllObservers()
                 case .ended:
                     break
                 }
-                completion(.Success)
-            } else {
-                completion(.Success)
             }
         }
     }

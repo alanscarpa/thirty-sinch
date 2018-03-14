@@ -172,7 +172,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     private func makeCallWithDeviceToken(_ deviceToken: String, toRoom room: TVIRoom) {
-        FirebaseManager.shared.createCall(call!) { [weak self] result in
+        FirebaseManager.shared.createCallStatusForCall(call!) { [weak self] result in
             guard let strongSelf = self else { return }
             switch result {
             case .Success():

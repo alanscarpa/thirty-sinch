@@ -44,6 +44,10 @@ struct THError: Error {
             title = "Unable to get device token."
             description = "Please try again later."
             code = 005
+        case .blankFBCallStatusReturned:
+            title = "Unable to get FB Call Status."
+            description = "Please try again later."
+            code = 006
         }
     }
 }
@@ -54,4 +58,5 @@ enum THErrorType {
     case usernameAlreadyExists
     case noCurrentUser
     case unableToGetDeviceToken
+    case blankFBCallStatusReturned
 }
