@@ -11,14 +11,15 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-protocol FirebaseManagerDelegate: class {
-    func currentUserDidSignOut()
+@objc protocol FirebaseObserverDelegate: class {
+    @objc optional func currentUserDidSignOut()
+    @objc optional func callWasDeclinedByCallee()
 }
 
 class FirebaseManager {
     
     static let shared = FirebaseManager()
-    weak var delegate: FirebaseManagerDelegate?
+    weak var delegate: FirebaseObserverDelegate?
     private let databaseRef = FIRDatabase.database().reference()
     
     var currentUserIsSignedIn: Bool {
@@ -43,7 +44,7 @@ class FirebaseManager {
     
     private func authStateChangedHandler(auth: FIRAuth, user: FIRUser?) -> Swift.Void {
         if currentUserIsSignedOut {
-            delegate?.currentUserDidSignOut()
+            delegate?.currentUserDidSignOut?()
         }
     }
     
@@ -55,6 +56,31 @@ class FirebaseManager {
             completion(.Success)
         } catch {
             completion(.Failure(error))
+        }
+    }
+    
+    func createCall(_ call: Call, completion: @escaping (Result<Void>) -> Void) {
+        let activeCallCallStateRef = databaseRef.child("active-calls").child(call.roomName)
+        activeCallCallStateRef.child("call-state").setValue("pending")
+        activeCallCallStateRef.child("call-state").observe(.value) { [weak self] snapshot in
+            if let value = snapshot.value as? NSDictionary {
+                //let displayName = value["display-name"] as? String ?? ""
+                let callState = CallState(rawValue: value["call-state"] as! String)!
+                switch callState {
+                case .pending:
+                    break
+                case .accepted:
+                    break
+                case .declined:
+                    self?.delegate?.callWasDeclinedByCallee?()
+                    activeCallCallStateRef.removeValue()
+                case .ended:
+                    break
+                }
+                completion(.Success)
+            } else {
+                completion(.Success)
+            }
         }
     }
     

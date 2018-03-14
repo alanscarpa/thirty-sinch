@@ -12,7 +12,7 @@ import CallKit
 import Alamofire
 import JHSpinner
 
-class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipantDelegate, TVIVideoViewDelegate, TVICameraCapturerDelegate, CallManagerDelegate {
+class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipantDelegate, TVIVideoViewDelegate, TVICameraCapturerDelegate, CallManagerDelegate, FirebaseObserverDelegate {
     
     let simplePushURL = "https://php-ios.herokuapp.com/simplepush.php"
     
@@ -53,6 +53,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         remoteVideoView.delegate = self
         remoteVideoView.alpha = 0
         CallManager.shared.delegate = self
+        FirebaseManager.shared.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,7 +118,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                 TokenUtils.accessToken = accessToken
                 let connectOptions = self?.defaultConnectOptionsWithAccessToken(accessToken)
                 self?.room = TwilioVideo.connect(with: connectOptions!, delegate: self)
-                TwilioVideo.setLogLevel(.all)
             }
         }
     }
@@ -138,24 +138,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         }
         return connectOptions
     }
-    
-    // MARK: - TVIRemoteParticipantDelegate
-    
-    func failedToSubscribe(toVideoTrack publication: TVIRemoteVideoTrackPublication, error: Error, for participant: TVIRemoteParticipant) {
-        print(error.localizedDescription)
-        endCall()
-    }
-    
-    func failedToSubscribe(toAudioTrack publication: TVIRemoteAudioTrackPublication, error: Error, for participant: TVIRemoteParticipant) {
-        print(error.localizedDescription)
-        endCall()
-    }
-    
-    func failedToSubscribe(toDataTrack publication: TVIRemoteDataTrackPublication, error: Error, for participant: TVIRemoteParticipant) {
-        print(error.localizedDescription)
-        endCall()
-    }
-    
+
     // MARK: - TVIRoomDelegate
     
     func didConnect(to room: TVIRoom) {
@@ -178,7 +161,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                         strongSelf.calleeDeviceToken = token
                         strongSelf.makeCallWithDeviceToken(token, toRoom: room)
                     case .Failure(let error):
-                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription) { action in
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get user's device token.  Try again later.", message: error.localizedDescription) { action in
                             strongSelf.endCall()
                         }
                         strongSelf.present(alertVC, animated: true, completion: nil)
@@ -189,10 +172,25 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     private func makeCallWithDeviceToken(_ deviceToken: String, toRoom room: TVIRoom) {
-        var parameters: Parameters = ["device_token": deviceToken, "room_name": roomName, "uuid_string": uuid.uuidString]
-        #if DEBUG
-            parameters["dev"] = true
-        #endif
+        FirebaseManager.shared.createCall(call!) { [weak self] result in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .Success():
+                var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.roomName, "uuid_string": strongSelf.uuid.uuidString]
+                #if DEBUG
+                    parameters["dev"] = true
+                #endif
+                strongSelf.sendVOIPPush(parameters)
+            case .Failure(let error):
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to create call on FB.", message: error.localizedDescription) { action in
+                    strongSelf.endCall()
+                }
+                strongSelf.present(alertVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func sendVOIPPush(_ parameters: Parameters) {
         // Send voIP Push
         Alamofire.request(simplePushURL, method: .post, parameters: parameters).validate().response { [weak self] response in
             guard let strongSelf = self else { print("Self not available"); return }
@@ -305,6 +303,12 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     func callIsOnHold(_ onHold: Bool) {
         holdCall(onHold: onHold)
+    }
+    
+    // MARK: - FirebaseObserverDelegate
+    
+    func callWasDeclinedByCallee() {
+        endCall()
     }
     
     // MARK: - Call Handling

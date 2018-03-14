@@ -13,6 +13,13 @@ enum CallDirection {
     case outgoing
 }
 
+enum CallState: String {
+    case pending
+    case declined
+    case accepted
+    case ended
+}
+
 struct Call {
     var uuid = UUID()
     var roomName = ""
