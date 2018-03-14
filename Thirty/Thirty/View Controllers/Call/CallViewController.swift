@@ -285,7 +285,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             self?.remoteVideoView.alpha = 1
         }) { [weak self] complete in
             if complete {
-                self?.callBackgroundImageView.explode(.chaos, duration: 2)
+                guard let strongSelf = self else { return }
+                strongSelf.callBackgroundImageView.explode(.chaos, duration: 2) 
+                strongSelf.timer = Timer.scheduledTimer(timeInterval: 1.0, target: strongSelf, selector: #selector(strongSelf.updateTime), userInfo: nil, repeats: true)
             }
         }
     }
@@ -322,7 +324,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func answerCall() {
         THSpinner.dismiss()
         answerCallButton.isHidden = true
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
     }
     
     @objc func updateTime() {
