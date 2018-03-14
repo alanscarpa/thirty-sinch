@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>6</string>
+	<string>7</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -28,6 +28,10 @@
 	<string>Used to display video</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to send and receive sound</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>INStartVideoCallIntent</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -44,10 +48,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>NSUserActivityTypes</key>
-	<array>
-		<string>INStartVideoCallIntent</string>
 	</array>
 </dict>
 </plist>
