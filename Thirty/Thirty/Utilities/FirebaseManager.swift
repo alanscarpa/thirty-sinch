@@ -21,7 +21,9 @@ class FirebaseManager {
     static let shared = FirebaseManager()
     weak var delegate: FirebaseObserverDelegate?
     private let databaseRef = FIRDatabase.database().reference()
-    
+    var activeCallsRef: FIRDatabaseReference {
+        return databaseRef.child("active-calls")
+    }
     var currentUserIsSignedIn: Bool {
         return FIRAuth.auth()?.currentUser != nil
     }
@@ -31,7 +33,8 @@ class FirebaseManager {
     }
     
     private var authStateListener: FIRAuthStateDidChangeListenerHandle!
-    
+    private var observeCallEndedStateHandle: FIRDatabaseHandle?
+    private var observeCallPendingStateHandle: FIRDatabaseHandle?
     private init() {}
     
     func listenForAuthStateChanges() {
@@ -59,35 +62,72 @@ class FirebaseManager {
         }
     }
     
+    func answeredCallWithRoomName(_ roomName: String) {
+        activeCallsRef.child(roomName).updateChildValues(["call-state": "active"])
+    }
+    
+    func endCallWithRoomName(_ roomName: String) {
+        activeCallsRef.child(roomName).observeSingleEvent(of: .value) { [weak self] snapshot in
+            if snapshot.exists() {
+                self?.activeCallsRef.child(roomName).updateChildValues(["call-state": "ended"]) { [weak self] (error, ref) in
+                    self?.activeCallsRef.child(roomName).removeValue()
+                }
+            }
+        }
+    }
+    
     func declineCall(_ call: Call) {
-        let activeCallCallStateRef = databaseRef.child("active-calls").child(call.roomName)
-        activeCallCallStateRef.updateChildValues(["call-state": "declined"])
+        activeCallsRef.child(call.roomName).updateChildValues(["call-state": "declined"])
+    }
+    
+    func observeStatusForCallWithRoomName(_ roomName: String, completion: @escaping (CallState) -> Void) {
+        let callStateRef = activeCallsRef.child(roomName).child("call-state")
+        observeCallEndedStateHandle = callStateRef.observe(.value) { [weak self] snapshot in
+            guard let strongSelf = self else { return }
+            if let value = snapshot.value as? String {
+                let callState = CallState(rawValue: value)!
+                switch callState {
+                case .ended:
+                    callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
+                    completion(callState)
+                case .active:
+                    callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
+                case .declined, .pending:
+                    break // no-op
+                }
+            } else {
+                callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
+                // Value may return nil.  End call if that's the case.
+                completion(CallState(rawValue: "ended")!)
+            }
+        }
     }
     
     func createCallStatusForCall(_ call: Call, completion: @escaping (Result<Void>) -> Void) {
-        let activeCallCallStateRef = databaseRef.child("active-calls").child(call.roomName)
-        activeCallCallStateRef.child("call-state").setValue("pending") { (error, ref) in
+        let callStateRef = activeCallsRef.child(call.roomName).child("call-state")
+        callStateRef.setValue("pending") { (error, ref) in
             if let error = error {
                 completion(.Failure(error))
             } else {
                 completion(.Success)
             }
         }
-        activeCallCallStateRef.child("call-state").observe(.value) { [weak self] snapshot in
+        observeCallPendingStateHandle = callStateRef.observe(.value) { [weak self] snapshot in
+            guard let strongSelf = self else { return }
             if let value = snapshot.value as? String {
-                //let displayName = value["display-name"] as? String ?? ""
                 let callState = CallState(rawValue: value)!
+                let cleanUpCall = {
+                    self?.activeCallsRef.child(call.roomName).removeValue()
+                    callStateRef.removeObserver(withHandle: strongSelf.observeCallPendingStateHandle!)
+                }
                 switch callState {
-                case .pending:
-                    break
-                case .accepted:
+                case .pending, .active:
                     break
                 case .declined:
                     self?.delegate?.callWasDeclinedByCallee?()
-                    activeCallCallStateRef.removeValue()
-                    activeCallCallStateRef.child("call-state").removeAllObservers()
+                    cleanUpCall()
                 case .ended:
-                    break
+                    cleanUpCall()
                 }
             }
         }

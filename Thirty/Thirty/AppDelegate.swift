@@ -42,6 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registry.delegate = self
         registry.desiredPushTypes = [PKPushType.voIP]
         
+        // TODO:  I dont think this is ever called.  Probably safe to delete after more testing.
         if let userInfo = launchOptions?[.remoteNotification] as? [AnyHashable : Any] {
             if let roomName = (userInfo["info"] as? NSDictionary)?["roomname"] as? String,
                 let uuidString = (userInfo["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
@@ -68,6 +69,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 let uuidString = (payload.dictionaryPayload["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
                 if roomName != UserManager.shared.currentUserUsername {
                     CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
+                    FirebaseManager.shared.observeStatusForCallWithRoomName(roomName) { callState in
+                        switch callState {
+                        case .pending, .declined, .active:
+                            break // no-op because only this callee can decline and pending is default.
+                        case .ended:
+                            CallManager.shared.performEndCallAction(uuid: uuid)
+                        }
+                    }
                 }
             }
         }

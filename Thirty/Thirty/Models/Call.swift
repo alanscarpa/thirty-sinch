@@ -16,8 +16,8 @@ enum CallDirection {
 enum CallState: String {
     case pending
     case declined
-    case accepted
     case ended
+    case active
 }
 
 struct Call {

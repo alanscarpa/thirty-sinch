@@ -196,23 +196,24 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     func sendVOIPPush(_ parameters: Parameters) {
-        // Send voIP Push
-        Alamofire.request(simplePushURL, method: .post, parameters: parameters).validate().response { [weak self] response in
-            guard let strongSelf = self else { print("Self not available"); return }
-            if let error = response.error {
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to send call request.  \(error.localizedDescription)") { action in
-                    strongSelf.endCall()
+        CallManager.shared.performStartCallAction(uuid: uuid, calleeHandle: call!.callee) { [weak self] error in
+            if let error = error {
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in
+                    self?.endCall()
                 }
-                strongSelf.present(alertVC, animated: true, completion: nil)
+                self?.present(alertVC, animated: true, completion: nil)
             } else {
-                print("successfully sent voIP push")
-                CallManager.shared.performStartCallAction(uuid: strongSelf.uuid, calleeHandle: strongSelf.call!.callee) { [weak self] error in
-                    if let error = error {
-                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in
+                // Send voIP Push
+                guard let strongSelf = self else { print("Self not available"); return }
+                Alamofire.request(strongSelf.simplePushURL, method: .post, parameters: parameters).validate().response { [weak self] response in
+                    guard let strongSelf = self else { print("Self not available"); return }
+                    if let error = response.error {
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Unable to send call request.  \(error.localizedDescription)") { action in
                             strongSelf.endCall()
                         }
-                        self?.present(alertVC, animated: true, completion: nil)
+                        strongSelf.present(alertVC, animated: true, completion: nil)
                     } else {
+                        print("successfully sent voIP push")
                         guard let strongSelf = self else { return }
                         DispatchQueue.main.async {
                             strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: 35.0, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)
@@ -327,6 +328,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         }) { [weak self] complete in
             if complete {
                 guard let strongSelf = self else { return }
+                FirebaseManager.shared.answeredCallWithRoomName(strongSelf.roomName)
                 THSpinner.dismiss()
                 strongSelf.callBackgroundImageView.explode(.chaos, duration: 2)
                 strongSelf.timer = Timer.scheduledTimer(timeInterval: 1.0, target: strongSelf, selector: #selector(strongSelf.updateTime), userInfo: nil, repeats: true)
@@ -355,6 +357,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             room?.disconnect()
             RootViewController.shared.popViewController()
             CallManager.shared.performEndCallAction(uuid: uuid)
+            FirebaseManager.shared.endCallWithRoomName(roomName)
         }
     }
     
