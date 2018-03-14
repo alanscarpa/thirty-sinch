@@ -42,13 +42,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registry.delegate = self
         registry.desiredPushTypes = [PKPushType.voIP]
         
-        // TODO:  I dont think this is ever called.  Probably safe to delete after more testing.
-        if let userInfo = launchOptions?[.remoteNotification] as? [AnyHashable : Any] {
-            if let roomName = (userInfo["info"] as? NSDictionary)?["roomname"] as? String,
-                let uuidString = (userInfo["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
-                CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
-            }
-        }
+//        if let userInfo = launchOptions?[.remoteNotification] as]y] {
+//            if let roomName = (userInfo["info"] as? NSDictionary)?["roomname"] as? String,
+//                let uuidString = (userInfo["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
+//                CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
+//            }
+//        }
         
         return true
     }
@@ -97,12 +96,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let startVideoCallIntent = interaction.intent as? INStartVideoCallIntent {
             personHandle = startVideoCallIntent.contacts?[0].personHandle
         }
+        
+        // ALL VIDEO BUTTON
+        //   x handle when coming from recents - killed state
+        //   x handle coming from recents - bg state
+        //   x handle coming from lock screen video button killed
+        //   x handle when app is on screen and receiving call
+        //   x handle when app is on screen and locked video button
+        //  handle when app is in bg and unlocked WITH NO BRAKPOINTS
+        //  handle when app is in bg and locked WITH NO BRAKPOINTS
+        
+        // 30 BUTTON TAPS
+        //   handle when app is on screen and locked 30 button
+        
         if let personHandle = personHandle {
             let callDirection: CallDirection = CallManager.shared.call == nil ? .outgoing : .incoming
-            let roomName = callDirection == .outgoing ? UserManager.shared.currentUserUsername! : personHandle.value!
-            let callee = callDirection == .outgoing ? personHandle.value! : UserManager.shared.currentUserUsername!
-            let call = Call(uuid: UUID(), roomName: roomName, callee: callee, direction: callDirection)
-            RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: call)
+            if callDirection == .outgoing {
+                let roomName = callDirection == .outgoing ? UserManager.shared.currentUserUsername! : personHandle.value!
+                let callee = callDirection == .outgoing ? personHandle.value! : UserManager.shared.currentUserUsername!
+                let call = Call(uuid: UUID(), roomName: roomName, callee: callee, direction: callDirection)
+                CallManager.shared.call = call
+            }
+            if RootViewController.shared.homeVCIsVisible {
+                RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+            }
         }
         return true
     }
@@ -132,7 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
+        //
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -140,7 +157,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-
+        //
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -150,6 +167,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("became active")
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+         print("resigned active")
+        //RootViewController.shared.setHomeVCIsVisible(false)
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+         print("entered background")
+        //RootViewController.shared.setHomeVCIsVisible(false)
     }
 
 }

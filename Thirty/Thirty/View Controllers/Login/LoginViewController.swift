@@ -35,8 +35,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 THSpinner.dismiss()
                 switch result {
                 case .Success(_):
-                    UserManager.shared.userId = self?.usernameTextField.text
-                    RootViewController.shared.goToHomeVC()
+                    self?.completeLoginProcess()
                 case .Failure(let error):
                     let errorInfo = THErrorHandler.errorInfoFromError(error)
                     let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description, handler: nil)
@@ -47,6 +46,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username and password.")
             present(alert, animated: true, completion: nil)
         }
+    }
+    
+    func completeLoginProcess() {
+        // Just in case there are lingering calls due to voIP pushes
+        CallManager.shared.call = nil
+        UserManager.shared.userId = usernameTextField.text
+        RootViewController.shared.goToHomeVC()
     }
     
     // MARK: - UITextFieldDelegate

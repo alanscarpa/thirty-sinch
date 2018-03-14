@@ -24,7 +24,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     @IBOutlet weak var callBackgroundImageView: UIImageView!
     // This will also be the room name
     var calleeDeviceToken = ""
-    var call: Call?
+    private var call: Call? {
+        return CallManager.shared.call
+    }
     // TODO: Fix this - incorporate into call.  This is quick lazy fix.
     let defaultUUUID = UUID()
     var uuid: UUID {
@@ -58,6 +60,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         timeRemainingLabel.textColor = .thPrimaryPurple
         timeRemainingLabel.alpha = 0.5
         cancelButton.alpha = 0.75
+        print("-- CALL VC VIEWDIDLOAD")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,6 +69,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         connectToRoom()
         let spinnerText: String? = call?.direction == .incoming ? nil : "CALLING"
         THSpinner.showSpinnerOnView(view, text: spinnerText, preventUserInteraction: false)
+        print("-- CALL VC VIEWWILLAPPEAR")
+        print("Room: \(room)")
+        print("Call: \(call)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -238,6 +244,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     func room(_ room: TVIRoom, didFailToConnectWithError error: Error) {
+        print("Problem connectin to room: \(error.localizedDescription)")
         let alertVC = UIAlertController.createSimpleAlert(withTitle: "Problem Connecting to Chat", message: error.localizedDescription) { [weak self] action in
             self?.endCall()
         }
@@ -355,9 +362,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             callHasEnded = true
             THSpinner.dismiss()
             room?.disconnect()
-            RootViewController.shared.popViewController()
             CallManager.shared.performEndCallAction(uuid: uuid)
             FirebaseManager.shared.endCallWithRoomName(roomName)
+            RootViewController.shared.popViewController()
         }
     }
     

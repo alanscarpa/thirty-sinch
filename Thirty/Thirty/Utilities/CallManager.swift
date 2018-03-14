@@ -59,13 +59,13 @@ class CallManager: NSObject, CXProviderDelegate {
     func performEndCallAction(uuid: UUID) {
         let endCallAction = CXEndCallAction(call: uuid)
         let transaction = CXTransaction(action: endCallAction)
-        callKitCallController.request(transaction) { [weak self] error in
+        call = nil
+        callKitCallController.request(transaction) { error in
             if let error = error {
-                NSLog("EndCallAction transaction request failed: \(error.localizedDescription).")
-                return
+                print("EndCallAction transaction request failed: \(error.localizedDescription).")
+            } else {
+                print("EndCallAction transaction request successful")
             }
-            self?.call = nil
-            NSLog("EndCallAction transaction request successful")
         }
     }
     
@@ -114,6 +114,7 @@ class CallManager: NSObject, CXProviderDelegate {
         // AudioDevice is enabled by default
         audioDevice.isEnabled = true
         delegate?.callDidEnd()
+        call = nil
         if let call = call {
             FirebaseManager.shared.declineCall(call)
         }
@@ -132,10 +133,13 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.isEnabled = false;
         // Configure the AVAudioSession by executing the audio device's `block`.
         audioDevice.block()
+
+        //RootViewController.shared.pushHomeVC()
+        if RootViewController.shared.homeVCIsVisible {
+            RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+        }
         
-        //RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: call)
         action.fulfill()
-        
     }
     
     func providerDidReset(_ provider: CXProvider) {

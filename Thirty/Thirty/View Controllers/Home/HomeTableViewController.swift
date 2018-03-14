@@ -15,6 +15,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var isSearching = false
     
     var searchResults = [User]()
+    var isVisible = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,19 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             SCLAlertView().showInfo("HI, BETA USER!", subTitle: "Tap on a name to make your first 30!  NOTE:  If the user has not updated to the newest version of the app, the call will show error and fail.", colorStyle: UIColor.thPrimaryPurple.toHex())
             UserManager.shared.hasSeenWelcomeAlert = true
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isVisible = true
+        if CallManager.shared.call != nil {
+            RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        isVisible = false
     }
     
     // MARK: - Setup
@@ -129,7 +143,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         guard searchResults.isEmpty else { return }
         let user = UserManager.shared.contacts[indexPath.row]
         let call = Call(uuid: UUID(), roomName: UserManager.shared.currentUserUsername!, callee: user.username, direction: .outgoing)
-        RootViewController.shared.pushCallVC(calleeDeviceToken: user.deviceToken, call: call)
+        CallManager.shared.call = call
+        RootViewController.shared.pushCallVC(calleeDeviceToken: user.deviceToken)
     }
     
     // MARK: SearchResultTableViewCellDelegate

@@ -159,8 +159,7 @@ class FirebaseManager {
                                             if let error = error {
                                                 completion(.Failure(error))
                                             } else {
-                                                UserManager.shared.currentUserUsername = user.username
-                                                UserManager.shared.currentUserPassword = user.password
+                                                self?.completeUserSetup(username: user.username, password: user.password)
                                                 completion(.Success)
                                             }
                                 })
@@ -201,8 +200,7 @@ class FirebaseManager {
                                             .child(username.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
                                     }
                                     // TODO: Get entire profile and set user.
-                                    UserManager.shared.currentUserUsername = username
-                                    UserManager.shared.currentUserPassword = password
+                                    self?.completeUserSetup(username: username, password: password)
                                     completion(.Success)
                                 }
                             }
@@ -215,6 +213,11 @@ class FirebaseManager {
                 })
             }
         }
+    }
+    
+    private func completeUserSetup(username: String, password: String) {
+        UserManager.shared.currentUserUsername = username
+        UserManager.shared.currentUserPassword = password
     }
     
     func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {

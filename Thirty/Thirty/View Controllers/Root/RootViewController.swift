@@ -26,6 +26,8 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         }
     }
     
+    private var homeVC = HomeTableViewController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
@@ -77,20 +79,27 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     func goToHomeVC() {
-        rootNavigationController.setViewControllers([WelcomeViewController(), HomeTableViewController()], animated: true)
+        rootNavigationController.setViewControllers([WelcomeViewController(), homeVC], animated: true)
     }
     
     func pushHomeVC() {
-        rootNavigationController.pushViewController(HomeTableViewController(), animated: true)
+        rootNavigationController.pushViewController(homeVC, animated: true)
     }
     
-    func pushCallVC(calleeDeviceToken: String?, call: Call?) {
+    var homeVCIsVisible: Bool {
+        return homeVC.isVisible
+    }
+    
+    func setHomeVCIsVisible(_ isVisible: Bool) {
+        homeVC.isVisible = isVisible
+    }
+    
+    func pushCallVC(calleeDeviceToken: String?) {
         let callVC = CallViewController()
         if let calleeDeviceToken = calleeDeviceToken {
             callVC.calleeDeviceToken = calleeDeviceToken
         }
-        callVC.call = call
-        rootNavigationController.pushViewController(callVC, animated: true)
+        rootNavigationController.pushViewController(callVC, animated: true) 
     }
     
 }
