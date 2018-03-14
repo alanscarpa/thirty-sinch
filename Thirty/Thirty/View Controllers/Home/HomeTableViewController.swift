@@ -25,10 +25,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         searchController.hidesNavigationBarDuringPresentation = false
         definesPresentationContext = true
         
-        tableView.tableHeaderView = searchController.searchBar
-        // TODO: undo this when search is re-enabled and users are adding friends again and searching.
-        tableView.tableHeaderView?.isHidden = true
+        // TODO: undo when search re-enabled
+//        tableView.tableHeaderView = searchController.searchBar
+//        tableView.tableHeaderView?.isHidden = true
         tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
+        tableView.backgroundColor = .thSecondaryPurple
+        tableView.separatorInset = .zero
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,8 +47,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 print(user)
                 self?.tableView.reloadData()
             case .Failure(let error):
-                // TODO: Present error
-                print(error.localizedDescription)
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts.", message: error.localizedDescription)
+                self?.present(alertVC, animated: true, completion: nil)
             }
         }
     }
@@ -94,7 +96,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     }
                     self?.tableView.reloadData()
                 case .Failure(let error):
-                    print(error.localizedDescription)
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
+                    self?.present(alertVC, animated: true, completion: nil)
                 }
             }
         }
@@ -135,7 +138,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 UserManager.shared.contacts.append(tappedUser)
                 self?.resetTableView()
             case .Failure(let error):
-                print(error.localizedDescription)
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
+                self?.present(alertVC, animated: true, completion: nil)
             }
         }
     }
