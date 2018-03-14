@@ -19,6 +19,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CallViewController" customModule="Thirty" customModuleProvider="target">
             <connections>
                 <outlet property="answerCallButton" destination="gzb-IT-lWs" id="wFB-yb-koJ"/>
+                <outlet property="callBackgroundImageView" destination="seS-fL-BAi" id="Yuy-Z7-wGb"/>
                 <outlet property="localVideoView" destination="nZc-U7-ulj" id="PjE-7G-WwO"/>
                 <outlet property="remoteUserLabel" destination="8Ah-Jn-y0d" id="x2p-hQ-qi9"/>
                 <outlet property="remoteVideoView" destination="pkp-zq-p9e" id="aFV-cl-k76"/>
@@ -47,6 +48,9 @@
                         <constraint firstItem="8Ah-Jn-y0d" firstAttribute="centerX" secondItem="pkp-zq-p9e" secondAttribute="centerX" id="KLd-9t-77l"/>
                     </constraints>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callBackgroundGradient" translatesAutoresizingMaskIntoConstraints="NO" id="seS-fL-BAi" userLabel="Call Background Gradient Image View">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                </imageView>
                 <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="nZc-U7-ulj" userLabel="Local Video View" customClass="TVIVideoView">
                     <rect key="frame" x="28" y="478" width="123" height="177"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -111,13 +115,25 @@
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="Qz9-Ym-Ll8"/>
                 <constraint firstItem="nZc-U7-ulj" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leadingMargin" constant="12" id="RjN-Da-5M1"/>
                 <constraint firstAttribute="bottom" secondItem="nZc-U7-ulj" secondAttribute="bottom" constant="12" id="XSB-Qb-qqd"/>
+                <constraint firstItem="seS-fL-BAi" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="b06-q1-tdh"/>
                 <constraint firstItem="gzb-IT-lWs" firstAttribute="centerX" secondItem="pkp-zq-p9e" secondAttribute="centerX" id="cb5-ME-Xoi"/>
                 <constraint firstItem="eGt-2Q-r26" firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" constant="-8" id="gqd-RS-3dd"/>
                 <constraint firstItem="3h8-LR-Tak" firstAttribute="centerX" secondItem="esb-ui-Src" secondAttribute="centerX" id="gu6-44-kXJ"/>
                 <constraint firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" id="hts-QR-ptT"/>
+                <constraint firstItem="seS-fL-BAi" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leading" id="ll9-S6-faq"/>
+                <constraint firstAttribute="bottom" secondItem="seS-fL-BAi" secondAttribute="bottom" id="uYr-jv-dTo"/>
                 <constraint firstAttribute="trailing" secondItem="eGt-2Q-r26" secondAttribute="trailing" constant="8" id="woc-5y-tGb"/>
+                <constraint firstAttribute="trailing" secondItem="seS-fL-BAi" secondAttribute="trailing" id="xax-ew-WDM"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="131.5"/>
         </view>
+        <view contentMode="scaleToFill" id="4FC-ew-1CZ">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </view>
     </objects>
+    <resources>
+        <image name="callBackgroundGradient" width="375" height="812"/>
+    </resources>
 </document>

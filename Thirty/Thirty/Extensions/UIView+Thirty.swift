@@ -8,6 +8,8 @@
 
 import UIKit
 
+extension UIView: Explodable {}
+
 extension UIView {
     func rotate360Degrees(duration: CFTimeInterval = 2.0, andScaleUp scaleUp: Bool = false, infinitely: Bool = false, completionDelegate: CAAnimationDelegate? = nil) {
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")

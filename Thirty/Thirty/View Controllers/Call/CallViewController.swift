@@ -22,6 +22,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     @IBOutlet weak var answerCallButton: UIButton!
     @IBOutlet weak var timeRemainingLabel: UILabel!
     
+    @IBOutlet weak var callBackgroundImageView: UIImageView!
     // This will also be the room name
     var calleeDeviceToken = ""
     var call: Call?
@@ -280,8 +281,12 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func videoViewDidReceiveData(_ view: TVIVideoView) {
         // First frame has been rendered; this prevents the brief black screen that appears first and is only called once
         answerCall()
-        UIView.animate(withDuration: 2.0) {
-            self.remoteVideoView.alpha = 1
+        UIView.animate(withDuration: 1.0, animations: { [weak self] in
+            self?.remoteVideoView.alpha = 1
+        }) { [weak self] complete in
+            if complete {
+                self?.callBackgroundImageView.explode(.chaos, duration: 2)
+            }
         }
     }
         
