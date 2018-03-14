@@ -190,7 +190,7 @@ private func generateFragmentsFrom(_ originView:UIView, with splitRatio:CGFloat,
     let snapshots = originView.snapshotView(afterScreenUpdates: true)
     var fragments = [UIView]()
     
-    print("Snapshots:\(snapshots) from \(originView)")
+    print("Snapshots:\(snapshots?.description ?? "NIL DESCRIPTION") from \(originView)")
     
     let shortSide = min(size.width, size.height)
     let gap = max(20, shortSide/splitRatio)
