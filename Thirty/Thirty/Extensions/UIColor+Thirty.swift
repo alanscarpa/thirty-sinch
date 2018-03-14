@@ -11,7 +11,7 @@ import UIKit
 extension UIColor {
     
     static var thPrimaryPurple: UIColor {
-        return UIColor(red: 65.0 / 255.0, green: 21.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
+        return UIColor(red: 101.0 / 255.0, green: 0.0 / 255.0, blue: 225.0 / 255.0, alpha: 1)
     }
     
     static var thSecondaryPurple: UIColor {
