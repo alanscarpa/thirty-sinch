@@ -34,6 +34,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         return call?.direction == .incoming ? call!.roomName : UserManager.shared.currentUserUsername!
     }
     var timer = Timer()
+    var outgoingCallRingingTimer = Timer()
     var callHasEnded = false
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
@@ -70,6 +71,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         timer.invalidate()
+        outgoingCallRingingTimer.invalidate()
     }
     
     // MARK: - Setup
@@ -211,7 +213,10 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                         }
                         self?.present(alertVC, animated: true, completion: nil)
                     } else {
-                        CallManager.shared.callKitCompletionHandler?(true)
+                        guard let strongSelf = self else { return }
+                        DispatchQueue.main.async {
+                            strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: 35.0, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)
+                        }
                     }
                 }
             }
@@ -220,7 +225,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     func room(_ room: TVIRoom, didDisconnectWithError error: Error?) {
         print("Disconnected from room \(room.name)")
-        CallManager.shared.callKitCompletionHandler = nil
         endCall()
     }
     
@@ -237,7 +241,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             self?.endCall()
         }
         present(alertVC, animated: true, completion: nil)
-        CallManager.shared.callKitCompletionHandler?(false)
     }
     
     func room(_ room: TVIRoom, participantDidDisconnect participant: TVIRemoteParticipant) {
@@ -313,7 +316,12 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     // MARK: - Call Handling
     
+    @objc func outgoingCallTimerFinished() {
+        endCall()
+    }
+    
     func answerCall() {
+        outgoingCallRingingTimer.invalidate()
         UIView.animate(withDuration: 1.0, animations: { [weak self] in
             self?.remoteVideoView.alpha = 1
         }) { [weak self] complete in

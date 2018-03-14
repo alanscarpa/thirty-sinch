@@ -22,13 +22,13 @@ class CallManager: NSObject, CXProviderDelegate {
     // CallKit components
     var callKitProvider: CXProvider?
     var callKitCallController = CXCallController()
-    var callKitCompletionHandler: ((Bool)->Swift.Void?)? = nil
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
      */
     var audioDevice: TVIDefaultAudioDevice = TVIDefaultAudioDevice()
     var call: Call?
     weak var delegate: CallManagerDelegate?
+    var outgoingCallRingingTimer = Timer()
     
     func configure() {
         let configuration = CXProviderConfiguration(localizedName: "Thirty")
