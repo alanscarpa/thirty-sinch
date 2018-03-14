@@ -67,6 +67,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             switch result {
             case .Success(_):
                 UserManager.shared.userId = user.username
+                RootViewController.shared.goToHomeVC()
             case .Failure(let error):
                 let errorInfo = THErrorHandler.errorInfoFromError(error)
                 self.present(UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description), animated: true, completion: nil)
