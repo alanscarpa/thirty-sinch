@@ -96,8 +96,8 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3h8-LR-Tak">
-                    <rect key="frame" x="172.5" y="30" width="30" height="41"/>
-                    <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBold" family="Avenir Next Condensed" pointSize="30"/>
+                    <rect key="frame" x="166" y="45" width="43" height="59"/>
+                    <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBold" family="Avenir Next Condensed" pointSize="43"/>
                     <color key="textColor" red="0.53725490200000003" green="0.0" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -107,7 +107,7 @@
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="trailing" secondItem="esb-ui-Src" secondAttribute="trailing" id="4bz-5b-iZU"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leading" id="BJM-En-AsO"/>
                 <constraint firstItem="gzb-IT-lWs" firstAttribute="centerY" secondItem="pkp-zq-p9e" secondAttribute="centerY" id="OQu-Om-yn1"/>
-                <constraint firstItem="3h8-LR-Tak" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" constant="30" id="PzZ-xT-hDP"/>
+                <constraint firstItem="3h8-LR-Tak" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" constant="45" id="PzZ-xT-hDP"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="Qz9-Ym-Ll8"/>
                 <constraint firstItem="nZc-U7-ulj" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leadingMargin" constant="12" id="RjN-Da-5M1"/>
                 <constraint firstAttribute="bottom" secondItem="nZc-U7-ulj" secondAttribute="bottom" constant="12" id="XSB-Qb-qqd"/>

@@ -54,6 +54,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         remoteVideoView.alpha = 0
         CallManager.shared.delegate = self
         FirebaseManager.shared.delegate = self
+        timeRemainingLabel.textColor = .thPrimaryPurple
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -324,7 +325,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         guard var timeRemaining = Int(timeRemainingString) else { return }
         timeRemaining = timeRemaining - 1
         timeRemainingLabel.text = String(timeRemaining)
-        if timeRemaining == 0 {
+        if timeRemaining <= 10 {
+            timeRemainingLabel.rotate360Degrees(duration: 0.6, andScaleUp: true)
+        } else if timeRemaining == 0 {
             timer.invalidate()
             endCall()
         }
