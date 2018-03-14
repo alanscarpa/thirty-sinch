@@ -41,7 +41,7 @@ class CallManager: NSObject, CXProviderDelegate {
         }
         
         callKitProvider = CXProvider(configuration: configuration)
-        callKitProvider!.setDelegate(self, queue: nil)
+        callKitProvider?.setDelegate(self, queue: nil)
     }
     
     // MARK -
@@ -78,6 +78,7 @@ class CallManager: NSObject, CXProviderDelegate {
         callUpdate.supportsGrouping = false
         callUpdate.supportsUngrouping = false
         callUpdate.hasVideo = true
+        
         
         callKitProvider?.reportNewIncomingCall(with: uuid, update: callUpdate) { [weak self] error in
             if let error = error {
@@ -131,8 +132,10 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.isEnabled = false;
         // Configure the AVAudioSession by executing the audio device's `block`.
         audioDevice.block()
-        RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: call)
+        
+        //RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: call)
         action.fulfill()
+        
     }
     
     func providerDidReset(_ provider: CXProvider) {

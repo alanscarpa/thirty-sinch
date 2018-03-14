@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -8,6 +8,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -29,14 +30,14 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="esb-ui-Src">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="pkp-zq-p9e" userLabel="Remote Video View" customClass="TVIVideoView">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ah-Jn-y0d" userLabel="Remote User Label">
-                            <rect key="frame" x="187" y="12" width="0.0" height="0.0"/>
+                            <rect key="frame" x="187.33333333333334" y="12" width="0.0" height="0.0"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.1215686275" green="0.72156862749999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -55,10 +56,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callBackgroundGradient" translatesAutoresizingMaskIntoConstraints="NO" id="seS-fL-BAi" userLabel="Call Background Gradient Image View">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                 </imageView>
-                <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="nZc-U7-ulj" userLabel="Local Video View" customClass="TVIVideoView">
-                    <rect key="frame" x="28" y="478" width="123" height="177"/>
+                <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="nZc-U7-ulj" userLabel="Local Video View" customClass="TVIVideoView">
+                    <rect key="frame" x="28" y="577" width="123" height="177"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="177" id="T48-Id-VON"/>
@@ -66,7 +67,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGt-2Q-r26">
-                    <rect key="frame" x="267" y="626" width="100" height="33"/>
+                    <rect key="frame" x="267" y="721" width="100" height="33"/>
                     <color key="backgroundColor" red="0.99928373100000001" green="0.15537679200000001" blue="0.22883668539999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="eGt-2Q-r26" secondAttribute="height" multiplier="208:69" id="CNH-4b-M6U"/>
@@ -90,12 +91,12 @@
             <constraints>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="trailing" secondItem="esb-ui-Src" secondAttribute="trailing" id="4bz-5b-iZU"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leading" id="BJM-En-AsO"/>
+                <constraint firstItem="nZc-U7-ulj" firstAttribute="bottom" secondItem="fLm-Do-n0P" secondAttribute="bottom" constant="-24" id="FbP-Dr-qez"/>
+                <constraint firstItem="eGt-2Q-r26" firstAttribute="bottom" secondItem="nZc-U7-ulj" secondAttribute="bottom" id="HQP-M6-kgb"/>
                 <constraint firstItem="3h8-LR-Tak" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" constant="45" id="PzZ-xT-hDP"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="Qz9-Ym-Ll8"/>
                 <constraint firstItem="nZc-U7-ulj" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leadingMargin" constant="12" id="RjN-Da-5M1"/>
-                <constraint firstAttribute="bottom" secondItem="nZc-U7-ulj" secondAttribute="bottom" constant="12" id="XSB-Qb-qqd"/>
                 <constraint firstItem="seS-fL-BAi" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="b06-q1-tdh"/>
-                <constraint firstItem="eGt-2Q-r26" firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" constant="-8" id="gqd-RS-3dd"/>
                 <constraint firstItem="3h8-LR-Tak" firstAttribute="centerX" secondItem="esb-ui-Src" secondAttribute="centerX" id="gu6-44-kXJ"/>
                 <constraint firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" id="hts-QR-ptT"/>
                 <constraint firstItem="seS-fL-BAi" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leading" id="ll9-S6-faq"/>
@@ -103,10 +104,11 @@
                 <constraint firstAttribute="trailing" secondItem="eGt-2Q-r26" secondAttribute="trailing" constant="8" id="woc-5y-tGb"/>
                 <constraint firstAttribute="trailing" secondItem="seS-fL-BAi" secondAttribute="trailing" id="xax-ew-WDM"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="fLm-Do-n0P"/>
             <point key="canvasLocation" x="34.5" y="131.5"/>
         </view>
     </objects>
     <resources>
-        <image name="callBackgroundGradient" width="375" height="812"/>
+        <image name="callBackgroundGradient" width="426" height="266"/>
     </resources>
 </document>

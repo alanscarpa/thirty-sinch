@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        FIRApp.configure()
         CallManager.shared.configure()
+        FIRApp.configure()
 
         window = UIWindow(frame: UIScreen.main.bounds)
         window!.rootViewController = RootViewController.shared
@@ -98,8 +98,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             personHandle = startVideoCallIntent.contacts?[0].personHandle
         }
         if let personHandle = personHandle {
-            guard CallManager.shared.call == nil else { return true }
-            let call = Call(uuid: UUID(), roomName: UserManager.shared.currentUserUsername!, callee: personHandle.value!, direction: .outgoing)
+            let callDirection: CallDirection = CallManager.shared.call == nil ? .outgoing : .incoming
+            let roomName = callDirection == .outgoing ? UserManager.shared.currentUserUsername! : personHandle.value!
+            let callee = callDirection == .outgoing ? personHandle.value! : UserManager.shared.currentUserUsername!
+            let call = Call(uuid: UUID(), roomName: roomName, callee: callee, direction: callDirection)
             RootViewController.shared.pushCallVC(calleeDeviceToken: nil, call: call)
         }
         return true
