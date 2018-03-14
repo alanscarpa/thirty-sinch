@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SCLAlertView
 
 class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate {
 
@@ -29,13 +30,17 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
 //        tableView.tableHeaderView = searchController.searchBar
 //        tableView.tableHeaderView?.isHidden = true
         tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
-        tableView.backgroundColor = .thSecondaryPurple
+        tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
+        if !UserManager.shared.hasSeenWelcomeAlert {
+            SCLAlertView().showInfo("HI, BETA USER!", subTitle: "Tap on a name to make your first 30!  NOTE:  If the user has not updated to the newest version of the app, the call will show error and fail.", colorStyle: UIColor.thPrimaryPurple.toHex())
+            UserManager.shared.hasSeenWelcomeAlert = true
+        }
     }
     
     // MARK: - Setup

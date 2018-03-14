@@ -12,9 +12,20 @@ class UserManager {
     static let shared = UserManager()
     private init(){}
 
-    let UserIdKey = "UserIdKey"
-    let UsernameKey = "UsernameKey"
-    let UserPasswordKey = "UserPasswordKey"
+    private let UserIdKey = "UserIdKey"
+    private let UsernameKey = "UsernameKey"
+    private let UserPasswordKey = "UserPasswordKey"
+    private let HasSeenWelcomeAlertKey = "HasSeenWelcomeAlertKey"
+    
+    var hasSeenWelcomeAlert: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: HasSeenWelcomeAlertKey)
+        }
+        set {
+            UserDefaults.standard.set(true, forKey: HasSeenWelcomeAlertKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
     
     var userId: String? {
         get {

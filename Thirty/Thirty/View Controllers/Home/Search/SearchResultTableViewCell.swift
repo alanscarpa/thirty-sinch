@@ -23,7 +23,7 @@ class SearchResultTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.backgroundColor = .thSecondaryPurple
+        contentView.backgroundColor = .thPrimaryPurple
         selectionStyle = .none
     }
 

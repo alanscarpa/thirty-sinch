@@ -21,4 +21,17 @@ extension UIColor {
     static var thBlack: UIColor {
         return UIColor(red: 40.0 / 255.0, green: 40.0 / 255.0, blue: 40.0 / 255.0, alpha: 1)
     }
+    
+    func toHex() -> UInt {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        let stringHex = String(format:"0x%06x", rgb)
+        return UInt(String(stringHex.suffix(6)), radix: 16)!
+    }
 }

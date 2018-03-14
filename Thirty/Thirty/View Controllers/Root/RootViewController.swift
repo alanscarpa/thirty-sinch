@@ -43,7 +43,9 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         if let username = UserManager.shared.currentUserUsername,
             let password = UserManager.shared.currentUserPassword,
             let userId = UserManager.shared.userId {
+            THSpinner.showSpinnerOnView(rootNavigationController.view)
             FirebaseManager.shared.logInUserWithUsername(username, password: password, completion: { [weak self] result in
+                THSpinner.dismiss()
                 switch result {
                 case .Success(_):
                     self?.goToHomeVC()
