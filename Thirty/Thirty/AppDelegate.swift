@@ -261,6 +261,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // if resign active, eligible to check if call exists, then pushCallVC
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("became active")
+        // CHECK FOR CALL, AND IF SO, PRESENT CALL VC
+        if let call = CallManager.shared.call, call.state != .active {
+            RootViewController.shared.pushCallVCWithCall(call)
+        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
