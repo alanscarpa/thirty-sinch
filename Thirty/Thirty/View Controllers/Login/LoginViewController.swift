@@ -49,7 +49,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func completeLoginProcess() {
-        UserManager.shared.userId = usernameTextField.text
         RootViewController.shared.goToHomeVC()
     }
     

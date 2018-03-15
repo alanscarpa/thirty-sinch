@@ -37,25 +37,5 @@ class UserManager {
         }
     }
     
-    var currentUserUsername: String? {
-        get {
-            return UserDefaults.standard.string(forKey: UsernameKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: UsernameKey)
-            UserDefaults.standard.synchronize()
-        }
-    }
-    
-    var currentUserPassword: String? {
-        get {
-            return UserDefaults.standard.string(forKey: UserPasswordKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: UserPasswordKey)
-            UserDefaults.standard.synchronize()
-        }
-    }
-    
     var contacts = [User]()
 }
