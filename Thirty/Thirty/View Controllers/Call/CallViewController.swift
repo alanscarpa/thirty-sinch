@@ -148,9 +148,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         // The room now has 2 participants and we are good to go
         if room.remoteParticipants.count == 1 {
             // Only needed if calling simulator because it doesn't answer fully.
-            #if DEBUG
-            CallManager.shared.setCallStateActive()
-            #endif
             remoteParticipant = room.remoteParticipants.first
             remoteParticipant?.delegate = self
         } else if let deviceToken = call.calleeDeviceToken {
@@ -311,7 +308,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     func answerCall() {
-        CallManager.shared.setCallStateActive()
         outgoingCallRingingTimer.invalidate()
         UIView.animate(withDuration: 1.0, animations: { [weak self] in
             self?.remoteVideoView.alpha = 1

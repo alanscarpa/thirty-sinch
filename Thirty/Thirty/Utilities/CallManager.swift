@@ -43,10 +43,6 @@ class CallManager: NSObject, CXProviderDelegate {
         callKitProvider?.setDelegate(self, queue: nil)
     }
     
-    func setCallStateActive() {
-        call!.state = .active
-    }
-    
     // MARK -
     
     func performStartCallAction(call: Call, completion: @escaping ((Error?) -> Void)) {
@@ -106,6 +102,8 @@ class CallManager: NSObject, CXProviderDelegate {
         // Configure the AVAudioSession by executing the audio device's `block`.
         // THIS GETS CALLED ON SWIPE TO UNLOCK AND TAP TO ANSWER WHILE UNLOCKED
         audioDevice.block()
+        
+        call!.state = .active
         // REALLY - we should always just go to the homescreen, check if there is a call, then push that call
         // if phone was locked, do not push VC  (WILL PUSH WITH INTENT), and set state to unlocked
 //        if isUnlocked {
@@ -129,6 +127,7 @@ class CallManager: NSObject, CXProviderDelegate {
         
         // Configure the AVAudioSession by executing the audio device's `block`.
         audioDevice.block()
+        call!.state = .active
         callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
         action.fulfill()
     }

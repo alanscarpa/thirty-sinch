@@ -51,17 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // if launched by default, login like normal
         }
         
-        logIn { result in
-            switch result {
-            case .Success(_):
-                if let call = self.callToMake {
-                    RootViewController.shared.pushCallVCWithCall(call)
-                } else if let call = self.callToReport {
-                    self.reportIncomingCall(call)
-                }
-            case .Failure(let error):
-                print(error.localizedDescription)
-            }
+        if loggedIn {
+            RootViewController.shared.goToHomeVC()
+        } else {
+            RootViewController.shared.goToWelcomeVC()
         }
         
 //        if let userInfo = launchOptions?[.remoteNotification] as]y] {
@@ -74,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
-    func logIn(completion: @escaping (Result<Void>) -> Void) {
+    func logIn(completion: ((Result<Void>) -> Void)? = nil) {
         if let username = UserManager.shared.currentUserUsername,
             let password = UserManager.shared.currentUserPassword {
             THSpinner.showSpinnerOnView(RootViewController.shared.view)
@@ -86,11 +79,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 case .Failure(_):
                     RootViewController.shared.goToWelcomeVC()
                 }
-                completion(result)
+                completion?(result)
             }
         } else {
             RootViewController.shared.goToWelcomeVC()
-            completion(.Failure(THError(errorType: .noSavedCredentials)))
+            completion?(.Failure(THError(errorType: .noSavedCredentials)))
         }
     }
     
@@ -188,7 +181,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // 30 BUTTON TAPS
         //   handle when app is on screen and locked 30 button
         
-        if let callee = personHandle?.value {
+        if let personHandle = personHandle?.value {
             // if there is already an active call, then it is incoming and we are already logged in
                 // push call vc
             // if it is outgoing, create the call,
@@ -199,13 +192,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 RootViewController.shared.pushCallVCWithCall(CallManager.shared.call!)
             } else {
                 if loggedIn {
-                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: callee, calleeDeviceToken: nil, direction: .outgoing)
+                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: personHandle, calleeDeviceToken: nil, direction: .outgoing)
                     RootViewController.shared.pushCallVCWithCall(call)
                 } else {
                     logIn { result in
                         switch result {
                         case .Success(_):
-                            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: callee, calleeDeviceToken: nil, direction: .outgoing)
+                            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: personHandle, calleeDeviceToken: nil, direction: .outgoing)
                             RootViewController.shared.pushCallVCWithCall(call)
                         case .Failure(let error):
                             print(error.localizedDescription)
@@ -249,15 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // TODO: Present screen asking to turn on notifications
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        //
-    }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        print("entering foreground")
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    }
-    
     // if resign active, eligible to check if call exists, then pushCallVC
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("became active")
