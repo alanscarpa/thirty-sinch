@@ -193,12 +193,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             } else {
                 if loggedIn {
                     let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: personHandle, calleeDeviceToken: nil, direction: .outgoing)
+                    CallManager.shared.call = call
                     RootViewController.shared.pushCallVCWithCall(call)
                 } else {
                     logIn { result in
                         switch result {
                         case .Success(_):
                             let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: personHandle, calleeDeviceToken: nil, direction: .outgoing)
+                            CallManager.shared.call = call
                             RootViewController.shared.pushCallVCWithCall(call)
                         case .Failure(let error):
                             print(error.localizedDescription)
@@ -246,6 +248,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // if resign active, eligible to check if call exists, then pushCallVC
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("became active")
+        // ANSWERING CALL IN PRESENT, OPEN STATE MAKES CALL STATE ACTIVE BEFORE APP BECOMES ACTIVE
+        // ANSWERING CALL FROM LOCKED STATE
         // CHECK FOR CALL, AND IF SO, PRESENT CALL VC
         if let call = CallManager.shared.call, call.state != .active {
             RootViewController.shared.pushCallVCWithCall(call)

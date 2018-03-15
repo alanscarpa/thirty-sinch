@@ -43,6 +43,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        CallManager.shared.setCallToActive()
         remoteVideoView.delegate = self
         CallManager.shared.delegate = self
         FirebaseManager.shared.delegate = self
