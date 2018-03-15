@@ -106,7 +106,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     private func connectToRoom() {
-        let parameters: Parameters = ["identity": UserManager.shared.currentUserUsername!, "room": call.roomName]
+        let parameters: Parameters = ["identity": UserManager.shared.currentUserUsername, "room": call.roomName]
         // Generate access token
         Alamofire.request(TokenUtils.tokenGeneratorAddress, parameters: parameters).validate().response { [weak self] response in
             if let error = response.error {

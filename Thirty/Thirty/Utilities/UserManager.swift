@@ -27,14 +27,8 @@ class UserManager {
         }
     }
     
-    var userId: String? {
-        get {
-            return UserDefaults.standard.string(forKey: UserIdKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: UserIdKey)
-            UserDefaults.standard.synchronize()
-        }
+    var currentUserUsername: String {
+        return FirebaseManager.shared.currentUser!.displayName!
     }
     
     var contacts = [User]()

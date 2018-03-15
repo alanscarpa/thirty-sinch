@@ -27,9 +27,11 @@ class FirebaseManager {
     var currentUserIsSignedIn: Bool {
         return FIRAuth.auth()?.currentUser != nil
     }
-    
     private var currentUserIsSignedOut: Bool {
         return FIRAuth.auth()?.currentUser == nil
+    }
+    var currentUser: FIRUser? {
+        return FIRAuth.auth()?.currentUser
     }
     
     private var authStateListener: FIRAuthStateDidChangeListenerHandle!
@@ -54,8 +56,6 @@ class FirebaseManager {
     func signOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
         do {
             try FIRAuth.auth()?.signOut()
-            UserManager.shared.currentUserUsername = nil
-            UserManager.shared.currentUserPassword = nil
             completion(.Success)
         } catch {
             completion(.Failure(error))
@@ -140,31 +140,41 @@ class FirebaseManager {
                 completion(.Failure(error))
             } else {
                 // STEP 2 - Make sure the username is available
-                self?.databaseRef.child("users").child(user.username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
+                self?.databaseRef.child("users").child(user.userNameLowercased).observeSingleEvent(of: .value, with: { snapshot in
                     if snapshot.exists() {
                         // Delete our user from DB if username already exists
                         fbUser?.delete(completion: { error in
                             completion(.Failure(error ?? THError(errorType: .usernameAlreadyExists)))
                         })
                     } else {
-                        // STEP 3 - Then we add details to user which allows a username sign-in
-                        if let fbUser = fbUser {
-                            self?.databaseRef.child("users")
-                                .child(user.username.lowercased())
-                                .setValue(["phone-number": user.phoneNumber,
-                                           "uid": fbUser.uid,
-                                           "display-name": user.username,
-                                           "email": user.email,
-                                           "device-token": user.deviceToken], withCompletionBlock: { (error, ref) in
-                                            if let error = error {
-                                                completion(.Failure(error))
-                                            } else {
-                                                self?.completeUserSetup(username: user.username, password: user.password)
-                                                completion(.Success)
-                                            }
-                                })
-                        } else {
-                            completion(.Failure(THError(errorType: .blankFBUserReturned)))
+                        // STEP 3 - We add a display name to the firebase auth user
+                        if let newlyCreatedUser = FIRAuth.auth()?.currentUser {
+                            let changeRequest = newlyCreatedUser.profileChangeRequest()
+                            changeRequest.displayName = user.username
+                            changeRequest.commitChanges { error in
+                                if let error = error {
+                                    completion(.Failure(error))
+                                } else {
+                                    // STEP 4 - Then we add details to user which allows a username sign-in
+                                    if let fbUser = fbUser {
+                                        self?.databaseRef.child("users")
+                                            .child(user.username.lowercased())
+                                            .setValue(["phone-number": user.phoneNumber,
+                                                       "uid": fbUser.uid,
+                                                       "display-name": user.username,
+                                                       "email": user.email,
+                                                       "device-token": user.deviceToken], withCompletionBlock: { (error, ref) in
+                                                        if let error = error {
+                                                            completion(.Failure(error))
+                                                        } else {
+                                                            completion(.Success)
+                                                        }
+                                            })
+                                    } else {
+                                        completion(.Failure(THError(errorType: .blankFBUserReturned)))
+                                    }
+                                }
+                            }
                         }
                     }
                 }) { (error) in
@@ -199,8 +209,6 @@ class FirebaseManager {
                                         self?.databaseRef.child("users")
                                             .child(username.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
                                     }
-                                    // TODO: Get entire profile and set user.
-                                    self?.completeUserSetup(username: username, password: password)
                                     completion(.Success)
                                 }
                             }
@@ -213,11 +221,6 @@ class FirebaseManager {
                 })
             }
         }
-    }
-    
-    private func completeUserSetup(username: String, password: String) {
-        UserManager.shared.currentUserUsername = username
-        UserManager.shared.currentUserPassword = password
     }
     
     func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {
@@ -238,11 +241,8 @@ class FirebaseManager {
     }
     
     func addUserAsFriend(username: String, completion: @escaping (Result<Void>) -> Void) {
-        guard let currentUsername = UserManager.shared.currentUserUsername?.lowercased() else {
-            return completion(.Failure(THError.init(errorType: .noCurrentUser)))
-        }
         databaseRef.child("friends")
-            .child(currentUsername)
+            .child(UserManager.shared.currentUserUsername.lowercased())
             .setValue([username.lowercased(): true], withCompletionBlock: { (error, ref) in
                         if let error = error {
                             completion(.Failure(error))
@@ -253,18 +253,16 @@ class FirebaseManager {
     }
     
     func getContacts(completion: @escaping (Result<Void>) -> Void) {
-        guard let currentUsername = UserManager.shared.currentUserUsername?.lowercased() else {
-            return completion(.Failure(THError.init(errorType: .noCurrentUser)))
-        }
         // TODO: Change "users" back to ("friends").child(currentUsername)
         databaseRef.child("users").observeSingleEvent(of: .value, with: { snapshot in
             let value = snapshot.value as? NSDictionary
-            // TODO: Get display-name somehow
             if let usernames = value?.allKeys as? [String] {
                 for username in usernames {
-                    guard username != currentUsername else { continue }
+                    guard username != UserManager.shared.currentUserUsername.lowercased() else { continue }
                     var user = User()
-                    user.username = username
+                    if let displayName = (value?[username] as? NSDictionary)?["display-name"] as? String {
+                        user.username = displayName
+                    }
                     if let deviceToken = (value?[username] as? NSDictionary)?["device-token"] as? String {
                         user.deviceToken = deviceToken
                     }

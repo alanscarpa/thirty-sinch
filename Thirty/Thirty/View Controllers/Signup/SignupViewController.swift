@@ -66,7 +66,6 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             THSpinner.dismiss()
             switch result {
             case .Success(_):
-                UserManager.shared.userId = user.username
                 RootViewController.shared.goToHomeVC()
             case .Failure(let error):
                 let errorInfo = THErrorHandler.errorInfoFromError(error)

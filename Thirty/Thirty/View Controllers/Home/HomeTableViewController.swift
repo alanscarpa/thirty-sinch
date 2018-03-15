@@ -130,7 +130,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         guard searchResults.isEmpty else { return }
         let user = UserManager.shared.contacts[indexPath.row]
         if let deviceToken = user.deviceToken {
-            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
             RootViewController.shared.pushCallVCWithCall(call)
         } else {
             let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because they haven't yet updated their app to the latest version.")
