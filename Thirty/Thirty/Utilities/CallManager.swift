@@ -26,7 +26,6 @@ class CallManager: NSObject, CXProviderDelegate {
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
      */
     var audioDevice: TVIDefaultAudioDevice = TVIDefaultAudioDevice()
-    var call: Call?
     weak var delegate: CallManagerDelegate?
     var outgoingCallRingingTimer = Timer()
     
@@ -59,7 +58,6 @@ class CallManager: NSObject, CXProviderDelegate {
     func performEndCallAction(uuid: UUID) {
         let endCallAction = CXEndCallAction(call: uuid)
         let transaction = CXTransaction(action: endCallAction)
-        call = nil
         callKitCallController.request(transaction) { error in
             if let error = error {
                 print("EndCallAction transaction request failed: \(error.localizedDescription).")
@@ -84,13 +82,34 @@ class CallManager: NSObject, CXProviderDelegate {
             if let error = error {
                 print(error.localizedDescription)
             } else {
-                self?.call = Call(uuid: uuid, roomName: roomName ?? "", callee: UserManager.shared.currentUserUsername!, direction: .incoming)
+               // self?.call = Call(uuid: uuid, roomName: roomName ?? "", callee: UserManager.shared.currentUserUsername!, direction: .incoming)
             }
             completion?(error)
         }
     }
     
     // MARK: - CXProviderDelegate
+    
+    func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
+        print("provider:performAnswerCallAction:")
+        
+        /*
+         * Configure the audio session, but do not start call audio here, since it must be done once
+         * the audio session has been activated by the system after having its priority elevated.
+         */
+        
+        // Stop the audio unit by setting isEnabled to `false`.
+        audioDevice.isEnabled = false;
+        // Configure the AVAudioSession by executing the audio device's `block`.
+        audioDevice.block()
+        
+        RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+        //        if RootViewController.shared.homeVCIsVisible {
+        //            RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+        //        }
+        
+        action.fulfill()
+    }
     
     func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
         print("provider:performStartCallAction:")
@@ -114,32 +133,9 @@ class CallManager: NSObject, CXProviderDelegate {
         // AudioDevice is enabled by default
         audioDevice.isEnabled = true
         delegate?.callDidEnd()
-        call = nil
-        if let call = call {
-            FirebaseManager.shared.declineCall(call)
-        }
-        action.fulfill()
-    }
-    
-    func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
-        print("provider:performAnswerCallAction:")
-        
-        /*
-         * Configure the audio session, but do not start call audio here, since it must be done once
-         * the audio session has been activated by the system after having its priority elevated.
-         */
-        
-        // Stop the audio unit by setting isEnabled to `false`.
-        audioDevice.isEnabled = false;
-        // Configure the AVAudioSession by executing the audio device's `block`.
-        audioDevice.block()
-
-        // TODO: I don't really like this because it resets the view controllers so you lose your place in the app and any temporary info livig on those vcs.
-        RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
-//        if RootViewController.shared.homeVCIsVisible {
-//            RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+//        if let call = call {
+//            FirebaseManager.shared.declineCall(call)
 //        }
-        
         action.fulfill()
     }
     

@@ -49,8 +49,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func completeLoginProcess() {
-        // Just in case there are lingering calls due to voIP pushes
-        CallManager.shared.call = nil
         UserManager.shared.userId = usernameTextField.text
         RootViewController.shared.goToHomeVC()
     }

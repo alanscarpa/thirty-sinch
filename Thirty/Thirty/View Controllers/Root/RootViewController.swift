@@ -65,9 +65,9 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.pushViewController(HomeTableViewController(), animated: true)
     }
     
-    func pushCallVC(calleeDeviceToken: String?) {
+    func pushCallVCWithCall(call: Call) {
         let callVC = CallViewController()
-        if let calleeDeviceToken = calleeDeviceToken {
+        if let calleeDeviceToken = call.calleeDeviceTokens {
             callVC.calleeDeviceToken = calleeDeviceToken
         }
         rootNavigationController.pushViewController(callVC, animated: true) 

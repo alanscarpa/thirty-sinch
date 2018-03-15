@@ -22,19 +22,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     @IBOutlet weak var timeRemainingLabel: UILabel!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var callBackgroundImageView: UIImageView!
-    // This will also be the room name
-    var calleeDeviceToken = ""
-    private var call: Call? {
-        return CallManager.shared.call
-    }
-    // TODO: Fix this - incorporate into call.  This is quick lazy fix.
-    let defaultUUUID = UUID()
-    var uuid: UUID {
-        return call?.uuid ?? defaultUUUID
-    }
-    var roomName: String {
-        return call?.direction == .incoming ? call!.roomName : UserManager.shared.currentUserUsername!
-    }
+    var call: Call!
     var timer = Timer()
     var outgoingCallRingingTimer = Timer()
     var callHasEnded = false
@@ -67,7 +55,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         super.viewWillAppear(animated)
         startLocalPreviewVideo()
         connectToRoom()
-        let spinnerText: String? = call?.direction == .incoming ? nil : "CALLING"
+        let spinnerText: String? = call.direction == .incoming ? nil : "CALLING"
         THSpinner.showSpinnerOnView(view, text: spinnerText, preventUserInteraction: false)
         print("-- CALL VC VIEWWILLAPPEAR")
         print("Room: \(room)")
@@ -84,16 +72,12 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     func prepareLocalMedia() {
         // We will share local audio and video when we connect to the Room.
-        
-        // Create an audio track.
         if (localAudioTrack == nil) {
             localAudioTrack = TVILocalAudioTrack.init()
-            
             if (localAudioTrack == nil) {
                 logMessage(messageText: "Failed to create audio track")
             }
         }
-        
         // Create a video track which captures from the camera.
         if (localVideoTrack == nil) {
             self.startLocalPreviewVideo()
@@ -115,8 +99,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     private func connectToRoom() {
-        let currentUsername = UserManager.shared.currentUserUsername!
-        let parameters: Parameters = ["identity": currentUsername, "room": roomName]
+        let parameters: Parameters = ["identity": UserManager.shared.currentUserUsername!, "room": call.roomName]
         // Generate access token
         Alamofire.request(TokenUtils.tokenGeneratorAddress, parameters: parameters).validate().response { [weak self] response in
             if let error = response.error {
@@ -135,8 +118,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     private func defaultConnectOptionsWithAccessToken(_ accessToken: String) -> TVIConnectOptions {
         let connectOptions = TVIConnectOptions.init(token: accessToken) { [weak self] builder in
-            builder.roomName = self?.call?.roomName
-            builder.uuid = self?.uuid
+            builder.roomName = self?.call.roomName
+            builder.uuid = self?.call.uuid
             // Will share audio with users in room
             if let audioTrack = self?.localAudioTrack {
                 builder.audioTracks = [audioTrack]
@@ -145,7 +128,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             if let videoTrack = self?.localVideoTrack {
                 builder.videoTracks = [videoTrack]
             }
-            
         }
         return connectOptions
     }
@@ -162,14 +144,13 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             remoteParticipant = room.remoteParticipants.first
             remoteParticipant?.delegate = self
         } else {
-            if !calleeDeviceToken.isEmpty {
-                makeCallWithDeviceToken(calleeDeviceToken, toRoom: room)
+            if let deviceToken = call.calleeDeviceToken {
+                makeCallWithDeviceToken(deviceToken, toRoom: room)
             } else {
-                FirebaseManager.shared.getDeviceTokenForUsername(call!.callee) { [weak self] result in
+                FirebaseManager.shared.getDeviceTokenForUsername(call.callee) { [weak self] result in
                     guard let strongSelf = self else { return }
                     switch result {
                     case .Success(let token):
-                        strongSelf.calleeDeviceToken = token
                         strongSelf.makeCallWithDeviceToken(token, toRoom: room)
                     case .Failure(let error):
                         let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get user's device token.  Try again later.", message: error.localizedDescription) { action in
@@ -183,11 +164,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     private func makeCallWithDeviceToken(_ deviceToken: String, toRoom room: TVIRoom) {
-        FirebaseManager.shared.createCallStatusForCall(call!) { [weak self] result in
+        FirebaseManager.shared.createCallStatusForCall(call) { [weak self] result in
             guard let strongSelf = self else { return }
             switch result {
             case .Success():
-                var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.roomName, "uuid_string": strongSelf.uuid.uuidString]
+                var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString]
                 #if DEBUG
                     parameters["dev"] = true
                 #endif
@@ -202,7 +183,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     func sendVOIPPush(_ parameters: Parameters) {
-        CallManager.shared.performStartCallAction(uuid: uuid, calleeHandle: call!.callee) { [weak self] error in
+        CallManager.shared.performStartCallAction(uuid: call.uuid, calleeHandle: call.callee) { [weak self] error in
             if let error = error {
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in
                     self?.endCall()
@@ -222,7 +203,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                         print("successfully sent voIP push")
                         guard let strongSelf = self else { return }
                         DispatchQueue.main.async {
-                            strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: 30.0, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)
+                            strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: 33.0, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)
                         }
                     }
                 }
@@ -236,9 +217,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     func room(_ room: TVIRoom, participantDidConnect participant: TVIRemoteParticipant) {
-        if (self.remoteParticipant == nil) {
-            self.remoteParticipant = participant
-            self.remoteParticipant?.delegate = self
+        if (remoteParticipant == nil) {
+            remoteParticipant = participant
+            remoteParticipant?.delegate = self
         }
         logMessage(messageText: "Participant \(participant.identity) connected with \(participant.remoteAudioTracks.count) audio and \(participant.remoteVideoTracks.count) video tracks")
     }
@@ -261,12 +242,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func subscribed(to videoTrack: TVIRemoteVideoTrack,
                     publication: TVIRemoteVideoTrackPublication,
                     for participant: TVIRemoteParticipant) {
-        
         // We are subscribed to the remote Participant's video Track. We will start receiving the
         // remote Participant's video frames now.
-        
         logMessage(messageText: "Subscribed to video track for Participant \(participant.identity)")
-        
         if (remoteParticipant == participant) {
             videoTrack.addRenderer(remoteVideoView)
         }
@@ -275,15 +253,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func unsubscribed(from videoTrack: TVIRemoteVideoTrack,
                       publication: TVIRemoteVideoTrackPublication,
                       for participant: TVIRemoteParticipant) {
-        
         // We are unsubscribed from the remote Participant's video Track. We will no longer receive the
         // remote Participant's video.
-        
         logMessage(messageText: "Unsubscribed from video track for Participant \(participant.identity)")
-        
         if (remoteParticipant == participant) {
             videoTrack.removeRenderer(remoteVideoView)
-            remoteVideoView.removeFromSuperview()
             endCall()
         }
     }
@@ -335,7 +309,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         }) { [weak self] complete in
             if complete {
                 guard let strongSelf = self else { return }
-                FirebaseManager.shared.answeredCallWithRoomName(strongSelf.roomName)
+                FirebaseManager.shared.answeredCallWithRoomName(strongSelf.call.roomName)
                 THSpinner.dismiss()
                 strongSelf.callBackgroundImageView.explode(.chaos, duration: 2)
                 strongSelf.timer = Timer.scheduledTimer(timeInterval: 1.0, target: strongSelf, selector: #selector(strongSelf.updateTime), userInfo: nil, repeats: true)
@@ -362,8 +336,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             callHasEnded = true
             THSpinner.dismiss()
             room?.disconnect()
-            CallManager.shared.performEndCallAction(uuid: uuid)
-            FirebaseManager.shared.endCallWithRoomName(roomName)
+            CallManager.shared.performEndCallAction(uuid: call.uuid)
+            FirebaseManager.shared.endCallWithRoomName(call.roomName)
             RootViewController.shared.popViewController()
         }
     }

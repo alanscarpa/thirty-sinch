@@ -21,8 +21,12 @@ enum CallState: String {
 }
 
 struct Call {
-    var uuid = UUID()
-    var roomName = ""
+    var uuid: UUID!
+    var caller = ""
     var callee = ""
+    var calleeDeviceToken: String?
     var direction = CallDirection.incoming
+    var roomName: String {
+        return caller
+    }
 }
