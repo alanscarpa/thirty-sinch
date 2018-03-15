@@ -26,8 +26,6 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         }
     }
     
-    private var homeVC = HomeTableViewController()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
@@ -41,25 +39,6 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.didMove(toParentViewController: self)
         
         rootNavigationController.view.frame = super.view.frame
-        
-        if let username = UserManager.shared.currentUserUsername,
-            let password = UserManager.shared.currentUserPassword,
-            let userId = UserManager.shared.userId {
-            THSpinner.showSpinnerOnView(rootNavigationController.view)
-            FirebaseManager.shared.logInUserWithUsername(username, password: password, completion: { [weak self] result in
-                THSpinner.dismiss()
-                switch result {
-                case .Success(_):
-                    self?.goToHomeVC()
-                case .Failure(let error):
-                    print(error.localizedDescription)
-                    // TODO: Present failure pop up
-                    self?.goToWelcomeVC()
-                }
-            })
-        } else {
-            goToWelcomeVC()
-        }
     }
     
     func popViewController() {
@@ -79,19 +58,11 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     func goToHomeVC() {
-        rootNavigationController.setViewControllers([WelcomeViewController(), homeVC], animated: true)
+        rootNavigationController.setViewControllers([WelcomeViewController(), HomeTableViewController()], animated: true)
     }
     
     func pushHomeVC() {
-        rootNavigationController.pushViewController(homeVC, animated: true)
-    }
-    
-    var homeVCIsVisible: Bool {
-        return homeVC.isVisible
-    }
-    
-    func setHomeVCIsVisible(_ isVisible: Bool) {
-        homeVC.isVisible = isVisible
+        rootNavigationController.pushViewController(HomeTableViewController(), animated: true)
     }
     
     func pushCallVC(calleeDeviceToken: String?) {

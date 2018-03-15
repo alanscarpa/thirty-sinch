@@ -44,19 +44,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        isVisible = true
-        if CallManager.shared.call != nil {
-            RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        isVisible = false
-    }
-    
     // MARK: - Setup
     
     func getContacts() {

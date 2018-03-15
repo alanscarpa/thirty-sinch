@@ -103,7 +103,7 @@ class CallManager: NSObject, CXProviderDelegate {
         // Stop the audio unit by setting isEnabled to `false`.
         audioDevice.isEnabled = false;
         
-        // Configure the AVAudioSession by executign the audio device's `block`.
+        // Configure the AVAudioSession by executing the audio device's `block`.
         self.audioDevice.block()
         callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
         action.fulfill()
@@ -134,10 +134,11 @@ class CallManager: NSObject, CXProviderDelegate {
         // Configure the AVAudioSession by executing the audio device's `block`.
         audioDevice.block()
 
-        //RootViewController.shared.pushHomeVC()
-        if RootViewController.shared.homeVCIsVisible {
-            RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
-        }
+        // TODO: I don't really like this because it resets the view controllers so you lose your place in the app and any temporary info livig on those vcs.
+        RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+//        if RootViewController.shared.homeVCIsVisible {
+//            RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+//        }
         
         action.fulfill()
     }
