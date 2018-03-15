@@ -25,6 +25,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var call: Call!
     var timer = Timer()
     var outgoingCallRingingTimer = Timer()
+    // TODO:  Change to 35
+    let callTimeoutLength: Double = 500
     var callHasEnded = false
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
@@ -205,7 +207,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                         print("successfully sent voIP push")
                         guard let strongSelf = self else { return }
                         DispatchQueue.main.async {
-                            strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: 33.0, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)
+                            strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: strongSelf.callTimeoutLength, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)
                         }
                     }
                 }

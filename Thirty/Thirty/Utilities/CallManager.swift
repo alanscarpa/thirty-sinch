@@ -28,7 +28,6 @@ class CallManager: NSObject, CXProviderDelegate {
      */
     var audioDevice: TVIDefaultAudioDevice = TVIDefaultAudioDevice()
     weak var delegate: CallManagerDelegate?
-    var outgoingCallRingingTimer = Timer()
     
     func configure() {
         let configuration = CXProviderConfiguration(localizedName: "Thirty")
@@ -101,8 +100,9 @@ class CallManager: NSObject, CXProviderDelegate {
         // Stop the audio unit by setting isEnabled to `false`.
         audioDevice.isEnabled = false;
         // Configure the AVAudioSession by executing the audio device's `block`.
+        // THIS GETS CALLED ON SWIPE TO UNLOCK AND TAP TO ANSWER WHILE UNLOCKED
         audioDevice.block()
-        call.state = .active
+        call!.state = .active
         // REALLY - we should always just go to the homescreen, check if there is a call, then push that call
         // if phone was locked, do not push VC  (WILL PUSH WITH INTENT), and set state to unlocked
 //        if isUnlocked {
@@ -126,7 +126,7 @@ class CallManager: NSObject, CXProviderDelegate {
         
         // Configure the AVAudioSession by executing the audio device's `block`.
         audioDevice.block()
-        call.state = .active
+        call!.state = .active
         callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
         action.fulfill()
     }
@@ -134,7 +134,7 @@ class CallManager: NSObject, CXProviderDelegate {
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
         NSLog("provider:performEndCallAction:")
         if call?.state == .pending {
-            FirebaseManager.shared.declineCall(call)
+            FirebaseManager.shared.declineCall(call!)
         }
         endCall()
         action.fulfill()

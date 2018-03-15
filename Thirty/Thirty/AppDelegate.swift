@@ -205,12 +205,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     logIn { result in
                         switch result {
                         case .Success(_):
-                            RootViewController.shared.goToHomeVC()
                             let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: callee, calleeDeviceToken: nil, direction: .outgoing)
                             RootViewController.shared.pushCallVCWithCall(call)
                         case .Failure(let error):
                             print(error.localizedDescription)
-                            RootViewController.shared.goToWelcomeVC()
                         }
                     }
                 }
@@ -260,6 +258,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
     
+    // if resign active, eligible to check if call exists, then pushCallVC
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("became active")
     }
@@ -269,6 +268,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //RootViewController.shared.setHomeVCIsVisible(false)
     }
     
+    // ELIGIBLE TO CHECK FOR CALLS
     func applicationDidEnterBackground(_ application: UIApplication) {
          print("entered background")
         //RootViewController.shared.setHomeVCIsVisible(false)
