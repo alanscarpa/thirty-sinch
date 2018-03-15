@@ -131,7 +131,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         let user = UserManager.shared.contacts[indexPath.row]
         if let deviceToken = user.deviceToken {
             let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
-            RootViewController.shared.pushCallVCWithCall(call: call)
+            RootViewController.shared.pushCallVCWithCall(call)
         } else {
             let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call.", message: "Unable to call this user at this time.")
             present(alertVC, animated: true, completion: nil)

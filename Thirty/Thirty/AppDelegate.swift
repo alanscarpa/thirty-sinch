@@ -51,28 +51,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // if launched by default, login like normal
         }
         
-        if let username = UserManager.shared.currentUserUsername,
-            let password = UserManager.shared.currentUserPassword {
-            THSpinner.showSpinnerOnView(RootViewController.shared.view)
-            FirebaseManager.shared.logInUserWithUsername(username, password: password, completion: { result in
-                THSpinner.dismiss()
-                switch result {
-                case .Success(_):
-                    self.loginComplete()
-                    if let call = self.callToMake {
-                        CallManager.shared.call = call
-                        RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
-                    } else if let call = self.callToReport {
-                        self.reportCall(call)
-                    }
-                case .Failure(let error):
-                    print(error.localizedDescription)
-                    // TODO: Present failure pop up
-                    self.loginFailed()
+        logIn { result in
+            switch result {
+            case .Success(_):
+                if let call = self.callToMake {
+                    RootViewController.shared.pushCallVCWithCall(call)
+                } else if let call = self.callToReport {
+                    self.reportIncomingCall(call)
                 }
-            })
-        } else {
-            loginFailed()
+            case .Failure(let error):
+                print(error.localizedDescription)
+            }
         }
         
 //        if let userInfo = launchOptions?[.remoteNotification] as]y] {
@@ -85,12 +74,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
-    func loginComplete() {
-        RootViewController.shared.goToHomeVC()
+    func logIn(completion: @escaping (Result<Void>) -> Void) {
+        if let username = UserManager.shared.currentUserUsername,
+            let password = UserManager.shared.currentUserPassword {
+            THSpinner.showSpinnerOnView(RootViewController.shared.view)
+            FirebaseManager.shared.logInUserWithUsername(username, password: password) { result in
+                THSpinner.dismiss()
+                switch result {
+                case .Success(_):
+                    RootViewController.shared.goToHomeVC()
+                case .Failure(_):
+                    RootViewController.shared.goToWelcomeVC()
+                }
+                completion(result)
+            }
+        } else {
+            RootViewController.shared.goToWelcomeVC()
+            completion(.Failure(THError(errorType: .noSavedCredentials)))
+        }
     }
     
-    func loginFailed() {
-        RootViewController.shared.goToWelcomeVC()
+    var loggedIn: Bool {
+        return FirebaseManager.shared.currentUserIsSignedIn
     }
     
     func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
@@ -106,14 +111,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var callToMake: Call?
     
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
+        // create call
+        // if logged in, show push
+        // if not logged in, log in, then show push
         print(payload.dictionaryPayload)
         if payload.type == .voIP {
             if let roomName = (payload.dictionaryPayload["info"] as? NSDictionary)?["roomname"] as? String,
                 let uuidString = (payload.dictionaryPayload["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
+                // TODO: Test if this check is still necessary - push registry was called more than once in pst
                 if roomName != UserManager.shared.currentUserUsername {
-                    callToReport = Call(uuid: uuid, roomName: roomName, callee: "", direction: .incoming)
-                    if FirebaseManager.shared.currentUserIsSignedIn {
-                        reportCall(callToReport!)
+                    callToReport = Call(uuid: uuid, caller: roomName, callee: "", calleeDeviceToken: nil, direction: .incoming)
+                    if loggedIn {
+                        reportIncomingCall(callToReport!)
+                    } else {
+                        logIn { [weak self] result in
+                            guard let strongSelf = self else { return }
+                            switch result {
+                            case .Success():
+                                strongSelf.reportIncomingCall(strongSelf.callToReport!)
+                            case .Failure(let error):
+                                print(error.localizedDescription)
+                            }
+                        }
                     }
                 }
             }
@@ -122,14 +141,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //completion()
     }
     
-    func reportCall(_ call: Call) {
-        CallManager.shared.reportIncomingCall(uuid: call.uuid, roomName: call.roomName)
-        FirebaseManager.shared.observeStatusForCallWithRoomName(call.roomName) { callState in
-            switch callState {
-            case .pending, .declined, .active:
-            break // no-op because only this callee can decline and pending is default.
-            case .ended:
-                CallManager.shared.performEndCallAction(uuid: call.uuid)
+    func reportIncomingCall(_ call: Call) {
+        CallManager.shared.reportIncomingCall(call) { (error) in
+            if error == nil {
+                FirebaseManager.shared.observeStatusForCallWithRoomName(call.roomName) { callState in
+                    switch callState {
+                    case .pending, .declined, .active:
+                    break // no-op because only this callee can decline and pending is default.
+                    case .ended:
+                        CallManager.shared.performEndCallAction(uuid: call.uuid)
+                    }
+                }
             }
         }
     }
@@ -145,6 +167,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         var personHandle: INPersonHandle?
+        
+        // Find out what the intent is when tapping "30" butotn
+        print(interaction)
+        print(interaction.intent)
         
         if let startVideoCallIntent = interaction.intent as? INStartVideoCallIntent {
             personHandle = startVideoCallIntent.contacts?[0].personHandle
@@ -162,20 +188,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // 30 BUTTON TAPS
         //   handle when app is on screen and locked 30 button
         
-        if let personHandle = personHandle {
+        if let callee = personHandle?.value {
+            // if there is already an active call, then it is incoming and we are already logged in
+                // push call vc
+            // if it is outgoing, create the call,
+                // if logged in, push callVC
+                // - check if logged in, if not, log in, then go to callvc,
             let callDirection: CallDirection = CallManager.shared.call == nil ? .outgoing : .incoming
-            if callDirection == .outgoing {
-                let roomName = callDirection == .outgoing ? UserManager.shared.currentUserUsername! : personHandle.value!
-                let callee = callDirection == .outgoing ? personHandle.value! : UserManager.shared.currentUserUsername!
-                let call = Call(uuid: UUID(), roomName: roomName, callee: callee, direction: callDirection)
-                callToMake = call
-                
-                //RootViewController.shared.goToHomeVC()
-               // RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
+            if callDirection == .incoming {
+                RootViewController.shared.pushCallVCWithCall(CallManager.shared.call!)
+            } else {
+                if loggedIn {
+                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: callee, calleeDeviceToken: nil, direction: .outgoing)
+                    RootViewController.shared.pushCallVCWithCall(call)
+                } else {
+                    logIn { result in
+                        switch result {
+                        case .Success(_):
+                            RootViewController.shared.goToHomeVC()
+                            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername!, callee: callee, calleeDeviceToken: nil, direction: .outgoing)
+                            RootViewController.shared.pushCallVCWithCall(call)
+                        case .Failure(let error):
+                            print(error.localizedDescription)
+                            RootViewController.shared.goToWelcomeVC()
+                        }
+                    }
+                }
             }
-//            if RootViewController.shared.homeVCIsVisible {
-//                RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
-//            }
         }
         return true
     }

@@ -20,13 +20,22 @@ enum CallState: String {
     case active
 }
 
-struct Call {
+class Call {
     var uuid: UUID!
-    var caller = ""
-    var callee = ""
+    var caller: String
+    var callee: String
     var calleeDeviceToken: String?
-    var direction = CallDirection.incoming
+    var direction: CallDirection
     var roomName: String {
         return caller
+    }
+    var state: CallState = .pending
+    
+    init(uuid: UUID, caller: String, callee: String, calleeDeviceToken: String?, direction: CallDirection) {
+        self.uuid = uuid
+        self.caller = caller
+        self.callee = callee
+        self.calleeDeviceToken = calleeDeviceToken
+        self.direction = direction
     }
 }

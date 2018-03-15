@@ -19,6 +19,7 @@ protocol CallManagerDelegate: class {
 class CallManager: NSObject, CXProviderDelegate {
     
     static let shared = CallManager()
+    var call: Call?
     // CallKit components
     var callKitProvider: CXProvider?
     var callKitCallController = CXCallController()
@@ -45,11 +46,12 @@ class CallManager: NSObject, CXProviderDelegate {
     
     // MARK -
     
-    func performStartCallAction(uuid: UUID, calleeHandle: String?, completion: @escaping ((Error?) -> Void)) {
-        let callHandle = CXHandle(type: .generic, value: calleeHandle ?? "")
-        let startCallAction = CXStartCallAction(call: uuid, handle: callHandle)
+    func performStartCallAction(call: Call, completion: @escaping ((Error?) -> Void)) {
+        let callHandle = CXHandle(type: .generic, value: call.callee)
+        let startCallAction = CXStartCallAction(call: call.uuid, handle: callHandle)
         startCallAction.isVideo = true
         let transaction = CXTransaction(action: startCallAction)
+        self.call = call
         callKitCallController.request(transaction)  { error in
             completion(error)
         }
@@ -67,8 +69,8 @@ class CallManager: NSObject, CXProviderDelegate {
         }
     }
     
-    func reportIncomingCall(uuid: UUID, roomName: String?, completion: ((Error?) -> Void)? = nil) {
-        let callHandle = CXHandle(type: .generic, value: roomName ?? "")
+    func reportIncomingCall(_ call: Call, completion: @escaping ((Error?) -> Void)) {
+        let callHandle = CXHandle(type: .generic, value: call.roomName)
         let callUpdate = CXCallUpdate()
         callUpdate.remoteHandle = callHandle
         callUpdate.supportsDTMF = false
@@ -76,15 +78,13 @@ class CallManager: NSObject, CXProviderDelegate {
         callUpdate.supportsGrouping = false
         callUpdate.supportsUngrouping = false
         callUpdate.hasVideo = true
-        
-        
-        callKitProvider?.reportNewIncomingCall(with: uuid, update: callUpdate) { [weak self] error in
+        self.call = call
+        callKitProvider?.reportNewIncomingCall(with: call.uuid, update: callUpdate) { [weak self] error in
             if let error = error {
+                self?.endCall()
                 print(error.localizedDescription)
-            } else {
-               // self?.call = Call(uuid: uuid, roomName: roomName ?? "", callee: UserManager.shared.currentUserUsername!, direction: .incoming)
             }
-            completion?(error)
+            completion(error)
         }
     }
     
@@ -102,12 +102,14 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.isEnabled = false;
         // Configure the AVAudioSession by executing the audio device's `block`.
         audioDevice.block()
-        
-        RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
-        //        if RootViewController.shared.homeVCIsVisible {
-        //            RootViewController.shared.pushCallVC(calleeDeviceToken: nil)
-        //        }
-        
+        call.state = .active
+        // REALLY - we should always just go to the homescreen, check if there is a call, then push that call
+        // if phone was locked, do not push VC  (WILL PUSH WITH INTENT), and set state to unlocked
+//        if isUnlocked {
+//            RootViewController.shared.pushCallVCWithCall(call)
+//        } else {
+//            isUnlocked = true
+//        }
         action.fulfill()
     }
     
@@ -123,27 +125,24 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.isEnabled = false;
         
         // Configure the AVAudioSession by executing the audio device's `block`.
-        self.audioDevice.block()
+        audioDevice.block()
+        call.state = .active
         callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
         action.fulfill()
     }
     
     func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
         NSLog("provider:performEndCallAction:")
-        // AudioDevice is enabled by default
-        audioDevice.isEnabled = true
-        delegate?.callDidEnd()
-//        if let call = call {
-//            FirebaseManager.shared.declineCall(call)
-//        }
+        if call?.state == .pending {
+            FirebaseManager.shared.declineCall(call)
+        }
+        endCall()
         action.fulfill()
     }
     
     func providerDidReset(_ provider: CXProvider) {
         print("providerDidReset:")
-        // AudioDevice is enabled by default
-        audioDevice.isEnabled = true
-        delegate?.callDidEnd()
+        endCall()
     }
     
     func providerDidBegin(_ provider: CXProvider) {
@@ -180,5 +179,14 @@ class CallManager: NSObject, CXProviderDelegate {
         }
         delegate?.callIsOnHold(!call.isOnHold)
         action.fulfill()
+    }
+    
+    // MARK: - Helpers
+    
+    func endCall() {
+        call = nil
+        // AudioDevice is enabled by default
+        audioDevice.isEnabled = true
+        delegate?.callDidEnd()
     }
 }

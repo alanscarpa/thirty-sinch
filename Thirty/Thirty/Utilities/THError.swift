@@ -48,6 +48,10 @@ struct THError: Error {
             title = "Unable to get FB Call Status."
             description = "Please try again later."
             code = 006
+        case .noSavedCredentials:
+            title = "Unable to log in."
+            description = "No previously saved credentials."
+            code = 007
         }
     }
 }
@@ -59,4 +63,5 @@ enum THErrorType {
     case noCurrentUser
     case unableToGetDeviceToken
     case blankFBCallStatusReturned
+    case noSavedCredentials
 }

@@ -42,12 +42,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     override func viewDidLoad() {
         super.viewDidLoad()
         remoteVideoView.delegate = self
-        remoteVideoView.alpha = 0
         CallManager.shared.delegate = self
         FirebaseManager.shared.delegate = self
-        timeRemainingLabel.textColor = .thPrimaryPurple
-        timeRemainingLabel.alpha = 0.5
-        cancelButton.alpha = 0.75
+        setUpUI()
         print("-- CALL VC VIEWDIDLOAD")
     }
     
@@ -69,6 +66,13 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     // MARK: - Setup
+    
+    private func setUpUI() {
+        remoteVideoView.alpha = 0
+        timeRemainingLabel.textColor = .thPrimaryPurple
+        timeRemainingLabel.alpha = 0.5
+        cancelButton.alpha = 0.75
+    }
     
     func prepareLocalMedia() {
         // We will share local audio and video when we connect to the Room.
@@ -143,21 +147,19 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         if room.remoteParticipants.count == 1 {
             remoteParticipant = room.remoteParticipants.first
             remoteParticipant?.delegate = self
+        } else if let deviceToken = call.calleeDeviceToken {
+            makeCallWithDeviceToken(deviceToken, toRoom: room)
         } else {
-            if let deviceToken = call.calleeDeviceToken {
-                makeCallWithDeviceToken(deviceToken, toRoom: room)
-            } else {
-                FirebaseManager.shared.getDeviceTokenForUsername(call.callee) { [weak self] result in
-                    guard let strongSelf = self else { return }
-                    switch result {
-                    case .Success(let token):
-                        strongSelf.makeCallWithDeviceToken(token, toRoom: room)
-                    case .Failure(let error):
-                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get user's device token.  Try again later.", message: error.localizedDescription) { action in
-                            strongSelf.endCall()
-                        }
-                        strongSelf.present(alertVC, animated: true, completion: nil)
+            FirebaseManager.shared.getDeviceTokenForUsername(call.callee) { [weak self] result in
+                guard let strongSelf = self else { return }
+                switch result {
+                case .Success(let token):
+                    strongSelf.makeCallWithDeviceToken(token, toRoom: room)
+                case .Failure(let error):
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get user's device token.  Try again later.", message: error.localizedDescription) { action in
+                        strongSelf.endCall()
                     }
+                    strongSelf.present(alertVC, animated: true, completion: nil)
                 }
             }
         }
@@ -183,7 +185,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     func sendVOIPPush(_ parameters: Parameters) {
-        CallManager.shared.performStartCallAction(uuid: call.uuid, calleeHandle: call.callee) { [weak self] error in
+        CallManager.shared.performStartCallAction(call: call) { [weak self] error in
             if let error = error {
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in
                     self?.endCall()

@@ -67,8 +67,6 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             switch result {
             case .Success(_):
                 UserManager.shared.userId = user.username
-                // Just in case there are lingering calls due to voIP pushes
-                CallManager.shared.call = nil
                 RootViewController.shared.goToHomeVC()
             case .Failure(let error):
                 let errorInfo = THErrorHandler.errorInfoFromError(error)
