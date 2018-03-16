@@ -19,7 +19,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         getContacts()
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false

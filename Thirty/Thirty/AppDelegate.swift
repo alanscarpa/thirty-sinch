@@ -87,7 +87,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let tokenData = pushCredentials.token
             let voipPushToken = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
             TokenUtils.deviceToken = voipPushToken
-            // Token is sent to server on login
+            if FirebaseManager.shared.currentUserIsSignedIn {
+                FirebaseManager.shared.updateDeviceToken()
+            }
         }
     }
     

@@ -207,6 +207,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                         strongSelf.present(alertVC, animated: true, completion: nil)
                     } else {
                         print("successfully sent voIP push")
+                        print(String(data: response.data!, encoding: .utf8)!)
                         guard let strongSelf = self else { return }
                         DispatchQueue.main.async {
                             strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: strongSelf.callTimeoutLength, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)

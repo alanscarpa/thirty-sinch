@@ -187,6 +187,10 @@ class FirebaseManager {
         }
     }
     
+    func updateDeviceToken() {
+        databaseRef.child("users").child(UserManager.shared.currentUserUsername.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
+    }
+    
     func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
         // TODO: if user logs in with email, it crashes because invalid characters
         FIRAuth.auth()?.signInAnonymously { [weak self] (anonymousUser, error) in
