@@ -49,6 +49,12 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.setViewControllers([WelcomeViewController()], animated: true)
     }
     
+    func goToWelcomeVCWithBetaMessage() {
+        let welcomeVC = WelcomeViewController()
+        welcomeVC.hasBetaMessage = true
+        rootNavigationController.setViewControllers([welcomeVC], animated: true)
+    }
+    
     func goToLoginVC() {
         rootNavigationController.pushViewController(LoginViewController(), animated: true)
     }

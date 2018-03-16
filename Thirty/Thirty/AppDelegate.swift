@@ -52,13 +52,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // if launched by default, login like normal
         }
         
-        FIRAuth.auth()?.currentUser?.delete(completion: { (error) in
+        
+        // TODO: REMOVE THIS AFTER NEXT RELEASE.
+        if UserManager.shared.hasLaunchedAppBETA {
+            // PROCEED LIKE NORMAL
             if self.loggedIn {
                 RootViewController.shared.goToHomeVC()
             } else {
                 RootViewController.shared.goToWelcomeVC()
             }
-        })
+        } else {
+            // FIRST TIME LAUNCHING APP
+            do {
+                try FIRAuth.auth()?.signOut()
+                RootViewController.shared.goToWelcomeVC()
+            } catch {
+                print(error.localizedDescription)
+            }
+            UserManager.shared.hasLaunchedAppBETA = true
+        }
         
 //        if let userInfo = launchOptions?[.remoteNotification] as]y] {
 //            if let roomName = (userInfo["info"] as? NSDictionary)?["roomname"] as? String,

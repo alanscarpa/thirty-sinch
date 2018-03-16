@@ -16,8 +16,19 @@ class UserManager {
     private let UsernameKey = "UsernameKey"
     private let UserPasswordKey = "UserPasswordKey"
     private let HasSeenWelcomeAlertKey = "HasSeenWelcomeAlertKey"
+    private let HasLaunchedApp = "HasLaunchedApp"
     
-    var hasSeenWelcomeAlert: Bool {
+    var hasLaunchedAppBETA: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: HasLaunchedApp)
+        }
+        set {
+            UserDefaults.standard.set(true, forKey: HasLaunchedApp)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    var hasSeenWelcomeAlertBETA: Bool {
         get {
             return UserDefaults.standard.bool(forKey: HasSeenWelcomeAlertKey)
         }
@@ -26,7 +37,7 @@ class UserManager {
             UserDefaults.standard.synchronize()
         }
     }
-    
+        
     var currentUserUsername: String {
         return FirebaseManager.shared.currentUser!.displayName!
     }

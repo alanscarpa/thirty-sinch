@@ -38,7 +38,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
-        if !UserManager.shared.hasSeenWelcomeAlert {
+        if !UserManager.shared.hasSeenWelcomeAlertBETA {
             SCLAlertView().showInfo("HI, BETA USER!", subTitle: "Tap on a name to make your first 30!  NOTE:  If the user has not updated to the newest version of the app, the call will show error and fail.", colorStyle: UIColor.thPrimaryPurple.toHex())
             UserManager.shared.hasSeenWelcomeAlert = true
         }
