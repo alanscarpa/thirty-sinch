@@ -55,11 +55,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         super.viewWillAppear(animated)
         startLocalPreviewVideo()
         connectToRoom()
-        let spinnerText: String? = call.direction == .incoming ? nil : "CALLING"
+        let spinnerText: String? = call.direction == .incoming ? "CONNECTING" : "CALLING"
         THSpinner.showSpinnerOnView(view, text: spinnerText, preventUserInteraction: false)
-        print("-- CALL VC VIEWWILLAPPEAR")
-        print("Room: \(room)")
-        print("Call: \(call)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -175,9 +172,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             switch result {
             case .Success():
                 var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString]
-//                #if DEBUG
-//                    parameters["dev"] = true
-//                #endif
+                #if DEBUG
+                    parameters["dev"] = true
+                #endif
                 strongSelf.sendVOIPPush(parameters)
             case .Failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to create call on FB.", message: error.localizedDescription) { action in
