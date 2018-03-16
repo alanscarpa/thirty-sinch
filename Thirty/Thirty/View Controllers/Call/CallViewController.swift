@@ -25,8 +25,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var call: Call!
     var timer = Timer()
     var outgoingCallRingingTimer = Timer()
+    let timeRemainingLabelColor = UIColor.thPrimaryPurple.withAlphaComponent(0.5)
     // TODO:  Change to 35
-    let callTimeoutLength: Double = 500
+    let callTimeoutLength: Double = 35
     var callHasEnded = false
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
@@ -48,7 +49,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         CallManager.shared.delegate = self
         FirebaseManager.shared.delegate = self
         setUpUI()
-        print("-- CALL VC VIEWDIDLOAD")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,8 +69,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     private func setUpUI() {
         remoteVideoView.alpha = 0
-        timeRemainingLabel.textColor = .thPrimaryPurple
-        timeRemainingLabel.alpha = 0.5
+        timeRemainingLabel.textColor = timeRemainingLabelColor
         cancelButton.alpha = 0.75
     }
     
@@ -327,12 +326,27 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         timeRemaining = timeRemaining - 1
         timeRemainingLabel.text = String(timeRemaining)
         if timeRemaining <= 10, timeRemaining > 0 {
-            timeRemainingLabel.rotate360Degrees(duration: 0.6, andScaleUp: true)
+            countdownAnimation()
         }
         if timeRemaining == 0 {
             timer.invalidate()
             endCall()
         }
+    }
+    
+    private func countdownAnimation() {
+        timeRemainingLabel.textColor = UIColor.red.withAlphaComponent(0.75)
+        let duration = 1.0
+        let delay = 0.0
+        let options: UIViewKeyframeAnimationOptions = [.calculationModeLinear, .repeat]
+        UIView.animateKeyframes(withDuration: duration, delay: delay, options: options, animations: { [weak self] in
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.5, animations: {
+                self?.timeRemainingLabel.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5, animations: {
+                self?.timeRemainingLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            })
+        })
     }
     
     func endCall() {
