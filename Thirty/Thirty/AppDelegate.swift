@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // FIRST TIME LAUNCHING APP
             do {
                 try FIRAuth.auth()?.signOut()
-                RootViewController.shared.goToWelcomeVC()
+                RootViewController.shared.goToWelcomeVCWithBetaMessage()
             } catch {
                 print(error.localizedDescription)
             }

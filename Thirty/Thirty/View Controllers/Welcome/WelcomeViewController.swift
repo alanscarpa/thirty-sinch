@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SCLAlertView
 
 class WelcomeViewController: UIViewController, UITextFieldDelegate {
     
@@ -21,8 +22,7 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
         if hasBetaMessage {
-            let alertVC = UIAlertController.createSimpleAlert(withTitle: "You must create a NEW account", message: "We're sorry about that.  As we are fixing bugs and working out kinks, things like this might happen.  You can sign up with the same username as last time.  Hopefully this is the last time!  Thank you.")
-            present(alertVC, animated: true, completion: nil)
+            SCLAlertView().showNotice("You must sign up for a NEW account", subTitle: "We're sorry about that.  As we are fixing bugs and working out kinks, things like this might happen.  You can sign up with the same info as last time.  Hopefully this is the last time!  Thank you.", colorStyle: UIColor.thPrimaryPurple.toHex())
         }
     }
     
