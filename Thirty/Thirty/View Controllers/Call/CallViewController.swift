@@ -175,9 +175,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             switch result {
             case .Success():
                 var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString]
-                #if DEBUG
-                    parameters["dev"] = true
-                #endif
+//                #if DEBUG
+//                    parameters["dev"] = true
+//                #endif
                 strongSelf.sendVOIPPush(parameters)
             case .Failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to create call on FB.", message: error.localizedDescription) { action in
