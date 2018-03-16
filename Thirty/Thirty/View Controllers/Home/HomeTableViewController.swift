@@ -129,11 +129,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard searchResults.isEmpty else { return }
         let user = UserManager.shared.contacts[indexPath.row]
-        if let deviceToken = user.deviceToken {
+        if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
             let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+            CallManager.shared.call = call
             RootViewController.shared.pushCallVCWithCall(call)
         } else {
-            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because they haven't yet updated their app to the latest version.")
+            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because of invalid device token.")
             present(alertVC, animated: true, completion: nil)
         }
     }

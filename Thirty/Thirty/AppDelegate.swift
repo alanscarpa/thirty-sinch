@@ -155,21 +155,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // 30 BUTTON TAPS
         //   handle when app is on screen and locked 30 button
         
+        // THIS IS CALLED WHEN A USER TAPS ANY OF BUTTONS FROM LOCK SCREEN
+        // ALSO CALLED FROM RECENTS
         if let personHandle = personHandle?.value {
             // if there is already an active call, then it is incoming and we are already logged in
                 // push call vc
             // if it is outgoing, create the call,
                 // if logged in, push callVC
             let callDirection: CallDirection = CallManager.shared.call == nil ? .outgoing : .incoming
-            if callDirection == .incoming {
-                RootViewController.shared.pushCallVCWithCall(CallManager.shared.call!)
-            } else {
-                if loggedIn {
+            if callDirection == .outgoing {
+                if loggedIn  {
                     let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: personHandle, calleeDeviceToken: nil, direction: .outgoing)
                     CallManager.shared.call = call
                     RootViewController.shared.pushCallVCWithCall(call)
                 } else {
                     RootViewController.shared.goToWelcomeVC()
+                }
+            } else {
+                if CallManager.shared.call?.state != .active  {
+                    RootViewController.shared.pushCallVCWithCall(CallManager.shared.call!)
+                } else {
+                    
                 }
             }
         }
