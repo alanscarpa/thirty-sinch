@@ -26,7 +26,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var timer = Timer()
     var outgoingCallRingingTimer = Timer()
     let timeRemainingLabelColor = UIColor.thPrimaryPurple.withAlphaComponent(0.5)
-    let callTimeoutLength: Double = 35
+    let callTimeoutLength: Double = 60
     var callHasEnded = false
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
