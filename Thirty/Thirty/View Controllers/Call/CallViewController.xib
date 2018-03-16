@@ -22,6 +22,7 @@
                 <outlet property="callBackgroundImageView" destination="seS-fL-BAi" id="Yuy-Z7-wGb"/>
                 <outlet property="cancelButton" destination="eGt-2Q-r26" id="cuz-0L-byr"/>
                 <outlet property="localVideoView" destination="nZc-U7-ulj" id="PjE-7G-WwO"/>
+                <outlet property="remoteParticipantLabel" destination="GcZ-fb-cKF" id="yMU-Ad-SjZ"/>
                 <outlet property="remoteUserLabel" destination="8Ah-Jn-y0d" id="x2p-hQ-qi9"/>
                 <outlet property="remoteVideoView" destination="pkp-zq-p9e" id="aFV-cl-k76"/>
                 <outlet property="timeRemainingLabel" destination="3h8-LR-Tak" id="ThI-w7-oxv"/>
@@ -58,6 +59,12 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callBackgroundGradient" translatesAutoresizingMaskIntoConstraints="NO" id="seS-fL-BAi" userLabel="Call Background Gradient Image View">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcZ-fb-cKF" userLabel="Remote Participant Label">
+                    <rect key="frame" x="28" y="45" width="319" height="59"/>
+                    <fontDescription key="fontDescription" name="AvenirNextCondensed-DemiBold" family="Avenir Next Condensed" pointSize="43"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="nZc-U7-ulj" userLabel="Local Video View" customClass="TVIVideoView">
                     <rect key="frame" x="28" y="577" width="123" height="177"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -90,22 +97,25 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="trailing" secondItem="esb-ui-Src" secondAttribute="trailing" id="4bz-5b-iZU"/>
+                <constraint firstItem="GcZ-fb-cKF" firstAttribute="centerY" secondItem="3h8-LR-Tak" secondAttribute="centerY" id="60Q-1Q-eOa"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leading" id="BJM-En-AsO"/>
                 <constraint firstItem="nZc-U7-ulj" firstAttribute="bottom" secondItem="fLm-Do-n0P" secondAttribute="bottom" constant="-24" id="FbP-Dr-qez"/>
                 <constraint firstItem="eGt-2Q-r26" firstAttribute="bottom" secondItem="nZc-U7-ulj" secondAttribute="bottom" id="HQP-M6-kgb"/>
                 <constraint firstItem="3h8-LR-Tak" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" constant="45" id="PzZ-xT-hDP"/>
+                <constraint firstItem="fLm-Do-n0P" firstAttribute="trailing" secondItem="GcZ-fb-cKF" secondAttribute="trailing" constant="28" id="Q1p-sy-vT8"/>
                 <constraint firstItem="pkp-zq-p9e" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="Qz9-Ym-Ll8"/>
                 <constraint firstItem="nZc-U7-ulj" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leadingMargin" constant="12" id="RjN-Da-5M1"/>
                 <constraint firstItem="seS-fL-BAi" firstAttribute="top" secondItem="esb-ui-Src" secondAttribute="top" id="b06-q1-tdh"/>
                 <constraint firstItem="3h8-LR-Tak" firstAttribute="centerX" secondItem="esb-ui-Src" secondAttribute="centerX" id="gu6-44-kXJ"/>
                 <constraint firstAttribute="bottom" secondItem="pkp-zq-p9e" secondAttribute="bottom" id="hts-QR-ptT"/>
+                <constraint firstItem="GcZ-fb-cKF" firstAttribute="leading" secondItem="fLm-Do-n0P" secondAttribute="leading" constant="28" id="k56-ud-CB2"/>
                 <constraint firstItem="seS-fL-BAi" firstAttribute="leading" secondItem="esb-ui-Src" secondAttribute="leading" id="ll9-S6-faq"/>
                 <constraint firstAttribute="bottom" secondItem="seS-fL-BAi" secondAttribute="bottom" id="uYr-jv-dTo"/>
                 <constraint firstAttribute="trailing" secondItem="eGt-2Q-r26" secondAttribute="trailing" constant="8" id="woc-5y-tGb"/>
                 <constraint firstAttribute="trailing" secondItem="seS-fL-BAi" secondAttribute="trailing" id="xax-ew-WDM"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fLm-Do-n0P"/>
-            <point key="canvasLocation" x="34.5" y="131.5"/>
+            <point key="canvasLocation" x="34.5" y="131"/>
         </view>
     </objects>
     <resources>

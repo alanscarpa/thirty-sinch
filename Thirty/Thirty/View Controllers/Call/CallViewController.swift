@@ -22,6 +22,8 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     @IBOutlet weak var timeRemainingLabel: UILabel!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var callBackgroundImageView: UIImageView!
+    @IBOutlet weak var remoteParticipantLabel: UILabel!
+    
     var call: Call!
     var timer = Timer()
     var outgoingCallRingingTimer = Timer()
@@ -47,15 +49,14 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         remoteVideoView.delegate = self
         CallManager.shared.delegate = self
         FirebaseManager.shared.delegate = self
-        setUpUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setUpUI()
         startLocalPreviewVideo()
         connectToRoom()
-        let spinnerText: String? = call.direction == .incoming ? "CONNECTING" : "CALLING"
-        THSpinner.showSpinnerOnView(view, text: spinnerText, preventUserInteraction: false)
+        showCallSpinner()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,6 +71,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         remoteVideoView.alpha = 0
         timeRemainingLabel.textColor = timeRemainingLabelColor
         cancelButton.alpha = 0.75
+        remoteParticipantLabel.text = call.direction == .outgoing ? call.callee : call.caller
     }
     
     func prepareLocalMedia() {
@@ -313,6 +315,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                 guard let strongSelf = self else { return }
                 FirebaseManager.shared.answeredCallWithRoomName(strongSelf.call.roomName)
                 THSpinner.dismiss()
+                strongSelf.remoteParticipantLabel.isHidden = true
                 strongSelf.callBackgroundImageView.explode(.chaos, duration: 2)
                 strongSelf.timer = Timer.scheduledTimer(timeInterval: 1.0, target: strongSelf, selector: #selector(strongSelf.updateTime), userInfo: nil, repeats: true)
             }
@@ -384,6 +387,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     func logMessage(messageText: String) {
         NSLog(messageText)
+    }
+    
+    func showCallSpinner() {
+        let spinnerText: String? = call.direction == .incoming ? "CONNECTING" : "CALLING"
+        THSpinner.showSpinnerOnView(view, text: spinnerText, preventUserInteraction: false)
     }
     
 }

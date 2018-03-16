@@ -60,15 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 print(error.localizedDescription)
             }
             UserManager.shared.hasLaunchedAppBETA = true
-        }
-        
-//        if let userInfo = launchOptions?[.remoteNotification] as]y] {
-//            if let roomName = (userInfo["info"] as? NSDictionary)?["roomname"] as? String,
-//                let uuidString = (userInfo["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
-//                CallManager.shared.reportIncomingCall(uuid: uuid, roomName: roomName)
-//            }
-//        }
-        
+        }        
         return true
     }
     
