@@ -26,7 +26,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var timer = Timer()
     var outgoingCallRingingTimer = Timer()
     let timeRemainingLabelColor = UIColor.thPrimaryPurple.withAlphaComponent(0.5)
-    // TODO:  Change to 35
     let callTimeoutLength: Double = 35
     var callHasEnded = false
     /**

@@ -43,16 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registry.delegate = self
         registry.desiredPushTypes = [PKPushType.voIP]
         
-        if launchOptions?[.userActivityDictionary] != nil {
-            print("we are launching from recents + killed state")
-            // TODO: First login and if successful, make the call
-        } else {
-            print("we are launching from something else")
-            // if launched from incoming voip, wait to login before acting on it
-            // if launched by default, login like normal
-        }
-        
-        
         // TODO: REMOVE THIS AFTER NEXT RELEASE.
         if UserManager.shared.hasLaunchedAppBETA {
             // PROCEED LIKE NORMAL
