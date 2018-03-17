@@ -55,8 +55,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         super.viewWillAppear(animated)
         setUpUI()
         startLocalPreviewVideo()
-        connectToRoom()
         showCallSpinner()
+        if call.direction == .outgoing {
+            CallManager.shared.playRingbackTone()
+        }
+        connectToRoom()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -120,22 +123,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         }
     }
     
-    private func defaultConnectOptionsWithAccessToken(_ accessToken: String) -> TVIConnectOptions {
-        let connectOptions = TVIConnectOptions.init(token: accessToken) { [weak self] builder in
-            builder.roomName = self?.call.roomName
-            builder.uuid = self?.call.uuid
-            // Will share audio with users in room
-            if let audioTrack = self?.localAudioTrack {
-                builder.audioTracks = [audioTrack]
-            }
-            // Will share video with users in room
-            if let videoTrack = self?.localVideoTrack {
-                builder.videoTracks = [videoTrack]
-            }
-        }
-        return connectOptions
-    }
-
     // MARK: - TVIRoomDelegate
     
     func didConnect(to room: TVIRoom) {
@@ -307,6 +294,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     func answerCall() {
+        CallManager.shared.stopRingbackTone()
         outgoingCallRingingTimer.invalidate()
         UIView.animate(withDuration: 1.0, animations: { [weak self] in
             self?.remoteVideoView.alpha = 1
@@ -379,6 +367,22 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     // MARK: - Helpers
+    
+    private func defaultConnectOptionsWithAccessToken(_ accessToken: String) -> TVIConnectOptions {
+        let connectOptions = TVIConnectOptions.init(token: accessToken) { [weak self] builder in
+            builder.roomName = self?.call.roomName
+            builder.uuid = self?.call.uuid
+            // Will share audio with users in room
+            if let audioTrack = self?.localAudioTrack {
+                builder.audioTracks = [audioTrack]
+            }
+            // Will share video with users in room
+            if let videoTrack = self?.localVideoTrack {
+                builder.videoTracks = [videoTrack]
+            }
+        }
+        return connectOptions
+    }
     
     func holdCall(onHold: Bool) {
         localAudioTrack?.isEnabled = !onHold

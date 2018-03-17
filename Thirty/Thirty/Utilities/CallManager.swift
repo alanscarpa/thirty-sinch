@@ -28,6 +28,7 @@ class CallManager: NSObject, CXProviderDelegate {
      */
     var audioDevice: TVIDefaultAudioDevice = TVIDefaultAudioDevice()
     weak var delegate: CallManagerDelegate?
+    var ringbackAudioPlayer: AVAudioPlayer?
     
     func configure() {
         let configuration = CXProviderConfiguration(localizedName: "Thirty")
@@ -41,10 +42,23 @@ class CallManager: NSObject, CXProviderDelegate {
         
         callKitProvider = CXProvider(configuration: configuration)
         callKitProvider?.setDelegate(self, queue: nil)
+        
+        let path = Bundle.main.path(forResource: "ringbackSong.mp3", ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeVideoChat, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
     }
     
     func setCallToActive() {
         call!.state = .active
+    }
+    
+    func playRingbackTone() {
+        ringbackAudioPlayer?.play()
+    }
+    
+    func stopRingbackTone() {
+        ringbackAudioPlayer?.stop()
     }
     
     // MARK -
@@ -58,6 +72,7 @@ class CallManager: NSObject, CXProviderDelegate {
         callKitCallController.request(transaction)  { error in
             completion(error)
         }
+        
     }
     
     func performEndCallAction(uuid: UUID) {
@@ -106,14 +121,6 @@ class CallManager: NSObject, CXProviderDelegate {
         // Configure the AVAudioSession by executing the audio device's `block`.
         // THIS GETS CALLED ON SWIPE TO UNLOCK AND TAP TO ANSWER WHILE UNLOCKED
         audioDevice.block()
-        
-        // REALLY - we should always just go to the homescreen, check if there is a call, then push that call
-        // if phone was locked, do not push VC  (WILL PUSH WITH INTENT), and set state to unlocked
-//        if isUnlocked {
-//            RootViewController.shared.pushCallVCWithCall(call)
-//        } else {
-//            isUnlocked = true
-//        }
         action.fulfill()
     }
     
