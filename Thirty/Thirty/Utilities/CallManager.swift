@@ -69,6 +69,7 @@ class CallManager: NSObject, CXProviderDelegate {
         startCallAction.isVideo = true
         let transaction = CXTransaction(action: startCallAction)
         self.call = call
+        ringbackAudioPlayer?.stop()
         callKitCallController.request(transaction)  { error in
             completion(error)
         }
