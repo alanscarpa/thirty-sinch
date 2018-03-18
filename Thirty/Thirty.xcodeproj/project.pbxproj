@@ -47,6 +47,8 @@
 		45993F322058D7DB002276E9 /* Explodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45993F312058D7DB002276E9 /* Explodable.swift */; };
 		459E61F12058BF00004C385A /* UIView+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459E61F02058BF00004C385A /* UIView+Thirty.swift */; };
 		45BB11B0205C97410014F48C /* ringbackSong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45BB11AF205C97400014F48C /* ringbackSong.mp3 */; };
+		45BB11B2205E1FDF0014F48C /* simpleRingback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45BB11B1205E1FDF0014F48C /* simpleRingback.mp3 */; };
+		45BB11B4205E21370014F48C /* ringbackMorningSong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45BB11B3205E21370014F48C /* ringbackMorningSong.mp3 */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +99,8 @@
 		45993F312058D7DB002276E9 /* Explodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Explodable.swift; sourceTree = "<group>"; };
 		459E61F02058BF00004C385A /* UIView+Thirty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Thirty.swift"; sourceTree = "<group>"; };
 		45BB11AF205C97400014F48C /* ringbackSong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringbackSong.mp3; sourceTree = "<group>"; };
+		45BB11B1205E1FDF0014F48C /* simpleRingback.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = simpleRingback.mp3; sourceTree = "<group>"; };
+		45BB11B3205E21370014F48C /* ringbackMorningSong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringbackMorningSong.mp3; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,7 +164,9 @@
 		4500C7791E4D463400AF54AA /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				45BB11B3205E21370014F48C /* ringbackMorningSong.mp3 */,
 				4500C77A1E4D463400AF54AA /* incoming.wav */,
+				45BB11B1205E1FDF0014F48C /* simpleRingback.mp3 */,
 				454CC7091E57CDB00087FAAD /* ringback.wav */,
 				45BB11AF205C97400014F48C /* ringbackSong.mp3 */,
 			);
@@ -378,6 +384,7 @@
 				4500C7881E4E92C200AF54AA /* WelcomeViewController.xib in Resources */,
 				4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */,
 				454CC70A1E57CDB00087FAAD /* ringback.wav in Resources */,
+				45BB11B4205E21370014F48C /* ringbackMorningSong.mp3 in Resources */,
 				457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */,
 				4500C77B1E4D463400AF54AA /* incoming.wav in Resources */,
 				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
@@ -385,6 +392,7 @@
 				4530A90D1F0451FE0039D303 /* SignupViewController.xib in Resources */,
 				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
+				45BB11B2205E1FDF0014F48C /* simpleRingback.mp3 in Resources */,
 				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
 				45BB11B0205C97410014F48C /* ringbackSong.mp3 in Resources */,

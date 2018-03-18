@@ -43,9 +43,10 @@ class CallManager: NSObject, CXProviderDelegate {
         callKitProvider = CXProvider(configuration: configuration)
         callKitProvider?.setDelegate(self, queue: nil)
         
-        let path = Bundle.main.path(forResource: "ringbackSong.mp3", ofType:nil)!
+        let path = Bundle.main.path(forResource: "ringbackMorningSong.mp3", ofType:nil)!
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+        ringbackAudioPlayer?.numberOfLoops = -1
         try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeVideoChat, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
     }
     
