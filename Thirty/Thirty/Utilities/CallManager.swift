@@ -39,6 +39,7 @@ class CallManager: NSObject, CXProviderDelegate {
         if let callKitIcon = UIImage(named: "callkitIcon") {
             configuration.iconTemplateImageData = UIImagePNGRepresentation(callKitIcon)
         }
+        configuration.ringtoneSound = "ringtone.mp3"
         
         callKitProvider = CXProvider(configuration: configuration)
         callKitProvider?.setDelegate(self, queue: nil)
