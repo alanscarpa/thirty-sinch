@@ -34,7 +34,7 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.9)
-  - IQKeyboardManagerSwift (5.0.7)
+  - IQKeyboardManagerSwift (5.0.8)
   - JHSpinner (0.2.1)
   - SCLAlertView (0.8)
   - SwiftyJSON (4.0.0)
@@ -61,7 +61,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: b9eedd6846fb5e1f0f7279e1deaa7a7e4cf8392e
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 5c046c76a1f859bc9c187e918f18e4fc7bb57b5e
-  IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
+  IQKeyboardManagerSwift: 2e7dc7f98c111458c1ea2b373f893e8cf95e2b97
   JHSpinner: bf7cc91a7e0ccad6336d2b0a3429dd34e7325e65
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
