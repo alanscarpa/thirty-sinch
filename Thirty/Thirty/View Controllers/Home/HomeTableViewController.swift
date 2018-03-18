@@ -32,6 +32,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
         tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
+        FirebaseManager.shared.updateDeviceToken()
     }
     
     override func viewWillAppear(_ animated: Bool) {

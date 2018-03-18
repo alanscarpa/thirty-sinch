@@ -28,7 +28,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func loginButtonTapped() {
-        // TODO: Check for username in Firebase, grab email, and then log in with associated email
+        guard usernameTextField.text?.contains("@") == false else {
+            let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please sign in with your username, not your email.")
+            present(alert, animated: true, completion: nil)
+            return
+        }
         if let userId = usernameTextField.text, let password = passwordTextField.text, !userId.isEmpty, !password.isEmpty {
             THSpinner.showSpinnerOnView(view)
             FirebaseManager.shared.logInUserWithUsername(userId, password: password) { [weak self] result in

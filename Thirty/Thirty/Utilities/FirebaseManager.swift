@@ -192,7 +192,6 @@ class FirebaseManager {
     }
     
     func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
-        // TODO: if user logs in with email, it crashes because invalid characters
         FIRAuth.auth()?.signInAnonymously { [weak self] (anonymousUser, error) in
             self?.databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
                 anonymousUser?.delete(completion: { deletionError in
