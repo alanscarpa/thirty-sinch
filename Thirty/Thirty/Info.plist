@@ -21,7 +21,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>11</string>
+	<string>12</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -32,9 +32,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Used to display video</string>
+	<string>You must allow camera permissions to properly send and receive 30s.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Used to send and receive sound</string>
+	<string>You must allow microphone permissions to properly send and receive 30s.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>INStartVideoCallIntent</string>

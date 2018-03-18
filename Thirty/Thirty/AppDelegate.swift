@@ -31,7 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
-        setUpRemoteNotificationsForApplication(application)
+        // TODO: Re-enable when we have a reason for push notifications
+        // setUpRemoteNotificationsForApplication(application)
                 
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().barTintColor = .thPrimaryPurple

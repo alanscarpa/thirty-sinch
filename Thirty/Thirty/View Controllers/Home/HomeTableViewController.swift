@@ -8,6 +8,7 @@
 
 import UIKit
 import SCLAlertView
+import AVFoundation
 
 class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate {
 
@@ -42,6 +43,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             SCLAlertView().showInfo("HI, BETA USER!", subTitle: "Tap on a name to make your first 30!  NOTE:  If the user has not updated to the newest version of the app, the call will show error and fail.", colorStyle: UIColor.thPrimaryPurple.toHex())
             UserManager.shared.hasSeenWelcomeAlertBETA = true
         }
+        requestCameraAndMicrophonePermissions()
     }
     
     // MARK: - Setup
@@ -130,12 +132,20 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         guard searchResults.isEmpty else { return }
         let user = UserManager.shared.contacts[indexPath.row]
         if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
-            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
-            CallManager.shared.call = call
-            RootViewController.shared.pushCallVCWithCall(call)
+            if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
+                requestCameraAndMicrophonePermissions()
+            } else {
+                let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+                CallManager.shared.call = call
+                DispatchQueue.main.async {
+                    RootViewController.shared.pushCallVCWithCall(call)
+                }
+            }
         } else {
             let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because of invalid device token.")
-            present(alertVC, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(alertVC, animated: true, completion: nil)
+            }
         }
     }
     
@@ -172,6 +182,24 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         searchResults = []
         isSearching = false
         tableView.reloadData()
+    }
+    
+    private func requestCameraAndMicrophonePermissions() {
+        AVCaptureDevice.requestAccess(for: AVMediaType.video) { granted in
+            if granted {
+                AVAudioSession.sharedInstance().requestRecordPermission({ granted in
+                    if !granted {
+                        DispatchQueue.main.async {
+                            SCLAlertView().showError("Please enable microphone permission", subTitle: "You won't be able to 30 unlesss you enable microphone permissions.  Go to Settings > Privacy > Microphone and please enable.", colorStyle: UIColor.thPrimaryPurple.toHex())
+                        }
+                    }
+                })
+            } else {
+                DispatchQueue.main.async {
+                    SCLAlertView().showError("Please enable video permission", subTitle: "You won't be able to  30 unlesss you enable video permissions.  Go to Settings > Privacy > Camera and please enable.", colorStyle: UIColor.thPrimaryPurple.toHex())
+                }
+            }
+        }
     }
     
 }
