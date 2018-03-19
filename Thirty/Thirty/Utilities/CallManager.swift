@@ -112,8 +112,8 @@ class CallManager: NSObject, CXProviderDelegate {
     // MARK: - CXProviderDelegate
     
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
+        // THIS GETS CALLED ON SWIPE TO UNLOCK AND TAP TO ANSWER WHILE UNLOCKED
         print("provider:performAnswerCallAction:")
-        
         /*
          * Configure the audio session, but do not start call audio here, since it must be done once
          * the audio session has been activated by the system after having its priority elevated.
@@ -122,8 +122,11 @@ class CallManager: NSObject, CXProviderDelegate {
         // Stop the audio unit by setting isEnabled to `false`.
         audioDevice.isEnabled = false;
         // Configure the AVAudioSession by executing the audio device's `block`.
-        // THIS GETS CALLED ON SWIPE TO UNLOCK AND TAP TO ANSWER WHILE UNLOCKED
         audioDevice.block()
+        if UIApplication.shared.applicationState == .background {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.sendLocalNotification()
+        }
         action.fulfill()
     }
     

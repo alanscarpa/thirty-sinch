@@ -31,8 +31,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
-        // TODO: Re-enable when we have a reason for push notifications
-        // setUpRemoteNotificationsForApplication(application)
+        setUpLocalNotification()
+        
+        // TODO: Set up when we have reason for remote notifications
+        //setUpRemoteNotificationsForApplication(application)
                 
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().barTintColor = .thPrimaryPurple
@@ -44,24 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registry.delegate = self
         registry.desiredPushTypes = [PKPushType.voIP]
         
-        // TODO: REMOVE THIS AFTER NEXT RELEASE.
-        if UserManager.shared.hasLaunchedAppBETA {
-            // PROCEED LIKE NORMAL
-            if self.loggedIn {
-                RootViewController.shared.goToHomeVC()
-            } else {
-                RootViewController.shared.goToWelcomeVC()
-            }
+        if self.loggedIn {
+            RootViewController.shared.goToHomeVC()
         } else {
-            // FIRST TIME LAUNCHING APP
-            do {
-                try FIRAuth.auth()?.signOut()
-                RootViewController.shared.goToWelcomeVCWithBetaMessage()
-            } catch {
-                print(error.localizedDescription)
-            }
-            UserManager.shared.hasLaunchedAppBETA = true
-        }        
+            RootViewController.shared.goToWelcomeVC()
+        }
         return true
     }
     
@@ -121,36 +110,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         guard let interaction = userActivity.interaction else {
             return false
         }
-        
         var personHandle: INPersonHandle?
-        
-        // Find out what the intent is when tapping "30" butotn
-        print(interaction)
-        print(interaction.intent)
-        
         if let startVideoCallIntent = interaction.intent as? INStartVideoCallIntent {
             personHandle = startVideoCallIntent.contacts?[0].personHandle
         }
-        
-        // ALL VIDEO BUTTON`
-        //    handle when coming from recents - killed state
-        //   handle coming from recents - bg state
-        //   handle coming from lock screen video button killed
-        //   handle when app is on screen and receiving call
-        //   handle when app is on screen and locked video button
-        //   handle when app is in bg and unlocked WITH NO BRAKPOINTS
-        //   handle when app is in bg and locked WITH NO BRAKPOINTS
-        
-        // 30 BUTTON TAPS
-        //   handle when app is on screen and locked 30 button
-        
-        // THIS IS CALLED WHEN A USER TAPS ANY OF BUTTONS FROM LOCK SCREEN
-        // ALSO CALLED FROM RECENTS
         if let personHandle = personHandle?.value {
-            // if there is already an active call, then it is incoming and we are already logged in
-                // push call vc
-            // if it is outgoing, create the call,
-                // if logged in, push callVC
             let callDirection: CallDirection = CallManager.shared.call == nil ? .outgoing : .incoming
             if callDirection == .outgoing {
                 if loggedIn  {
@@ -171,13 +135,66 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
-    // MARK: - UNUserNotificationCenterDelegate
+    // MARK: - Notifications
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void) {
-        // let userInfo = response.notification.request.content.userInfo
+    func setUpLocalNotification() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        let options: UNAuthorizationOptions = [.alert, .sound]
+        center.requestAuthorization(options: options) {
+            (granted, error) in
+            if !granted {
+                print("Something went wrong")
+            }
+        }
+        center.getNotificationSettings { (settings) in
+            if settings.authorizationStatus != .authorized {
+                // Notifications not allowed
+            }
+        }
     }
     
-    // MARK: - Notifications
+    func sendLocalNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Tap the \"Start 30\" button to accept the call!"
+        content.body = "Begin your 30 video chat by tapping the \"Start 30\""
+        content.sound = UNNotificationSound.default()
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1,
+                                                        repeats: false)
+        let identifier = "LocalNotification"
+        let request = UNNotificationRequest(identifier: identifier,
+                                            content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        })
+    }
+    
+    // MARK: - UNUserNotificationCenterDelegate
+
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert,.sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        // Determine the user action
+        switch response.actionIdentifier {
+        case UNNotificationDismissActionIdentifier:
+            break
+        case UNNotificationDefaultActionIdentifier:
+            print("Default")
+        default:
+            print("Unknown action")
+        }
+        completionHandler()
+    }
     
     func setUpRemoteNotificationsForApplication(_ application: UIApplication) {
         if !application.isRegisteredForRemoteNotifications {
@@ -203,28 +220,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // TODO: Present screen asking to turn on notifications
     }
     
-
-    // if resign active, eligible to check if call exists, then pushCallVC
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("became active")
-        // ANSWERING CALL IN PRESENT, OPEN STATE MAKES CALL STATE ACTIVE BEFORE APP BECOMES ACTIVE
-        // ANSWERING CALL FROM LOCKED STATE
-        // CHECK FOR CALL, AND IF SO, PRESENT CALL VC
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         if let call = CallManager.shared.call, call.state != .active {
             RootViewController.shared.pushCallVCWithCall(call)
         }
     }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-         print("resigned active")
-        //RootViewController.shared.setHomeVCIsVisible(false)
-    }
-    
-    // ELIGIBLE TO CHECK FOR CALLS
-    func applicationDidEnterBackground(_ application: UIApplication) {
-         print("entered background")
-        //RootViewController.shared.setHomeVCIsVisible(false)
-    }
-
 }
 
