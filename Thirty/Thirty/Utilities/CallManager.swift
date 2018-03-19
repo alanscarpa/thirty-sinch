@@ -154,6 +154,10 @@ class CallManager: NSObject, CXProviderDelegate {
             FirebaseManager.shared.declineCall(call!)
         }
         endCall()
+        if UIApplication.shared.applicationState == .background {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.removeLocalNotifications()
+        }
         action.fulfill()
     }
     

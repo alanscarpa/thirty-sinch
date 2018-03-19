@@ -156,8 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func sendLocalNotification() {
         let content = UNMutableNotificationContent()
-        content.title = "Tap the \"Start 30\" button to accept the call!"
-        content.body = "Begin your 30 video chat by tapping the \"Start 30\""
+        content.title = "Tap \"Start 30\" button to accept the call!"
         content.sound = UNNotificationSound.default()
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1,
                                                         repeats: false)
@@ -169,6 +168,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 print(error.localizedDescription)
             }
         })
+    }
+    
+    func removeLocalNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
     
     // MARK: - UNUserNotificationCenterDelegate
@@ -222,8 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("became active")
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        removeLocalNotifications()
         if let call = CallManager.shared.call, call.state != .active {
             RootViewController.shared.pushCallVCWithCall(call)
         }
