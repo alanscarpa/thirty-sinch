@@ -145,6 +145,7 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.block()
         call!.state = .active
         callKitProvider?.reportOutgoingCall(with: action.callUUID, startedConnectingAt: nil)
+        UIApplication.shared.isIdleTimerDisabled = true
         action.fulfill()
     }
     
@@ -209,5 +210,6 @@ class CallManager: NSObject, CXProviderDelegate {
         // AudioDevice is enabled by default
         audioDevice.isEnabled = true
         delegate?.callDidEnd()
+        UIApplication.shared.isIdleTimerDisabled = true
     }
 }
