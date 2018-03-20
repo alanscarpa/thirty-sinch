@@ -77,7 +77,9 @@ class FirebaseManager {
     }
     
     func declineCall(_ call: Call) {
-        activeCallsRef.child(call.roomName).updateChildValues(["call-state": "declined"])
+        activeCallsRef.child(call.roomName).updateChildValues(["call-state": "declined"]) { [weak self] (error, ref) in
+            self?.activeCallsRef.child(call.roomName).removeValue()
+        }
     }
     
     func observeStatusForCallWithRoomName(_ roomName: String, completion: @escaping (CallState) -> Void) {
