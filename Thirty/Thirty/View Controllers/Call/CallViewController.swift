@@ -71,6 +71,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     // MARK: - Setup
     
     private func setUpUI() {
+        view.backgroundColor = .thPrimaryPurple
         remoteVideoView.alpha = 0
         timeRemainingLabel.textColor = timeRemainingLabelColor
         cancelButton.alpha = 0.75
@@ -294,14 +295,14 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     func answerCall() {
         CallManager.shared.stopRingbackTone()
         outgoingCallRingingTimer.invalidate()
+        THSpinner.dismiss()
+        callBackgroundImageView.shake()
         UIView.animate(withDuration: 1.0, animations: { [weak self] in
             self?.remoteVideoView.alpha = 1
-            self?.callBackgroundImageView.alpha = 0.5
         }) { [weak self] complete in
             if complete {
                 guard let strongSelf = self else { return }
                 FirebaseManager.shared.answeredCallWithRoomName(strongSelf.call.roomName)
-                THSpinner.dismiss()
                 strongSelf.remoteParticipantLabel.isHidden = true
                 strongSelf.callBackgroundImageView.explode(.chaos, duration: 2)
                 strongSelf.timer = Timer.scheduledTimer(timeInterval: 1.0, target: strongSelf, selector: #selector(strongSelf.updateTime), userInfo: nil, repeats: true)

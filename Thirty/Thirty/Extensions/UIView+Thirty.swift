@@ -11,6 +11,15 @@ import UIKit
 extension UIView: Explodable {}
 
 extension UIView {
+    
+    func shake(duration: Double = 1.0) {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.duration = duration
+        animation.values = [-20.0, 20.0, -20.0, 20.0, -10.0, 10.0, -5.0, 5.0, 0.0 ]
+        layer.add(animation, forKey: "shake")
+    }
+    
     func rotate360Degrees(duration: CFTimeInterval = 2.0, andScaleUp scaleUp: Bool = false, infinitely: Bool = false, completionDelegate: CAAnimationDelegate? = nil) {
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
         rotateAnimation.fromValue = 0.0
