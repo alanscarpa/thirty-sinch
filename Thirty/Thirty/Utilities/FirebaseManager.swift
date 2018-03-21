@@ -77,8 +77,19 @@ class FirebaseManager {
     }
     
     func declineCall(_ call: Call) {
-        activeCallsRef.child(call.roomName).updateChildValues(["call-state": "declined"]) { [weak self] (error, ref) in
-            self?.activeCallsRef.child(call.roomName).removeValue()
+        activeCallsRef.child(call.roomName).child("call-state").observeSingleEvent(of: .value) { [weak self] snapshot in
+            guard let strongSelf = self else { return }
+            if let value = snapshot.value as? String {
+                let callState = CallState(rawValue: value)!
+                switch callState {
+                case .pending:
+                    strongSelf.activeCallsRef.child(call.roomName).updateChildValues(["call-state": "declined"]) { [weak self] (error, ref) in
+                        self?.activeCallsRef.child(call.roomName).removeValue()
+                    }
+                case .active, .declined, .ended:
+                    break
+                }
+            }
         }
     }
     
