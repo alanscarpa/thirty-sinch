@@ -61,17 +61,20 @@ class CallManager: NSObject, CXProviderDelegate {
     
     func stopRingbackTone() {
         ringbackAudioPlayer?.stop()
+        ringbackAudioPlayer?.currentTime = 0.0
     }
     
     // MARK -
     
     func performStartCallAction(call: Call, completion: @escaping ((Error?) -> Void)) {
+        self.call = call
         let callHandle = CXHandle(type: .generic, value: call.callee)
         let startCallAction = CXStartCallAction(call: call.uuid, handle: callHandle)
         startCallAction.isVideo = true
         let transaction = CXTransaction(action: startCallAction)
-        self.call = call
-        ringbackAudioPlayer?.stop()
+        if call.direction == .incoming {
+            stopRingbackTone()
+        }
         callKitCallController.request(transaction)  { error in
             completion(error)
         }

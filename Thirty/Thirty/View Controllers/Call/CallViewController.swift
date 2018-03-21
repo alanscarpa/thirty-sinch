@@ -183,10 +183,18 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                 strongSelf.present(alertVC, animated: true, completion: nil)
             } else {
                 print("successfully sent voIP push")
-                print(String(data: response.data!, encoding: .utf8)!)
                 guard let strongSelf = self else { return }
-                DispatchQueue.main.async {
-                    strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: strongSelf.callTimeoutLength, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)
+                CallManager.shared.performStartCallAction(call: strongSelf.call) { [weak self] error in
+                    if let error = error {
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in
+                            self?.endCall()
+                        }
+                        self?.present(alertVC, animated: true, completion: nil)
+                    } else {
+                        DispatchQueue.main.async {
+                            strongSelf.outgoingCallRingingTimer = Timer.scheduledTimer(timeInterval: strongSelf.callTimeoutLength, target: strongSelf, selector: #selector(strongSelf.outgoingCallTimerFinished), userInfo: nil, repeats: false)
+                        }
+                    }
                 }
             }
         }
@@ -201,14 +209,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         if (remoteParticipant == nil) {
             remoteParticipant = participant
             remoteParticipant?.delegate = self
-            CallManager.shared.performStartCallAction(call: call) { [weak self] error in
-                if let error = error {
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in
-                        self?.endCall()
-                    }
-                    self?.present(alertVC, animated: true, completion: nil)
-                }
-            }
         }
         logMessage(messageText: "Participant \(participant.identity) connected with \(participant.remoteAudioTracks.count) audio and \(participant.remoteVideoTracks.count) video tracks")
     }
