@@ -28,7 +28,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var timer = Timer()
     var outgoingCallRingingTimer = Timer()
     let timeRemainingLabelColor = UIColor.thPrimaryPurple.withAlphaComponent(0.5)
-    let callTimeoutLength: Double = 60
+    let callTimeoutLength: Double = 45
     var callHasEnded = false
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
@@ -297,6 +297,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         outgoingCallRingingTimer.invalidate()
         THSpinner.dismiss()
         callBackgroundImageView.shake()
+        if call.direction == .outgoing {
+            CallManager.shared.playAnsweredTone()
+        }
         UIView.animate(withDuration: 1.0, animations: { [weak self] in
             self?.remoteVideoView.alpha = 1
         }) { [weak self] complete in

@@ -56,6 +56,18 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func playRingbackTone() {
+        let path = Bundle.main.path(forResource: "ringbackMorningSong.mp3", ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+        ringbackAudioPlayer?.numberOfLoops = -1
+        ringbackAudioPlayer?.play()
+    }
+    
+    func playAnsweredTone() {
+        let path = Bundle.main.path(forResource: "answeredChime.wav", ofType: nil)!
+        let url = URL(fileURLWithPath: path)
+        ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+        ringbackAudioPlayer?.numberOfLoops = 0
         ringbackAudioPlayer?.play()
     }
     
