@@ -296,6 +296,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         outgoingCallRingingTimer.invalidate()
         UIView.animate(withDuration: 1.0, animations: { [weak self] in
             self?.remoteVideoView.alpha = 1
+            self?.callBackgroundImageView.alpha = 0.5
         }) { [weak self] complete in
             if complete {
                 guard let strongSelf = self else { return }
