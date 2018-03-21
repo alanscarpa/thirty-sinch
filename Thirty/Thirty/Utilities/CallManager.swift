@@ -225,6 +225,6 @@ class CallManager: NSObject, CXProviderDelegate {
         // AudioDevice is enabled by default
         audioDevice.isEnabled = true
         delegate?.callDidEnd()
-        UIApplication.shared.isIdleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = false
     }
 }
