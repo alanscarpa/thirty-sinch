@@ -26,9 +26,9 @@ class CallManager: NSObject, CXProviderDelegate {
     /**
      * We will create an audio device and manage it's lifecycle in response to CallKit events.
      */
-    var audioDevice: TVIDefaultAudioDevice = TVIDefaultAudioDevice()
+    private var audioDevice: TVIDefaultAudioDevice = TVIDefaultAudioDevice()
     weak var delegate: CallManagerDelegate?
-    var ringbackAudioPlayer: AVAudioPlayer?
+    private var ringbackAudioPlayer: AVAudioPlayer?
     
     func configure() {
         let configuration = CXProviderConfiguration(localizedName: "Thirty")
