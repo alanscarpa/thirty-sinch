@@ -29,16 +29,13 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
-        
+    }
+    
+    private func setupRootNavigationController() {
         rootNavigationController.setNavigationBarHidden(true, animated: false)
         rootNavigationController.delegate = self
-        rootNavigationController.willMove(toParentViewController: self)
-        addChildViewController(rootNavigationController)
-        view.addSubview(rootNavigationController.view)
         rootNavigationController.view.backgroundColor = .thPrimaryPurple
-        rootNavigationController.didMove(toParentViewController: self)
-        
-        rootNavigationController.view.frame = super.view.frame
+        thAddChildViewController(rootNavigationController)
     }
     
     func popViewController() {
@@ -72,9 +69,8 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     func pushCallVCWithCall(_ call: Call) {
-        let callVC = CallViewController()
-        callVC.call = call
-        rootNavigationController.pushViewController(callVC, animated: true) 
+        let callVC = CallViewController(call: call)
+        rootNavigationController.pushViewController(callVC, animated: true)
     }
     
 }

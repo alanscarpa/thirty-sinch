@@ -157,7 +157,7 @@ class FirebaseManager {
                     if snapshot.exists() {
                         // Delete our user from DB if username already exists
                         fbUser?.delete(completion: { error in
-                            completion(.Failure(error ?? THError(errorType: .usernameAlreadyExists)))
+                            completion(.Failure(error ?? THError.usernameAlreadyExists))
                         })
                     } else {
                         // STEP 3 - We add a display name to the firebase auth user
@@ -184,7 +184,7 @@ class FirebaseManager {
                                                         }
                                             })
                                     } else {
-                                        completion(.Failure(THError(errorType: .blankFBUserReturned)))
+                                        completion(.Failure(THError.blankFBUserReturned))
                                     }
                                 }
                             }
@@ -193,7 +193,7 @@ class FirebaseManager {
                 }) { (error) in
                     // Delete our user if we were unable to access DB after creating user
                     fbUser?.delete(completion: { error in
-                        completion(.Failure(error ?? THError(errorType: .usernameAlreadyExists)))
+                        completion(.Failure(error ?? THError.usernameAlreadyExists))
                     })
                 }
             }
@@ -212,7 +212,7 @@ class FirebaseManager {
                         completion(.Failure(deletionError))
                     } else {
                         guard snapshot.exists() else {
-                            completion(.Failure(THError(errorType: .usernameDoesNotExist)))
+                            completion(.Failure(THError.usernameDoesNotExist))
                             return
                         }
                         let value = snapshot.value as? NSDictionary
@@ -298,7 +298,7 @@ class FirebaseManager {
             if let deviceToken = value?["device-token"] as? String {
                 completion(.Success(deviceToken))
             } else {
-                completion(.Failure(THError.init(errorType: .unableToGetDeviceToken)))
+                completion(.Failure(THError.unableToGetDeviceToken))
             }
         }) { (error) in
             completion(.Failure(error))

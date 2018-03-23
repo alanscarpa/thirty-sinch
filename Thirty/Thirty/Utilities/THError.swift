@@ -6,57 +6,7 @@
 //  Copyright © 2017 Thirty. All rights reserved.
 //
 
-class THErrorHandler {
-    class func errorInfoFromError(_ error: Error) -> (title: String, description: String) {
-        if let customError = error as? THError {
-            return (customError.title, customError.description)
-        } else {
-            return ("Error", error.localizedDescription)
-        }
-
-    }
-}
-
-struct THError: Error {
-    var title: String
-    var description: String
-    var code: Int
-    
-    init(errorType: THErrorType) {
-        switch errorType {
-        case .blankFBUserReturned:
-            title = "Blank User Error"
-            description = "Unable to get your user info.  Please try again."
-            code = 001
-        case .usernameDoesNotExist:
-            title = "Username Does Not Exist"
-            description = "Incorrect username.  Please try again."
-            code = 002
-        case .usernameAlreadyExists:
-            title = "Username Already Exists"
-            description = "That username is already taken.  Please try another."
-            code = 003
-        case .noCurrentUser:
-            title = "No Current User"
-            description = "You've been logged out.  Please log in."
-            code = 004
-        case .unableToGetDeviceToken:
-            title = "Unable to get device token."
-            description = "Please try again later."
-            code = 005
-        case .blankFBCallStatusReturned:
-            title = "Unable to get FB Call Status."
-            description = "Please try again later."
-            code = 006
-        case .noSavedCredentials:
-            title = "Unable to log in."
-            description = "No previously saved credentials."
-            code = 007
-        }
-    }
-}
-
-enum THErrorType {
+enum THError: Error {
     case blankFBUserReturned
     case usernameDoesNotExist
     case usernameAlreadyExists
@@ -64,4 +14,61 @@ enum THErrorType {
     case unableToGetDeviceToken
     case blankFBCallStatusReturned
     case noSavedCredentials
+    
+    var title: String {
+        switch self {
+        case .blankFBUserReturned:
+            return "Blank User Error"
+        case .usernameDoesNotExist:
+            return "Username Does Not Exist"
+        case .usernameAlreadyExists:
+            return "Username Already Exists"
+        case .noCurrentUser:
+            return "No Current User"
+        case .unableToGetDeviceToken:
+            return "Unable to get device token."
+        case .blankFBCallStatusReturned:
+            return "Unable to get FB Call Status."
+        case .noSavedCredentials:
+            return "Unable to log in."
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .blankFBUserReturned:
+            return "Unable to get your user info.  Please try again."
+        case .usernameDoesNotExist:
+            return "Incorrect username.  Please try again."
+        case .usernameAlreadyExists:
+            return "That username is already taken.  Please try another."
+        case .noCurrentUser:
+            return "You've been logged out.  Please log in."
+        case .unableToGetDeviceToken:
+            return "Please try again later."
+        case .blankFBCallStatusReturned:
+            return "Please try again later."
+        case .noSavedCredentials:
+            return "No previously saved credentials."
+        }
+    }
+    
+    var code: Int {
+        switch self {
+        case .blankFBUserReturned:
+            return 001
+        case .usernameDoesNotExist:
+            return 002
+        case .usernameAlreadyExists:
+            return 003
+        case .noCurrentUser:
+            return 004
+        case .unableToGetDeviceToken:
+            return 005
+        case .blankFBCallStatusReturned:
+            return 006
+        case .noSavedCredentials:
+            return 007
+        }
+    }
 }

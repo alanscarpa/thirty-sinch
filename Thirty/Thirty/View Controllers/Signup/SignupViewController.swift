@@ -68,7 +68,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             case .Success(_):
                 RootViewController.shared.goToHomeVC()
             case .Failure(let error):
-                let errorInfo = THErrorHandler.errorInfoFromError(error)
+                let errorInfo = error.alertInfo
                 self.present(UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description), animated: true, completion: nil)
             }
         }
