@@ -37,7 +37,6 @@
 		4530A9181F05CF9E0039D303 /* JHSpinnerView+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9171F05CF9E0039D303 /* JHSpinnerView+Thirty.swift */; };
 		45407F5C20571AB0008B05B3 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45407F5B20571AB0008B05B3 /* CallManager.swift */; };
 		45407F5E20575A47008B05B3 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45407F5D20575A47008B05B3 /* Call.swift */; };
-		454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7021E54FEAD0087FAAD /* Keys.swift */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
 		455BDE7920621FD9009CA00A /* answeredChime.wav in Resources */ = {isa = PBXBuildFile; fileRef = 455BDE7820621FD9009CA00A /* answeredChime.wav */; };
@@ -85,7 +84,6 @@
 		4530A9171F05CF9E0039D303 /* JHSpinnerView+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JHSpinnerView+Thirty.swift"; sourceTree = "<group>"; };
 		45407F5B20571AB0008B05B3 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
 		45407F5D20575A47008B05B3 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
-		454CC7021E54FEAD0087FAAD /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Keys.swift; path = "Thirty/Supporting Files/Keys.swift"; sourceTree = SOURCE_ROOT; };
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		454CC70E1E57D4F60087FAAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -224,7 +222,6 @@
 		4500C7891E4E9EBD00AF54AA /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				454CC7021E54FEAD0087FAAD /* Keys.swift */,
 				45100BAD2051DE2A0000B254 /* PlatformUtils.swift */,
 				45100BB1205211630000B254 /* TokenUtils.swift */,
 				45100BB32052119A0000B254 /* TwilioSettings.swift */,
@@ -488,7 +485,6 @@
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 				45993F322058D7DB002276E9 /* Explodable.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
-				454CC7031E54FEAD0087FAAD /* Keys.swift in Sources */,
 				4530A9161F05C59D0039D303 /* THError.swift in Sources */,
 				4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */,
 			);
