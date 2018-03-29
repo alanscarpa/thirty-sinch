@@ -287,7 +287,7 @@ class FirebaseManager {
                 UserManager.shared.contacts.sort(by: { $0.username < $1.username })
                 completion(.Success)
             } else {
-                completion(.Failure(THError.unableToGetDeviceToken))
+                completion(.Failure(THError.unableToGetUsers))
             }
         }) { (error) in
             completion(.Failure(error))
