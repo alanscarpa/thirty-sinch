@@ -29,6 +29,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
+        RootViewController.shared.showStatusBarBackground = true
         requestCameraAndMicrophonePermissions()
     }
     

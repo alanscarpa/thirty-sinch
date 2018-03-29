@@ -65,6 +65,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        RootViewController.shared.showStatusBarBackground = false
         startLocalPreviewVideo()
         showCallSpinner()
         connectToRoom()

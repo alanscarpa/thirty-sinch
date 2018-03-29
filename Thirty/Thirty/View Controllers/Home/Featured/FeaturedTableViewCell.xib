@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="455" height="99.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="spPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="Pht-mm-dOe">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallpools" translatesAutoresizingMaskIntoConstraints="NO" id="Pht-mm-dOe">
                         <rect key="frame" x="14" y="9" width="80" height="80"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="80" id="IDG-cX-oTd"/>
@@ -70,6 +70,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="spPhoto" width="516" height="341"/>
+        <image name="smallpools" width="2176" height="1450"/>
     </resources>
 </document>

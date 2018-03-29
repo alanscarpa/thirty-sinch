@@ -20,6 +20,13 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         }
     }
     
+    var showStatusBarBackground = true {
+        didSet {
+            let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+            statusBar.backgroundColor = showStatusBarBackground  ? .thPrimaryPurple : .clear
+        }
+    }
+    
     var showToolBar = false {
         didSet {
             rootNavigationController.setToolbarHidden(!showToolBar, animated: true)
