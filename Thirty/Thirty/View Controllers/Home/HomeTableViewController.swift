@@ -27,9 +27,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         searchController.hidesNavigationBarDuringPresentation = false
         definesPresentationContext = true
         
-        // TODO: undo when search re-enabled
-//        tableView.tableHeaderView = searchController.searchBar
-//        tableView.tableHeaderView?.isHidden = true
+        tableView.tableHeaderView = searchController.searchBar
+        tableView.tableHeaderView?.isHidden = true
+        tableView.register(UINib(nibName: FeaturedTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: FeaturedTableViewCell.nibName)
         tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
         tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
@@ -39,10 +39,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
-        if !UserManager.shared.hasSeenWelcomeAlertBETA {
-            SCLAlertView().showInfo("HI, BETA USER!", subTitle: "Tap on a name to make your first 30!  NOTE:  If the user has not updated to the newest version of the app, the call will show error and fail.", colorStyle: UIColor.thPrimaryPurple.toHex())
-            UserManager.shared.hasSeenWelcomeAlertBETA = true
-        }
         requestCameraAndMicrophonePermissions()
     }
     

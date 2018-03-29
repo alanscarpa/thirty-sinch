@@ -40,6 +40,8 @@
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
 		454CD1BA206C7ED3006235C8 /* chillRingback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CD1B9206C7ED3006235C8 /* chillRingback.wav */; };
+		454CD1BE206D77FA006235C8 /* FeaturedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CD1BC206D77FA006235C8 /* FeaturedTableViewCell.swift */; };
+		454CD1BF206D77FA006235C8 /* FeaturedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454CD1BD206D77FA006235C8 /* FeaturedTableViewCell.xib */; };
 		455BDE7920621FD9009CA00A /* answeredChime.wav in Resources */ = {isa = PBXBuildFile; fileRef = 455BDE7820621FD9009CA00A /* answeredChime.wav */; };
 		457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */; };
 		457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */; };
@@ -89,6 +91,8 @@
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		454CC70E1E57D4F60087FAAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		454CD1B9206C7ED3006235C8 /* chillRingback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chillRingback.wav; sourceTree = "<group>"; };
+		454CD1BC206D77FA006235C8 /* FeaturedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedTableViewCell.swift; sourceTree = "<group>"; };
+		454CD1BD206D77FA006235C8 /* FeaturedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedTableViewCell.xib; sourceTree = "<group>"; };
 		455BDE7820621FD9009CA00A /* answeredChime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = answeredChime.wav; sourceTree = "<group>"; };
 		45635E401EC0089B0011096C /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
@@ -241,6 +245,7 @@
 		4500C78E1E527ADA00AF54AA /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				454CD1BB206D77E3006235C8 /* Featured */,
 				457A9ABC1F57C056004FC8D1 /* Search */,
 				4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */,
 				4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */,
@@ -282,6 +287,15 @@
 				45407F5D20575A47008B05B3 /* Call.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		454CD1BB206D77E3006235C8 /* Featured */ = {
+			isa = PBXGroup;
+			children = (
+				454CD1BC206D77FA006235C8 /* FeaturedTableViewCell.swift */,
+				454CD1BD206D77FA006235C8 /* FeaturedTableViewCell.xib */,
+			);
+			path = Featured;
 			sourceTree = "<group>";
 		};
 		457A9ABC1F57C056004FC8D1 /* Search */ = {
@@ -388,6 +402,7 @@
 				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
 				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
+				454CD1BF206D77FA006235C8 /* FeaturedTableViewCell.xib in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
 				4500C7921E527AFF00AF54AA /* HomeTableViewController.xib in Resources */,
 			);
@@ -485,6 +500,7 @@
 				45407F5C20571AB0008B05B3 /* CallManager.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */,
 				4530A9141F05BA3D0039D303 /* User.swift in Sources */,
+				454CD1BE206D77FA006235C8 /* FeaturedTableViewCell.swift in Sources */,
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 				45993F322058D7DB002276E9 /* Explodable.swift in Sources */,

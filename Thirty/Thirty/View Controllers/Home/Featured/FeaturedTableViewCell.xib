@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14105" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="FeaturedTableViewCell" customModule="Thirty" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="455" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="455" height="99.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callBackgroundGradient" translatesAutoresizingMaskIntoConstraints="NO" id="Pht-mm-dOe">
+                        <rect key="frame" x="14" y="9" width="80" height="80"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="IDG-cX-oTd"/>
+                            <constraint firstAttribute="height" constant="80" id="r9z-oe-pmR"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TITLE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="r6p-O6-cfY">
+                        <rect key="frame" x="108" y="29.5" width="333" height="41"/>
+                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 PRESENTS..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c0c-f1-7X7">
+                        <rect key="frame" x="232.5" y="9" width="84.5" height="16.5"/>
+                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEARN MORE &gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qb8-dM-Ejh">
+                        <rect key="frame" x="230.5" y="74.5" width="88" height="17"/>
+                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="c0c-f1-7X7" firstAttribute="centerX" secondItem="r6p-O6-cfY" secondAttribute="centerX" id="Piw-vu-E2f"/>
+                    <constraint firstItem="Qb8-dM-Ejh" firstAttribute="centerX" secondItem="r6p-O6-cfY" secondAttribute="centerX" id="RsL-kf-B8U"/>
+                    <constraint firstItem="r6p-O6-cfY" firstAttribute="leading" secondItem="Pht-mm-dOe" secondAttribute="trailing" constant="14" id="Xou-Bc-Slv"/>
+                    <constraint firstItem="Pht-mm-dOe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Yjm-lH-wKk"/>
+                    <constraint firstItem="r6p-O6-cfY" firstAttribute="top" secondItem="c0c-f1-7X7" secondAttribute="bottom" constant="4" id="pEO-PM-1kx"/>
+                    <constraint firstItem="r6p-O6-cfY" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="uCv-RK-apk"/>
+                    <constraint firstItem="Qb8-dM-Ejh" firstAttribute="top" secondItem="r6p-O6-cfY" secondAttribute="bottom" constant="4" id="veb-sA-SoS"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.1301618517" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="njF-e1-oar" firstAttribute="leading" secondItem="Pht-mm-dOe" secondAttribute="leading" constant="-14" id="Q1I-eg-h0l"/>
+                <constraint firstItem="r6p-O6-cfY" firstAttribute="trailing" secondItem="njF-e1-oar" secondAttribute="trailing" constant="-14" id="c6w-8p-Zju"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <point key="canvasLocation" x="101.5" y="130"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="callBackgroundGradient" width="426" height="266"/>
+    </resources>
+</document>
