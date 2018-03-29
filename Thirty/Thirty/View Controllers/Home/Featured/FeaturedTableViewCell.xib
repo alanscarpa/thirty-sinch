@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="455" height="99.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callBackgroundGradient" translatesAutoresizingMaskIntoConstraints="NO" id="Pht-mm-dOe">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="spPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="Pht-mm-dOe">
                         <rect key="frame" x="14" y="9" width="80" height="80"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="80" id="IDG-cX-oTd"/>
@@ -45,7 +45,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="0.1301618517" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" red="0.396078431372549" green="0.0" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="c0c-f1-7X7" firstAttribute="centerX" secondItem="r6p-O6-cfY" secondAttribute="centerX" id="Piw-vu-E2f"/>
                     <constraint firstItem="Qb8-dM-Ejh" firstAttribute="centerX" secondItem="r6p-O6-cfY" secondAttribute="centerX" id="RsL-kf-B8U"/>
@@ -70,6 +70,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="callBackgroundGradient" width="426" height="266"/>
+        <image name="spPhoto" width="516" height="341"/>
     </resources>
 </document>

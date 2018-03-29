@@ -39,15 +39,15 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         let bgView = UIView()
         bgView.backgroundColor = .thPrimaryPurple
         tableView.backgroundView = bgView
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.tableHeaderView?.isHidden = true
         tableView.register(UINib(nibName: FeaturedTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: FeaturedTableViewCell.nibName)
         tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
         tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
+        tableView.tableHeaderView = searchController.searchBar
     }
     
     func setUpSearchController() {
+        searchController.searchBar.searchBarStyle = .minimal
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
@@ -159,21 +159,26 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard searchResults.isEmpty else { return }
-        let user = UserManager.shared.contacts[indexPath.row]
-        if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
-            if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
-                requestCameraAndMicrophonePermissions()
-            } else {
-                let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
-                CallManager.shared.call = call
-                DispatchQueue.main.async {
-                    RootViewController.shared.pushCallVCWithCall(call)
-                }
-            }
+        
+        if UserManager.shared.hasFeaturedUsers && indexPath.section == 0 {
+            
         } else {
-            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because of invalid device token.")
-            DispatchQueue.main.async {
-                self.present(alertVC, animated: true, completion: nil)
+            let user = UserManager.shared.contacts[indexPath.row]
+            if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+                if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
+                    requestCameraAndMicrophonePermissions()
+                } else {
+                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+                    CallManager.shared.call = call
+                    DispatchQueue.main.async {
+                        RootViewController.shared.pushCallVCWithCall(call)
+                    }
+                }
+            } else {
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because of invalid device token.")
+                DispatchQueue.main.async {
+                    self.present(alertVC, animated: true, completion: nil)
+                }
             }
         }
     }
