@@ -21,18 +21,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func viewDidLoad() {
         super.viewDidLoad()
         getContacts()
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        definesPresentationContext = true
-        
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.tableHeaderView?.isHidden = true
-        tableView.register(UINib(nibName: FeaturedTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: FeaturedTableViewCell.nibName)
-        tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
-        tableView.backgroundColor = .thPrimaryPurple
-        tableView.separatorInset = .zero
+        setUpSearchController()
+        setUpTableView()
         FirebaseManager.shared.updateDeviceToken()
     }
     
@@ -44,12 +34,40 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     // MARK: - Setup
     
+    func setUpTableView() {
+        // This prevents the gray view from being seen when user exposes the bounce area.
+        let bgView = UIView()
+        bgView.backgroundColor = .thPrimaryPurple
+        tableView.backgroundView = bgView
+        tableView.tableHeaderView = searchController.searchBar
+        tableView.tableHeaderView?.isHidden = true
+        tableView.register(UINib(nibName: FeaturedTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: FeaturedTableViewCell.nibName)
+        tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
+        tableView.backgroundColor = .thPrimaryPurple
+        tableView.separatorInset = .zero
+    }
+    
+    func setUpSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        definesPresentationContext = true
+    }
+    
     func getContacts() {
         FirebaseManager.shared.getContacts { [weak self] result in
             switch result {
-            case .Success(let user):
-                print(user)
-                self?.tableView.reloadData()
+            case .Success():
+                FirebaseManager.shared.getFeaturedUsers { [weak self] result in
+                    switch result {
+                    case .Success():
+                        self?.tableView.reloadData()
+                    case .Failure(let error):
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
+                        self?.present(alertVC, animated: true, completion: nil)
+                    }
+                }
             case .Failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts.", message: error.localizedDescription)
                 self?.present(alertVC, animated: true, completion: nil)
@@ -109,17 +127,32 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     // MARK: - TableViewDataSource
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return UserManager.shared.hasFeaturedUsers ? 2 : 1
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isSearching ? searchResults.count : UserManager.shared.contacts.count
+        if UserManager.shared.hasFeaturedUsers && section == 0 {
+            return UserManager.shared.featuredUsers.count
+        } else {
+            return isSearching ? searchResults.count : UserManager.shared.contacts.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-        cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
-            UserManager.shared.contacts[indexPath.row].username
-        cell.addButton.isHidden = isSearching ? false : true
-        cell.delegate = self
-        return cell
+        if indexPath.section == 0 && UserManager.shared.hasFeaturedUsers {
+            let cell = tableView.dequeueReusableCell(withIdentifier: FeaturedTableViewCell.nibName, for: indexPath) as! FeaturedTableViewCell
+            let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
+            cell.setUpForFeaturedUser(featuredUser)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
+            cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
+                UserManager.shared.contacts[indexPath.row].username
+            cell.addButton.isHidden = isSearching ? false : true
+            cell.delegate = self
+            return cell
+        }
     }
     
     // MARK: - UITableViewDelegate
@@ -142,6 +175,14 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             DispatchQueue.main.async {
                 self.present(alertVC, animated: true, completion: nil)
             }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if UserManager.shared.hasFeaturedUsers && indexPath.section == 0 {
+            return 125
+        } else {
+            return 64
         }
     }
     

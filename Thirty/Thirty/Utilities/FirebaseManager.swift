@@ -275,7 +275,7 @@ class FirebaseManager {
                 let usernames = value.allKeys as? [String] {
                 for username in usernames {
                     guard username != UserManager.shared.currentUserUsername.lowercased() else { continue }
-                    var user = User()
+                    let user = User()
                     if let displayName = (value[username] as? NSDictionary)?["display-name"] as? String {
                         user.username = displayName
                     }
@@ -285,6 +285,41 @@ class FirebaseManager {
                     UserManager.shared.contacts.append(user)
                 }
                 UserManager.shared.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
+                completion(.Success)
+            } else {
+                completion(.Failure(THError.unableToGetUsers))
+            }
+        }) { (error) in
+            completion(.Failure(error))
+        }
+    }
+    
+    func getFeaturedUsers(completion: @escaping (Result<Void>) -> Void) {
+        // TODO: Change "users" back to ("friends").child(currentUsername)
+        databaseRef.child("featured").observeSingleEvent(of: .value, with: { snapshot in
+            if let value = snapshot.value as? NSDictionary,
+                let featuredUserNames = value.allKeys as? [String] {
+                for featuredUserName in featuredUserNames {
+                    let featuredUser = FeaturedUser()
+                    if let username = (value[featuredUserName] as? NSDictionary)?["username"] as? String {
+                        featuredUser.username = username
+                    }
+                    if let date = (value[featuredUserName] as? NSDictionary)?["feature-date"] as? Double {
+                        featuredUser.featureDate = Date(timeIntervalSince1970: date)
+                    }
+                    // TODO: photo from fb storage
+//                    if let photoLink = (value[featuredUserName] as? NSDictionary)?["photo"] as? String {
+//                        //user.deviceToken = deviceToken
+//                    }
+                    if let promoDetails = (value[featuredUserName] as? NSDictionary)?["promo-details"] as? String {
+                        featuredUser.promoDetails = promoDetails
+                    }
+                    if let deviceToken = (value[featuredUserName] as? NSDictionary)?["device-token"] as? String {
+                        featuredUser.deviceToken = deviceToken
+                    }
+                    UserManager.shared.featuredUsers.append(featuredUser)
+                }
+                UserManager.shared.featuredUsers.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
                 completion(.Success)
             } else {
                 completion(.Failure(THError.unableToGetUsers))

@@ -11,16 +11,18 @@ import UIKit
 class FeaturedTableViewCell: UITableViewCell {
 
     static let nibName = "FeaturedTableViewCell"
-
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var photoImageView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        contentView.backgroundColor = .thPrimaryPurple
+        photoImageView.clipsToBounds = true
+        photoImageView.layer.cornerRadius = photoImageView.frame.size.width / 2
     }
     
+    func setUpForFeaturedUser(_ featuredUser: FeaturedUser) {
+        titleLabel.text = featuredUser.username.uppercased()
+    }
+
 }

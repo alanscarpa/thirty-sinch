@@ -28,23 +28,24 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TITLE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="r6p-O6-cfY">
                         <rect key="frame" x="108" y="29.5" width="333" height="41"/>
-                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
-                        <nil key="textColor"/>
+                        <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="30"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 PRESENTS..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c0c-f1-7X7">
-                        <rect key="frame" x="232.5" y="9" width="84.5" height="16.5"/>
-                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
-                        <nil key="textColor"/>
+                        <rect key="frame" x="230.5" y="9" width="88.5" height="16.5"/>
+                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEARN MORE &gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qb8-dM-Ejh">
-                        <rect key="frame" x="230.5" y="74.5" width="88" height="17"/>
-                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="12"/>
-                        <nil key="textColor"/>
+                        <rect key="frame" x="229.5" y="74.5" width="90.5" height="17"/>
+                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" red="0.1301618517" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="c0c-f1-7X7" firstAttribute="centerX" secondItem="r6p-O6-cfY" secondAttribute="centerX" id="Piw-vu-E2f"/>
                     <constraint firstItem="Qb8-dM-Ejh" firstAttribute="centerX" secondItem="r6p-O6-cfY" secondAttribute="centerX" id="RsL-kf-B8U"/>
@@ -61,6 +62,10 @@
                 <constraint firstItem="r6p-O6-cfY" firstAttribute="trailing" secondItem="njF-e1-oar" secondAttribute="trailing" constant="-14" id="c6w-8p-Zju"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="photoImageView" destination="Pht-mm-dOe" id="6kp-Ho-hum"/>
+                <outlet property="titleLabel" destination="r6p-O6-cfY" id="6rF-6U-sM4"/>
+            </connections>
             <point key="canvasLocation" x="101.5" y="130"/>
         </tableViewCell>
     </objects>

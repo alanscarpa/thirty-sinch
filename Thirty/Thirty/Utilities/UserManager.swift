@@ -16,5 +16,10 @@ class UserManager {
         return FirebaseManager.shared.currentUser!.displayName!
     }
     
+    var hasFeaturedUsers: Bool {
+        return featuredUsers.count > 0
+    }
+    
     var contacts = [User]()
+    var featuredUsers = [FeaturedUser]()
 }
