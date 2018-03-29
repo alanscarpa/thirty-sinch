@@ -13,7 +13,7 @@ extension UIViewController {
         childVC.willMove(toParentViewController: self)
         addChildViewController(childVC)
         view.addSubview(childVC.view)
-        childVC.view.frame = view.bounds
+        childVC.view.frame = view.frame
         childVC.didMove(toParentViewController: self)
     }
 }

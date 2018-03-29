@@ -29,9 +29,10 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
+        setUpRootNavigationController()
     }
     
-    private func setupRootNavigationController() {
+    private func setUpRootNavigationController() {
         rootNavigationController.setNavigationBarHidden(true, animated: false)
         rootNavigationController.delegate = self
         rootNavigationController.view.backgroundColor = .thPrimaryPurple
