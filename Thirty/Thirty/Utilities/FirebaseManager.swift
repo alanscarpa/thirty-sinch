@@ -284,7 +284,7 @@ class FirebaseManager {
                     }
                     UserManager.shared.contacts.append(user)
                 }
-                UserManager.shared.contacts.sort(by: { $0.username < $1.username })
+                UserManager.shared.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
                 completion(.Success)
             } else {
                 completion(.Failure(THError.unableToGetUsers))
