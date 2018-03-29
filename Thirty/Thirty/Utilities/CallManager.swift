@@ -31,6 +31,12 @@ class CallManager: NSObject, CXProviderDelegate {
     private var ringbackAudioPlayer: AVAudioPlayer?
     
     func configure() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeVideoChat, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
+        } catch {
+            print(error.localizedDescription)
+        }
+        
         let configuration = CXProviderConfiguration(localizedName: "Thirty")
         configuration.maximumCallGroups = 1
         configuration.maximumCallsPerCallGroup = 1
@@ -40,15 +46,9 @@ class CallManager: NSObject, CXProviderDelegate {
             configuration.iconTemplateImageData = UIImagePNGRepresentation(callKitIcon)
         }
         configuration.ringtoneSound = "ringtone.mp3"
-        
+
         callKitProvider = CXProvider(configuration: configuration)
         callKitProvider?.setDelegate(self, queue: nil)
-        
-        let path = Bundle.main.path(forResource: "ringbackMorningSong.mp3", ofType:nil)!
-        let url = URL(fileURLWithPath: path)
-        ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
-        ringbackAudioPlayer?.numberOfLoops = -1
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeVideoChat, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
     }
     
     func setCallToActive() {
@@ -56,7 +56,7 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func playRingbackTone() {
-        let path = Bundle.main.path(forResource: "ringbackMorningSong.mp3", ofType:nil)!
+        let path = Bundle.main.path(forResource: "chillRingback.wav", ofType:nil)!
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
         ringbackAudioPlayer?.numberOfLoops = -1
@@ -138,6 +138,7 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.isEnabled = false;
         // Configure the AVAudioSession by executing the audio device's `block`.
         audioDevice.block()
+
         if UIApplication.shared.applicationState == .background {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.sendLocalNotification()
@@ -189,6 +190,9 @@ class CallManager: NSObject, CXProviderDelegate {
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         print("provider:didActivateAudioSession:")
         audioDevice.isEnabled = true
+        if call?.direction == .outgoing {
+            playRingbackTone()
+        }
     }
     
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
@@ -202,7 +206,6 @@ class CallManager: NSObject, CXProviderDelegate {
     
     func provider(_ provider: CXProvider, perform action: CXSetMutedCallAction) {
         NSLog("provier:performSetMutedCallAction:")
-        // toggleMic(sender: self)
         action.fulfill()
     }
     

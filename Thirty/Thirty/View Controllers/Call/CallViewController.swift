@@ -56,9 +56,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         setUpUI()
         startLocalPreviewVideo()
         showCallSpinner()
-        if call.direction == .outgoing {
-            CallManager.shared.playRingbackTone()
-        }
         connectToRoom()
     }
     

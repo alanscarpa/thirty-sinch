@@ -39,6 +39,7 @@
 		45407F5E20575A47008B05B3 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45407F5D20575A47008B05B3 /* Call.swift */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
+		454CD1BA206C7ED3006235C8 /* chillRingback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CD1B9206C7ED3006235C8 /* chillRingback.wav */; };
 		455BDE7920621FD9009CA00A /* answeredChime.wav in Resources */ = {isa = PBXBuildFile; fileRef = 455BDE7820621FD9009CA00A /* answeredChime.wav */; };
 		457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */; };
 		457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */; };
@@ -87,6 +88,7 @@
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		454CC70E1E57D4F60087FAAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		454CD1B9206C7ED3006235C8 /* chillRingback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chillRingback.wav; sourceTree = "<group>"; };
 		455BDE7820621FD9009CA00A /* answeredChime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = answeredChime.wav; sourceTree = "<group>"; };
 		45635E401EC0089B0011096C /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				455BDE7820621FD9009CA00A /* answeredChime.wav */,
+				454CD1B9206C7ED3006235C8 /* chillRingback.wav */,
 				45BB11B3205E21370014F48C /* ringbackMorningSong.mp3 */,
 				45DB90DB205E292000591EC8 /* ringtone.mp3 */,
 			);
@@ -381,6 +384,7 @@
 				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
 				4530A90D1F0451FE0039D303 /* SignupViewController.xib in Resources */,
+				454CD1BA206C7ED3006235C8 /* chillRingback.wav in Resources */,
 				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
 				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
@@ -421,7 +425,7 @@
 				"${BUILT_PRODUCTS_DIR}/JHSpinner/JHSpinner.framework",
 				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${PODS_ROOT}/TwilioVideo/TwilioVideo.framework",
+				"${PODS_ROOT}/TwilioVideo/Build/iOS/TwilioVideo.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (

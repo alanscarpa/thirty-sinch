@@ -38,7 +38,7 @@ PODS:
   - JHSpinner (0.2.1)
   - SCLAlertView (0.8)
   - SwiftyJSON (4.0.0)
-  - TwilioVideo (2.0.0-beta2)
+  - TwilioVideo (2.0.0-beta3)
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
@@ -49,7 +49,7 @@ DEPENDENCIES:
   - JHSpinner
   - SCLAlertView
   - SwiftyJSON
-  - TwilioVideo (= 2.0.0-beta2)
+  - TwilioVideo (= 2.0.0-beta3)
 
 SPEC CHECKSUMS:
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
@@ -65,8 +65,8 @@ SPEC CHECKSUMS:
   JHSpinner: bf7cc91a7e0ccad6336d2b0a3429dd34e7325e65
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
-  TwilioVideo: 7965c10c6cd24fd7fa291f5d96d130b1f6ce4da4
+  TwilioVideo: 08cada2c04a7a908655fd80a1423a9c762344625
 
-PODFILE CHECKSUM: a976083ff2ff2f0c8a2bfffdb039c9be3667da60
+PODFILE CHECKSUM: c7d8afefcc4729cc4126edf155875a84b081bc16
 
 COCOAPODS: 1.4.0
