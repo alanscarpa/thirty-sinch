@@ -14,6 +14,7 @@ enum THError: Error {
     case unableToGetDeviceToken
     case blankFBCallStatusReturned
     case noSavedCredentials
+    case unableToGetUsers
     
     var title: String {
         switch self {
@@ -31,6 +32,8 @@ enum THError: Error {
             return "Unable to get FB Call Status."
         case .noSavedCredentials:
             return "Unable to log in."
+        case .unableToGetUsers:
+            return "Unable to get users."
         }
     }
     
@@ -50,6 +53,8 @@ enum THError: Error {
             return "Please try again later."
         case .noSavedCredentials:
             return "No previously saved credentials."
+        case .unableToGetUsers:
+            return "Unable to get users from database."
         }
     }
     
@@ -69,6 +74,8 @@ enum THError: Error {
             return 006
         case .noSavedCredentials:
             return 007
+        case .unableToGetUsers:
+            return 008
         }
     }
 }

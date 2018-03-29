@@ -271,22 +271,24 @@ class FirebaseManager {
     func getContacts(completion: @escaping (Result<Void>) -> Void) {
         // TODO: Change "users" back to ("friends").child(currentUsername)
         databaseRef.child("users").observeSingleEvent(of: .value, with: { snapshot in
-            let value = snapshot.value as? NSDictionary
-            if let usernames = value?.allKeys as? [String] {
+            if let value = snapshot.value as? NSDictionary,
+                let usernames = value.allKeys as? [String] {
                 for username in usernames {
                     guard username != UserManager.shared.currentUserUsername.lowercased() else { continue }
                     var user = User()
-                    if let displayName = (value?[username] as? NSDictionary)?["display-name"] as? String {
+                    if let displayName = (value[username] as? NSDictionary)?["display-name"] as? String {
                         user.username = displayName
                     }
-                    if let deviceToken = (value?[username] as? NSDictionary)?["device-token"] as? String {
+                    if let deviceToken = (value[username] as? NSDictionary)?["device-token"] as? String {
                         user.deviceToken = deviceToken
                     }
                     UserManager.shared.contacts.append(user)
                 }
                 UserManager.shared.contacts.sort(by: { $0.username < $1.username })
+                completion(.Success)
+            } else {
+                completion(.Failure(THError.unableToGetDeviceToken))
             }
-            completion(.Success)
         }) { (error) in
             completion(.Failure(error))
         }
