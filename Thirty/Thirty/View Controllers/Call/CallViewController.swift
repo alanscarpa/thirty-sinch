@@ -24,7 +24,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     @IBOutlet weak var callBackgroundImageView: UIImageView!
     @IBOutlet weak var remoteParticipantLabel: UILabel!
     
-    var call: Call!
+    let call: Call
     var timer = Timer()
     var outgoingCallRingingTimer = Timer()
     let timeRemainingLabelColor = UIColor.thPrimaryPurple.withAlphaComponent(0.5)
@@ -41,6 +41,17 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     var localVideoTrack : TVILocalVideoTrack?
     var remoteParticipant: TVIRemoteParticipant?
     
+    // MARK: Init
+    
+    init(call: Call) {
+        self.call = call
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -49,11 +60,11 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         remoteVideoView.delegate = self
         CallManager.shared.delegate = self
         FirebaseManager.shared.delegate = self
+        setUpUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setUpUI()
         startLocalPreviewVideo()
         showCallSpinner()
         connectToRoom()

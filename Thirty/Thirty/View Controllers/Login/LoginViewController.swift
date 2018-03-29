@@ -41,7 +41,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 case .Success(_):
                     self?.completeLoginProcess()
                 case .Failure(let error):
-                    let errorInfo = THErrorHandler.errorInfoFromError(error)
+                    let errorInfo = error.alertInfo
                     let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description, handler: nil)
                     self?.present(alert, animated: true, completion: nil)
                 }

@@ -9,8 +9,10 @@
 import Foundation
 import TwilioVideo
 
-class TwilioSettings: NSObject {
-    
+class TwilioSettings {
+    static let shared = TwilioSettings()
+    private init() { }
+
     let supportedAudioCodecs = [TVIAudioCodec.ISAC,
                                 TVIAudioCodec.opus,
                                 TVIAudioCodec.PCMA,
@@ -24,22 +26,12 @@ class TwilioSettings: NSObject {
     var audioCodec: TVIAudioCodec?
     var videoCodec: TVIVideoCodec?
     
-    var maxAudioBitrate = UInt()
-    var maxVideoBitrate = UInt()
+    var maxAudioBitrate: UInt = 0
+    var maxVideoBitrate: UInt = 0
     
     func getEncodingParameters() -> TVIEncodingParameters?  {
-        if maxAudioBitrate == 0 && maxVideoBitrate == 0 {
-            return nil;
-        } else {
-            return TVIEncodingParameters(audioBitrate: maxAudioBitrate,
-                                         videoBitrate: maxVideoBitrate)
-        }
+        guard maxAudioBitrate > 0, maxVideoBitrate > 0 else { return nil }
+        return TVIEncodingParameters(audioBitrate: maxAudioBitrate,
+                                     videoBitrate: maxVideoBitrate)
     }
-    
-    private override init() {
-        // Can't initialize a singleton
-    }
-    
-    // MARK: Shared Instance
-    static let shared = TwilioSettings()
 }

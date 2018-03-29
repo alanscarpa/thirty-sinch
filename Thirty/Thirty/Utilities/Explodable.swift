@@ -74,7 +74,8 @@ extension Explodable where Self:UIView {
                         fragments.forEach {
                             
                             let direction = direction.explodeDirection($0.superview!.frame.size)
-                            let explodeAngle = random(from: -CGFloat(M_PI)*goldenRatio, to: CGFloat(M_PI)*goldenRatio)
+                            let angle = CGFloat(Double.pi) * goldenRatio
+                            let explodeAngle = random(from: -angle, to: angle)
                             let scale = 0.01 + random(from: 0.01, to: goldenRatio)
                             
                             let translateTransform = CGAffineTransform(translationX: direction.dx, y: direction.dy)
@@ -127,7 +128,8 @@ extension Explodable where Self:UITableView {
                         fragments.forEach {
                             
                             let direction = direction.explodeDirection($0.superview!.frame.size)
-                            let explodeAngle = random(from: -CGFloat(M_PI)*goldenRatio, to: CGFloat(M_PI)*goldenRatio)
+                            let angle = CGFloat(Double.pi) * goldenRatio
+                            let explodeAngle = random(from: -angle, to: angle)
                             let scale = 0.01 + random(from: 0.01, to: goldenRatio)
                             
                             let translateTransform = CGAffineTransform(translationX: direction.dx, y: direction.dy)
