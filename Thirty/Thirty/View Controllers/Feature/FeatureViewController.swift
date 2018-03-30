@@ -39,6 +39,7 @@ class FeatureViewController: UIViewController {
         detailsLabel.text = featuredUser.promoDetails
         addUserButton.setTitle("ADD \(featuredUser.username.uppercased())", for: .normal)
         addUserButton.setBackgroundImage(UIImage(color: .darkGray, size: addUserButton.frame.size), for: .disabled)
+        addUserButton.isEnabled = UserManager.shared.contacts.filter({ $0.username == featuredUser.username }).isEmpty
     }
     
     override func viewWillAppear(_ animated: Bool) {

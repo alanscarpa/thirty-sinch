@@ -197,6 +197,7 @@ class CallManager: NSObject, CXProviderDelegate {
     
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
         print("provider:didDeactivateAudioSession:")
+        stopRingbackTone()
     }
     
     func provider(_ provider: CXProvider, timedOutPerforming action: CXAction) {
