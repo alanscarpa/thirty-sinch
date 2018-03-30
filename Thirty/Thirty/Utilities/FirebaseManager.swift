@@ -277,22 +277,29 @@ class FirebaseManager {
     }
     
     func getContacts(completion: @escaping (Result<Void>) -> Void) {
-        databaseRef.child("friends").child(UserManager.shared.currentUserUsername.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
+        databaseRef.child("friends").child(UserManager.shared.currentUserUsername.lowercased()).observeSingleEvent(of: .value, with: { [weak self] snapshot in
             if let value = snapshot.value as? NSDictionary,
                 let usernames = value.allKeys as? [String] {
+                let dispatchGroup = DispatchGroup()
                 for username in usernames {
-                    guard username != UserManager.shared.currentUserUsername.lowercased() else { continue }
-                    let user = User()
-                    if let displayName = (value[username] as? NSDictionary)?["display-name"] as? String {
-                        user.username = displayName
+                    dispatchGroup.enter()
+                    self?.databaseRef.child("users").child(username).observeSingleEvent(of: .value) { snapshot in
+                        let value = snapshot.value as! [String: Any]
+                        let user = User()
+                        user.username = value["display-name"] as! String
+                        user.deviceToken = value["device-token"] as? String
+                        user.email = value["email"] as! String
+                        user.phoneNumber = value["phone-number"] as! String
+                        UserManager.shared.contacts.append(user)
+                        dispatchGroup.leave()
                     }
-                    if let deviceToken = (value[username] as? NSDictionary)?["device-token"] as? String {
-                        user.deviceToken = deviceToken
-                    }
-                    UserManager.shared.contacts.append(user)
                 }
-                UserManager.shared.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
-                completion(.Success)
+                dispatchGroup.notify(queue: DispatchQueue.global(qos: .`default`)) {
+                    DispatchQueue.main.async {
+                        UserManager.shared.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
+                        completion(.Success)
+                    }
+                }
             } else {
                 completion(.Failure(THError.unableToGetUsers))
             }
