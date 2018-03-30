@@ -277,8 +277,7 @@ class FirebaseManager {
     }
     
     func getContacts(completion: @escaping (Result<Void>) -> Void) {
-        // TODO: Change "users" back to ("friends").child(currentUsername)
-        databaseRef.child("users").observeSingleEvent(of: .value, with: { snapshot in
+        databaseRef.child("friends").child(UserManager.shared.currentUserUsername.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
             if let value = snapshot.value as? NSDictionary,
                 let usernames = value.allKeys as? [String] {
                 for username in usernames {
