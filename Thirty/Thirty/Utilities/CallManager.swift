@@ -56,7 +56,7 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func playRingbackTone() {
-        let path = Bundle.main.path(forResource: "chillRingback.wav", ofType:nil)!
+        let path = Bundle.main.path(forResource: "chill-ringback-quiet.m4a", ofType:nil)!
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
         ringbackAudioPlayer?.numberOfLoops = -1

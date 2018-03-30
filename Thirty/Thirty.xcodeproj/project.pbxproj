@@ -25,6 +25,7 @@
 		450AB133206D8ADF00BCDBA3 /* FeaturedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB132206D8ADF00BCDBA3 /* FeaturedUser.swift */; };
 		450AB137206DBEEC00BCDBA3 /* FeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB135206DBEEC00BCDBA3 /* FeatureViewController.swift */; };
 		450AB138206DBEEC00BCDBA3 /* FeatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450AB136206DBEEC00BCDBA3 /* FeatureViewController.xib */; };
+		450AB13A206DD15D00BCDBA3 /* chill-ringback-quiet.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 450AB139206DD15C00BCDBA3 /* chill-ringback-quiet.m4a */; };
 		45100BAE2051DE2A0000B254 /* PlatformUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BAD2051DE2A0000B254 /* PlatformUtils.swift */; };
 		45100BB2205211630000B254 /* TokenUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BB1205211630000B254 /* TokenUtils.swift */; };
 		45100BB42052119A0000B254 /* TwilioSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BB32052119A0000B254 /* TwilioSettings.swift */; };
@@ -44,7 +45,6 @@
 		45407F5E20575A47008B05B3 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45407F5D20575A47008B05B3 /* Call.swift */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
-		454CD1BA206C7ED3006235C8 /* chillRingback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CD1B9206C7ED3006235C8 /* chillRingback.wav */; };
 		454CD1BE206D77FA006235C8 /* FeaturedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CD1BC206D77FA006235C8 /* FeaturedTableViewCell.swift */; };
 		454CD1BF206D77FA006235C8 /* FeaturedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454CD1BD206D77FA006235C8 /* FeaturedTableViewCell.xib */; };
 		455BDE7920621FD9009CA00A /* answeredChime.wav in Resources */ = {isa = PBXBuildFile; fileRef = 455BDE7820621FD9009CA00A /* answeredChime.wav */; };
@@ -81,6 +81,7 @@
 		450AB132206D8ADF00BCDBA3 /* FeaturedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedUser.swift; sourceTree = "<group>"; };
 		450AB135206DBEEC00BCDBA3 /* FeatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureViewController.swift; sourceTree = "<group>"; };
 		450AB136206DBEEC00BCDBA3 /* FeatureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeatureViewController.xib; sourceTree = "<group>"; };
+		450AB139206DD15C00BCDBA3 /* chill-ringback-quiet.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "chill-ringback-quiet.m4a"; path = "../../../../../../../chill-ringback-quiet.m4a"; sourceTree = "<group>"; };
 		45100BAD2051DE2A0000B254 /* PlatformUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformUtils.swift; sourceTree = "<group>"; };
 		45100BB1205211630000B254 /* TokenUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenUtils.swift; sourceTree = "<group>"; };
 		45100BB32052119A0000B254 /* TwilioSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioSettings.swift; sourceTree = "<group>"; };
@@ -100,7 +101,6 @@
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		454CC70E1E57D4F60087FAAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		454CD1B9206C7ED3006235C8 /* chillRingback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chillRingback.wav; sourceTree = "<group>"; };
 		454CD1BC206D77FA006235C8 /* FeaturedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedTableViewCell.swift; sourceTree = "<group>"; };
 		454CD1BD206D77FA006235C8 /* FeaturedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedTableViewCell.xib; sourceTree = "<group>"; };
 		455BDE7820621FD9009CA00A /* answeredChime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = answeredChime.wav; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				455BDE7820621FD9009CA00A /* answeredChime.wav */,
-				454CD1B9206C7ED3006235C8 /* chillRingback.wav */,
+				450AB139206DD15C00BCDBA3 /* chill-ringback-quiet.m4a */,
 				45BB11B3205E21370014F48C /* ringbackMorningSong.mp3 */,
 				45DB90DB205E292000591EC8 /* ringtone.mp3 */,
 			);
@@ -421,11 +421,11 @@
 				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
 				4530A90D1F0451FE0039D303 /* SignupViewController.xib in Resources */,
-				454CD1BA206C7ED3006235C8 /* chillRingback.wav in Resources */,
 				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
 				450AB138206DBEEC00BCDBA3 /* FeatureViewController.xib in Resources */,
 				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
+				450AB13A206DD15D00BCDBA3 /* chill-ringback-quiet.m4a in Resources */,
 				454CD1BF206D77FA006235C8 /* FeaturedTableViewCell.xib in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
 				4500C7921E527AFF00AF54AA /* HomeTableViewController.xib in Resources */,
