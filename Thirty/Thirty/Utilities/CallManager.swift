@@ -60,6 +60,7 @@ class CallManager: NSObject, CXProviderDelegate {
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
         ringbackAudioPlayer?.numberOfLoops = -1
+        ringbackAudioPlayer?.prepareToPlay()
         ringbackAudioPlayer?.play()
     }
     
@@ -68,6 +69,7 @@ class CallManager: NSObject, CXProviderDelegate {
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
         ringbackAudioPlayer?.numberOfLoops = 0
+        ringbackAudioPlayer?.prepareToPlay()
         ringbackAudioPlayer?.play()
     }
     

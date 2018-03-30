@@ -190,6 +190,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             } else {
                 print("successfully sent voIP push")
                 guard let strongSelf = self else { return }
+                guard !strongSelf.callHasEnded else { return }
                 CallManager.shared.performStartCallAction(call: strongSelf.call) { [weak self] error in
                     if let error = error {
                         let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in
