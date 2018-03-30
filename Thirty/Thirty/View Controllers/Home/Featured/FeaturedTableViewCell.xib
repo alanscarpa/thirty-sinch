@@ -56,7 +56,7 @@
                     <constraint firstItem="Qb8-dM-Ejh" firstAttribute="top" secondItem="r6p-O6-cfY" secondAttribute="bottom" constant="4" id="veb-sA-SoS"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.1301618517" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="njF-e1-oar" firstAttribute="leading" secondItem="Pht-mm-dOe" secondAttribute="leading" constant="-14" id="Q1I-eg-h0l"/>
                 <constraint firstItem="r6p-O6-cfY" firstAttribute="trailing" secondItem="njF-e1-oar" secondAttribute="trailing" constant="-14" id="c6w-8p-Zju"/>

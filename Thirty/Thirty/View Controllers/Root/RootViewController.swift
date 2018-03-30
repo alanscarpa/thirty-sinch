@@ -43,6 +43,9 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.setNavigationBarHidden(true, animated: false)
         rootNavigationController.delegate = self
         rootNavigationController.view.backgroundColor = .thPrimaryPurple
+        let titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont(name: "Avenir-Black", size: 18)!] as [NSAttributedStringKey : Any]
+        rootNavigationController.navigationBar.titleTextAttributes = titleTextAttributes
+        UIBarButtonItem.appearance().setTitleTextAttributes(titleTextAttributes, for: .normal)
         thAddChildViewController(rootNavigationController)
     }
     
@@ -79,6 +82,11 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     func pushCallVCWithCall(_ call: Call) {
         let callVC = CallViewController(call: call)
         rootNavigationController.pushViewController(callVC, animated: true)
+    }
+    
+    func pushFeatureVCWithFeaturedUser(_ featuredUser: FeaturedUser) {
+        let featureVC = FeatureViewController(featuredUser: featuredUser)
+        rootNavigationController.pushViewController(featureVC, animated: true)
     }
     
 }

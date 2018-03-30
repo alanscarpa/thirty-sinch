@@ -136,7 +136,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if UserManager.shared.hasFeaturedUsers && section == 0 {
+        if isFeaturedSection(section) {
             return UserManager.shared.featuredUsers.count
         } else {
             return isSearching ? searchResults.count : UserManager.shared.contacts.count
@@ -144,7 +144,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 && UserManager.shared.hasFeaturedUsers {
+        if isFeaturedSection(indexPath.section) {
             let cell = tableView.dequeueReusableCell(withIdentifier: FeaturedTableViewCell.nibName, for: indexPath) as! FeaturedTableViewCell
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             cell.setUpForFeaturedUser(featuredUser)
@@ -163,9 +163,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard searchResults.isEmpty else { return }
-        
-        if UserManager.shared.hasFeaturedUsers && indexPath.section == 0 {
-            
+        if isFeaturedSection(indexPath.section) {
+            let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
+            RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
         } else {
             let user = UserManager.shared.contacts[indexPath.row]
             if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
@@ -188,7 +188,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if UserManager.shared.hasFeaturedUsers && indexPath.section == 0 {
+        if isFeaturedSection(indexPath.section) {
             return 125
         } else {
             return 64
@@ -246,6 +246,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 }
             }
         }
+    }
+    
+    private func isFeaturedSection(_ section: Int) -> Bool {
+        return UserManager.shared.hasFeaturedUsers && section == 0
     }
     
 }
