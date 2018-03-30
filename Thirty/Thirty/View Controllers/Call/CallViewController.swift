@@ -30,14 +30,10 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     let timeRemainingLabelColor = UIColor.thPrimaryPurple.withAlphaComponent(0.5)
     let callTimeoutLength: Double = 45
     var callHasEnded = false
-    /**
-     * We will create an audio device and manage it's lifecycle in response to CallKit events.
-     */
+
     var room: TVIRoom?
     var camera: TVICameraCapturer?
-    // Create an audio track
     var localAudioTrack = TVILocalAudioTrack()
-    // Create a Capturer to provide content for the video track
     var localVideoTrack : TVILocalVideoTrack?
     var remoteParticipant: TVIRemoteParticipant?
     

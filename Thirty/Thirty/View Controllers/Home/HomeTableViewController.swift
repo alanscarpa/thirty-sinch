@@ -49,6 +49,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func setUpSearchController() {
         searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.tintColor = .gray
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = .white
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
