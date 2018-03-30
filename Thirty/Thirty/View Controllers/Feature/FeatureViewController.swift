@@ -34,6 +34,11 @@ class FeatureViewController: UIViewController {
         super.viewDidLoad()
         title = "30 PRESENTS..."
         photoImageView.layer.cornerRadius = photoImageView.frame.size.width / 2
+        // TODO: Load uiimageview image from featured user.  Right now, it's a hardcoded Smallpools image.
+        titleLabel.text = featuredUser.username.uppercased()
+        detailsLabel.text = featuredUser.promoDetails
+        addUserButton.setTitle("ADD \(featuredUser.username.uppercased())", for: .normal)
+        addUserButton.setBackgroundImage(UIImage(color: .darkGray, size: addUserButton.frame.size), for: .disabled)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,4 +47,19 @@ class FeatureViewController: UIViewController {
         RootViewController.shared.showNavigationBar = true
     }
 
+    // MARK: - Actions
+    
+    @IBAction func addUserButtonTapped() {
+        addUserButton.isEnabled = false
+        FirebaseManager.shared.addUserAsFriend(username: featuredUser.username) { [weak self] result in
+            switch result {
+            case .Success():
+                break // no-op
+            case .Failure(let error):
+                self?.addUserButton.isEnabled = true
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
+                self?.present(alertVC, animated: true, completion: nil)
+            }
+        }
+    }
 }
