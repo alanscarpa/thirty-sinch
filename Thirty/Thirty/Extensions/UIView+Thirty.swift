@@ -12,6 +12,11 @@ extension UIView: Explodable {}
 
 extension UIView {
     
+    func makeCircle() {
+        clipsToBounds = true
+        layer.cornerRadius = frame.size.width / 2
+    }
+    
     func shake(duration: Double = 1.0) {
         let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)

@@ -35,12 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // TODO: Set up when we have reason for remote notifications
         //setUpRemoteNotificationsForApplication(application)
-                
-        UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().barTintColor = .thPrimaryPurple
-        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().tintColor = .white
         
         let registry = PKPushRegistry(queue: nil)
         registry.delegate = self
@@ -51,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         } else {
             RootViewController.shared.goToWelcomeVC()
         }
+        
         return true
     }
     

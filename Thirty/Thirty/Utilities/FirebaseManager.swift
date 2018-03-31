@@ -309,7 +309,6 @@ class FirebaseManager {
     }
     
     func getFeaturedUsers(completion: @escaping (Result<Void>) -> Void) {
-        // TODO: Change "users" back to ("friends").child(currentUsername)
         databaseRef.child("featured").observeSingleEvent(of: .value, with: { snapshot in
             if let value = snapshot.value as? NSDictionary,
                 let featuredUserNames = value.allKeys as? [String] {
@@ -322,8 +321,8 @@ class FirebaseManager {
                         featuredUser.featureDate = Date(timeIntervalSince1970: date)
                     }
                     // TODO: photo from fb storage
-//                    if let photoLink = (value[featuredUserName] as? NSDictionary)?["photo"] as? String {
-//                        //user.deviceToken = deviceToken
+//                    if let photoLink = (value[featuredUserName] as? NSDictionary)?["photo"] as? Data {
+//
 //                    }
                     if let promoDetails = (value[featuredUserName] as? NSDictionary)?["promo-details"] as? String {
                         featuredUser.promoDetails = promoDetails

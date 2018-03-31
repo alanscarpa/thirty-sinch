@@ -37,9 +37,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func setUpTableView() {
         // This prevents the gray view from being seen when user exposes the bounce area.
-        let bgView = UIView()
-        bgView.backgroundColor = .thPrimaryPurple
-        tableView.backgroundView = bgView
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .thPrimaryPurple
+        tableView.backgroundView = backgroundView
         tableView.register(UINib(nibName: FeaturedTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: FeaturedTableViewCell.nibName)
         tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
         tableView.backgroundColor = .thPrimaryPurple
@@ -64,9 +64,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             switch result {
             case .Success():
                 FirebaseManager.shared.getFeaturedUsers { [weak self] result in
+                    self?.tableView.reloadData()
                     switch result {
                     case .Success():
-                        self?.tableView.reloadData()
+                        break // no-op
                     case .Failure(let error):
                         let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
                         self?.present(alertVC, animated: true, completion: nil)

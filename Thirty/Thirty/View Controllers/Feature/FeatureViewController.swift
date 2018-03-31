@@ -32,20 +32,26 @@ class FeatureViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "30 PRESENTS..."
-        photoImageView.layer.cornerRadius = photoImageView.frame.size.width / 2
-        // TODO: Load uiimageview image from featured user.  Right now, it's a hardcoded Smallpools image.
-        titleLabel.text = featuredUser.username.uppercased()
-        detailsLabel.text = featuredUser.promoDetails
-        addUserButton.setTitle("ADD \(featuredUser.username.uppercased())", for: .normal)
-        addUserButton.setBackgroundImage(UIImage(color: .darkGray, size: addUserButton.frame.size), for: .disabled)
-        addUserButton.isEnabled = UserManager.shared.contacts.filter({ $0.username == featuredUser.username }).isEmpty
+        setUpUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showStatusBarBackground = true
         RootViewController.shared.showNavigationBar = true
+    }
+    
+    // MARK: - Setup
+    
+    func setUpUI() {
+        title = "30 PRESENTS..."
+        photoImageView.makeCircle()
+        // TODO: Load uiimageview image from featured user.  Right now, it's a hardcoded Smallpools image.
+        titleLabel.text = featuredUser.username.uppercased()
+        detailsLabel.text = featuredUser.promoDetails
+        addUserButton.setTitle("ADD \(featuredUser.username.uppercased())", for: .normal)
+        addUserButton.setBackgroundImage(UIImage(color: .darkGray, size: addUserButton.frame.size), for: .disabled)
+        addUserButton.isEnabled = UserManager.shared.contacts.filter({ $0.username == featuredUser.username }).isEmpty
     }
 
     // MARK: - Actions

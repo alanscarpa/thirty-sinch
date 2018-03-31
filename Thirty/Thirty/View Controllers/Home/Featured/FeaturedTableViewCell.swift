@@ -17,8 +17,7 @@ class FeaturedTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .thPrimaryPurple
-        photoImageView.clipsToBounds = true
-        photoImageView.layer.cornerRadius = photoImageView.frame.size.width / 2
+        photoImageView.makeCircle()
     }
     
     func setUpForFeaturedUser(_ featuredUser: FeaturedUser) {

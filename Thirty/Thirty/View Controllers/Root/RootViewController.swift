@@ -33,11 +33,16 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         }
     }
     
+    // MARK: - View Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
         setUpRootNavigationController()
+        setUpAppearances()
     }
+    
+    // MARK: - Setup
     
     private func setUpRootNavigationController() {
         rootNavigationController.setNavigationBarHidden(true, animated: false)
@@ -45,9 +50,20 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.view.backgroundColor = .thPrimaryPurple
         let titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont(name: "Avenir-Black", size: 18)!] as [NSAttributedStringKey : Any]
         rootNavigationController.navigationBar.titleTextAttributes = titleTextAttributes
+        // We can make custom back button and apply it if needed instead.
         UIBarButtonItem.appearance().setTitleTextAttributes(titleTextAttributes, for: .normal)
         thAddChildViewController(rootNavigationController)
     }
+    
+    private func setUpAppearances() {
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().barTintColor = .thPrimaryPurple
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().tintColor = .white
+    }
+    
+    // MARK: - Navigation
     
     func popViewController() {
         rootNavigationController.popViewController(animated: true)
