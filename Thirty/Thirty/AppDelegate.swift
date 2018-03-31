@@ -17,7 +17,7 @@ import Intents
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, PKPushRegistryDelegate {
 
     var window: UIWindow?
-    private var loggedIn: Bool { return FirebaseManager.shared.currentUserIsSignedIn }
+    private var loggedIn: Bool { return FirebaseManager.shared.currentUserIsLoggedIn }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         CallManager.shared.configure()
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let tokenData = pushCredentials.token
             let voipPushToken = tokenData.map { String(format: "%02.2hhx", $0) }.joined()
             TokenUtils.deviceToken = voipPushToken
-            if FirebaseManager.shared.currentUserIsSignedIn {
+            if FirebaseManager.shared.currentUserIsLoggedIn {
                 FirebaseManager.shared.updateDeviceToken()
             }
         }
