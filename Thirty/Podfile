@@ -2,16 +2,15 @@
 platform :ios, '10.0'
 
 target 'Thirty' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
+  inhibit_all_warnings!
 
   # Pods for Thirty
   pod 'IQKeyboardManagerSwift'
-  pod 'Firebase/Core' 
-  pod 'Firebase/Auth'
-  pod 'Firebase/Database'
+  pod 'Firebase/Core', '~> 4.0'
+  pod 'Firebase/Auth', '~> 4.0'
+  pod 'Firebase/Database', '~> 4.0'
   pod 'JHSpinner'
-  pod 'SwiftyJSON'
   pod 'TwilioVideo', '2.0.0-beta3'
   pod 'Alamofire', '~> 4.7'
   pod 'SCLAlertView'
