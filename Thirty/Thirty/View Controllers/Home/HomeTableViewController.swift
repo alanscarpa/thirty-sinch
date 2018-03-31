@@ -21,39 +21,58 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func viewDidLoad() {
         super.viewDidLoad()
         getContacts()
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        definesPresentationContext = true
-        
-        // TODO: undo when search re-enabled
-//        tableView.tableHeaderView = searchController.searchBar
-//        tableView.tableHeaderView?.isHidden = true
-        tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
-        tableView.backgroundColor = .thPrimaryPurple
-        tableView.separatorInset = .zero
+        setUpSearchController()
+        setUpTableView()
         FirebaseManager.shared.updateDeviceToken()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
-        if !UserManager.shared.hasSeenWelcomeAlertBETA {
-            SCLAlertView().showInfo("HI, BETA USER!", subTitle: "Tap on a name to make your first 30!  NOTE:  If the user has not updated to the newest version of the app, the call will show error and fail.", colorStyle: UIColor.thPrimaryPurple.toHex())
-            UserManager.shared.hasSeenWelcomeAlertBETA = true
-        }
+        RootViewController.shared.showStatusBarBackground = true
         requestCameraAndMicrophonePermissions()
     }
     
     // MARK: - Setup
     
+    func setUpTableView() {
+        // This prevents the gray view from being seen when user exposes the bounce area.
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .thPrimaryPurple
+        tableView.backgroundView = backgroundView
+        tableView.register(UINib(nibName: FeaturedTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: FeaturedTableViewCell.nibName)
+        tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
+        tableView.backgroundColor = .thPrimaryPurple
+        tableView.separatorInset = .zero
+        tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func setUpSearchController() {
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.tintColor = .gray
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = .white
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        definesPresentationContext = true
+    }
+    
     func getContacts() {
         FirebaseManager.shared.getContacts { [weak self] result in
             switch result {
-            case .Success(let user):
-                print(user)
-                self?.tableView.reloadData()
+            case .Success():
+                FirebaseManager.shared.getFeaturedUsers { [weak self] result in
+                    self?.tableView.reloadData()
+                    switch result {
+                    case .Success():
+                        break // no-op
+                    case .Failure(let error):
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
+                        self?.present(alertVC, animated: true, completion: nil)
+                    }
+                }
             case .Failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts.", message: error.localizedDescription)
                 self?.present(alertVC, animated: true, completion: nil)
@@ -113,39 +132,67 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     // MARK: - TableViewDataSource
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return UserManager.shared.hasFeaturedUsers ? 2 : 1
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isSearching ? searchResults.count : UserManager.shared.contacts.count
+        if isFeaturedSection(section) {
+            return UserManager.shared.featuredUsers.count
+        } else {
+            return isSearching ? searchResults.count : UserManager.shared.contacts.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-        cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
-            UserManager.shared.contacts[indexPath.row].username
-        cell.addButton.isHidden = isSearching ? false : true
-        cell.delegate = self
-        return cell
+        if isFeaturedSection(indexPath.section) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: FeaturedTableViewCell.nibName, for: indexPath) as! FeaturedTableViewCell
+            let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
+            cell.setUpForFeaturedUser(featuredUser)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
+            cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
+                UserManager.shared.contacts[indexPath.row].username
+            cell.addButton.isHidden = isSearching ? false : true
+            cell.delegate = self
+            return cell
+        }
     }
     
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard searchResults.isEmpty else { return }
-        let user = UserManager.shared.contacts[indexPath.row]
-        if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
-            if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
-                requestCameraAndMicrophonePermissions()
+        if isFeaturedSection(indexPath.section) {
+            let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
+            RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
+        } else {
+            let user = UserManager.shared.contacts[indexPath.row]
+            if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+                if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
+                    requestCameraAndMicrophonePermissions()
+                } else {
+                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+                    CallManager.shared.call = call
+                    DispatchQueue.main.async {
+                        RootViewController.shared.pushCallVCWithCall(call)
+                    }
+                }
             } else {
-                let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
-                CallManager.shared.call = call
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because of invalid device token.")
                 DispatchQueue.main.async {
-                    RootViewController.shared.pushCallVCWithCall(call)
+                    self.present(alertVC, animated: true, completion: nil)
                 }
             }
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if isFeaturedSection(indexPath.section) {
+            return 125
         } else {
-            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because of invalid device token.")
-            DispatchQueue.main.async {
-                self.present(alertVC, animated: true, completion: nil)
-            }
+            return 64
         }
     }
     
@@ -200,6 +247,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 }
             }
         }
+    }
+    
+    private func isFeaturedSection(_ section: Int) -> Bool {
+        return UserManager.shared.hasFeaturedUsers && section == 0
     }
     
 }

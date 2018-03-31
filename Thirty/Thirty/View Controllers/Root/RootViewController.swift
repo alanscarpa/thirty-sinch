@@ -20,23 +20,50 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         }
     }
     
+    var showStatusBarBackground = true {
+        didSet {
+            let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+            statusBar.backgroundColor = showStatusBarBackground  ? .thPrimaryPurple : .clear
+        }
+    }
+    
     var showToolBar = false {
         didSet {
             rootNavigationController.setToolbarHidden(!showToolBar, animated: true)
         }
     }
     
+    // MARK: - View Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
+        setUpRootNavigationController()
+        setUpAppearances()
     }
     
-    private func setupRootNavigationController() {
+    // MARK: - Setup
+    
+    private func setUpRootNavigationController() {
         rootNavigationController.setNavigationBarHidden(true, animated: false)
         rootNavigationController.delegate = self
         rootNavigationController.view.backgroundColor = .thPrimaryPurple
+        let titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont(name: "Avenir-Black", size: 18)!] as [NSAttributedStringKey : Any]
+        rootNavigationController.navigationBar.titleTextAttributes = titleTextAttributes
+        // We can make custom back button and apply it if needed instead.
+        UIBarButtonItem.appearance().setTitleTextAttributes(titleTextAttributes, for: .normal)
         thAddChildViewController(rootNavigationController)
     }
+    
+    private func setUpAppearances() {
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().barTintColor = .thPrimaryPurple
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().tintColor = .white
+    }
+    
+    // MARK: - Navigation
     
     func popViewController() {
         rootNavigationController.popViewController(animated: true)
@@ -71,6 +98,11 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     func pushCallVCWithCall(_ call: Call) {
         let callVC = CallViewController(call: call)
         rootNavigationController.pushViewController(callVC, animated: true)
+    }
+    
+    func pushFeatureVCWithFeaturedUser(_ featuredUser: FeaturedUser) {
+        let featureVC = FeatureViewController(featuredUser: featuredUser)
+        rootNavigationController.pushViewController(featureVC, animated: true)
     }
     
 }

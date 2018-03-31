@@ -259,34 +259,84 @@ class FirebaseManager {
     func addUserAsFriend(username: String, completion: @escaping (Result<Void>) -> Void) {
         databaseRef.child("friends")
             .child(UserManager.shared.currentUserUsername.lowercased())
-            .setValue([username.lowercased(): true], withCompletionBlock: { (error, ref) in
+            .setValue([username.lowercased(): true], withCompletionBlock: { [weak self] (error, ref) in
                         if let error = error {
                             completion(.Failure(error))
                         } else {
-                            completion(.Success)
+                            self?.databaseRef.child("friends")
+                                .child(username.lowercased())
+                                .setValue([UserManager.shared.currentUserUsername.lowercased(): true], withCompletionBlock: { (error, ref) in
+                                    if let error = error {
+                                        completion(.Failure(error))
+                                    } else {
+                                        completion(.Success)
+                                    }
+                                })
                         }
             })
     }
     
     func getContacts(completion: @escaping (Result<Void>) -> Void) {
-        // TODO: Change "users" back to ("friends").child(currentUsername)
-        databaseRef.child("users").observeSingleEvent(of: .value, with: { snapshot in
-            let value = snapshot.value as? NSDictionary
-            if let usernames = value?.allKeys as? [String] {
+        databaseRef.child("friends").child(UserManager.shared.currentUserUsername.lowercased()).observeSingleEvent(of: .value, with: { [weak self] snapshot in
+            if let value = snapshot.value as? NSDictionary,
+                let usernames = value.allKeys as? [String] {
+                let dispatchGroup = DispatchGroup()
                 for username in usernames {
-                    guard username != UserManager.shared.currentUserUsername.lowercased() else { continue }
-                    var user = User()
-                    if let displayName = (value?[username] as? NSDictionary)?["display-name"] as? String {
-                        user.username = displayName
+                    dispatchGroup.enter()
+                    self?.databaseRef.child("users").child(username).observeSingleEvent(of: .value) { snapshot in
+                        let value = snapshot.value as! [String: Any]
+                        let user = User()
+                        user.username = value["display-name"] as! String
+                        user.deviceToken = value["device-token"] as? String
+                        user.email = value["email"] as! String
+                        user.phoneNumber = value["phone-number"] as! String
+                        UserManager.shared.contacts.append(user)
+                        dispatchGroup.leave()
                     }
-                    if let deviceToken = (value?[username] as? NSDictionary)?["device-token"] as? String {
-                        user.deviceToken = deviceToken
-                    }
-                    UserManager.shared.contacts.append(user)
                 }
-                UserManager.shared.contacts.sort(by: { $0.username < $1.username })
+                dispatchGroup.notify(queue: DispatchQueue.global(qos: .`default`)) {
+                    DispatchQueue.main.async {
+                        UserManager.shared.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
+                        completion(.Success)
+                    }
+                }
+            } else {
+                completion(.Failure(THError.unableToGetUsers))
             }
-            completion(.Success)
+        }) { (error) in
+            completion(.Failure(error))
+        }
+    }
+    
+    func getFeaturedUsers(completion: @escaping (Result<Void>) -> Void) {
+        databaseRef.child("featured").observeSingleEvent(of: .value, with: { snapshot in
+            if let value = snapshot.value as? NSDictionary,
+                let featuredUserNames = value.allKeys as? [String] {
+                for featuredUserName in featuredUserNames {
+                    let featuredUser = FeaturedUser()
+                    if let username = (value[featuredUserName] as? NSDictionary)?["username"] as? String {
+                        featuredUser.username = username
+                    }
+                    if let date = (value[featuredUserName] as? NSDictionary)?["feature-date"] as? Double {
+                        featuredUser.featureDate = Date(timeIntervalSince1970: date)
+                    }
+                    // TODO: photo from fb storage
+//                    if let photoLink = (value[featuredUserName] as? NSDictionary)?["photo"] as? Data {
+//
+//                    }
+                    if let promoDetails = (value[featuredUserName] as? NSDictionary)?["promo-details"] as? String {
+                        featuredUser.promoDetails = promoDetails
+                    }
+                    if let deviceToken = (value[featuredUserName] as? NSDictionary)?["device-token"] as? String {
+                        featuredUser.deviceToken = deviceToken
+                    }
+                    UserManager.shared.featuredUsers.append(featuredUser)
+                }
+                UserManager.shared.featuredUsers.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
+                completion(.Success)
+            } else {
+                completion(.Failure(THError.unableToGetUsers))
+            }
         }) { (error) in
             completion(.Failure(error))
         }

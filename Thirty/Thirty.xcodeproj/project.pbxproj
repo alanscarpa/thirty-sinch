@@ -20,6 +20,12 @@
 		4500C7921E527AFF00AF54AA /* HomeTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */; };
 		4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7941E5286E000AF54AA /* CallViewController.swift */; };
 		4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7951E5286E000AF54AA /* CallViewController.xib */; };
+		450AB12C206D7E8A00BCDBA3 /* UIViewController+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB12A206D7E8A00BCDBA3 /* UIViewController+Thirty.swift */; };
+		450AB12D206D7E8A00BCDBA3 /* Error+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB12B206D7E8A00BCDBA3 /* Error+Thirty.swift */; };
+		450AB133206D8ADF00BCDBA3 /* FeaturedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB132206D8ADF00BCDBA3 /* FeaturedUser.swift */; };
+		450AB137206DBEEC00BCDBA3 /* FeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB135206DBEEC00BCDBA3 /* FeatureViewController.swift */; };
+		450AB138206DBEEC00BCDBA3 /* FeatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450AB136206DBEEC00BCDBA3 /* FeatureViewController.xib */; };
+		450AB13C206DDDD500BCDBA3 /* UIImage+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB13B206DDDD500BCDBA3 /* UIImage+Thirty.swift */; };
 		45100BAE2051DE2A0000B254 /* PlatformUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BAD2051DE2A0000B254 /* PlatformUtils.swift */; };
 		45100BB2205211630000B254 /* TokenUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BB1205211630000B254 /* TokenUtils.swift */; };
 		45100BB42052119A0000B254 /* TwilioSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45100BB32052119A0000B254 /* TwilioSettings.swift */; };
@@ -37,15 +43,16 @@
 		4530A9181F05CF9E0039D303 /* JHSpinnerView+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530A9171F05CF9E0039D303 /* JHSpinnerView+Thirty.swift */; };
 		45407F5C20571AB0008B05B3 /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45407F5B20571AB0008B05B3 /* CallManager.swift */; };
 		45407F5E20575A47008B05B3 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45407F5D20575A47008B05B3 /* Call.swift */; };
+		4542AAA2206E9800002A7FAD /* chill-ringback-quiet.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 4542AAA1206E9800002A7FAD /* chill-ringback-quiet.m4a */; };
 		454CC7081E568F640087FAAD /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CC7071E568F640087FAAD /* UserManager.swift */; };
 		454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 454CC70F1E57D4F60087FAAD /* Localizable.strings */; };
-		454CD1BA206C7ED3006235C8 /* chillRingback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 454CD1B9206C7ED3006235C8 /* chillRingback.wav */; };
+		454CD1BE206D77FA006235C8 /* FeaturedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CD1BC206D77FA006235C8 /* FeaturedTableViewCell.swift */; };
+		454CD1BF206D77FA006235C8 /* FeaturedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454CD1BD206D77FA006235C8 /* FeaturedTableViewCell.xib */; };
 		455BDE7920621FD9009CA00A /* answeredChime.wav in Resources */ = {isa = PBXBuildFile; fileRef = 455BDE7820621FD9009CA00A /* answeredChime.wav */; };
 		457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */; };
 		457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */; };
 		45993F322058D7DB002276E9 /* Explodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45993F312058D7DB002276E9 /* Explodable.swift */; };
 		459E61F12058BF00004C385A /* UIView+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459E61F02058BF00004C385A /* UIView+Thirty.swift */; };
-		45BB11B4205E21370014F48C /* ringbackMorningSong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45BB11B3205E21370014F48C /* ringbackMorningSong.mp3 */; };
 		45DB90DC205E292000591EC8 /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45DB90DB205E292000591EC8 /* ringtone.mp3 */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
@@ -69,6 +76,12 @@
 		4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTableViewController.xib; sourceTree = "<group>"; };
 		4500C7941E5286E000AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		4500C7951E5286E000AF54AA /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
+		450AB12A206D7E8A00BCDBA3 /* UIViewController+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Thirty.swift"; sourceTree = "<group>"; };
+		450AB12B206D7E8A00BCDBA3 /* Error+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Thirty.swift"; sourceTree = "<group>"; };
+		450AB132206D8ADF00BCDBA3 /* FeaturedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedUser.swift; sourceTree = "<group>"; };
+		450AB135206DBEEC00BCDBA3 /* FeatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureViewController.swift; sourceTree = "<group>"; };
+		450AB136206DBEEC00BCDBA3 /* FeatureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeatureViewController.xib; sourceTree = "<group>"; };
+		450AB13B206DDDD500BCDBA3 /* UIImage+Thirty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Thirty.swift"; sourceTree = "<group>"; };
 		45100BAD2051DE2A0000B254 /* PlatformUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformUtils.swift; sourceTree = "<group>"; };
 		45100BB1205211630000B254 /* TokenUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenUtils.swift; sourceTree = "<group>"; };
 		45100BB32052119A0000B254 /* TwilioSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioSettings.swift; sourceTree = "<group>"; };
@@ -85,17 +98,18 @@
 		4530A9171F05CF9E0039D303 /* JHSpinnerView+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JHSpinnerView+Thirty.swift"; sourceTree = "<group>"; };
 		45407F5B20571AB0008B05B3 /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
 		45407F5D20575A47008B05B3 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
+		4542AAA1206E9800002A7FAD /* chill-ringback-quiet.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "chill-ringback-quiet.m4a"; sourceTree = "<group>"; };
 		454CC7061E5532870087FAAD /* Thirty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thirty.entitlements; sourceTree = "<group>"; };
 		454CC7071E568F640087FAAD /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		454CC70E1E57D4F60087FAAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		454CD1B9206C7ED3006235C8 /* chillRingback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chillRingback.wav; sourceTree = "<group>"; };
+		454CD1BC206D77FA006235C8 /* FeaturedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedTableViewCell.swift; sourceTree = "<group>"; };
+		454CD1BD206D77FA006235C8 /* FeaturedTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeaturedTableViewCell.xib; sourceTree = "<group>"; };
 		455BDE7820621FD9009CA00A /* answeredChime.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = answeredChime.wav; sourceTree = "<group>"; };
 		45635E401EC0089B0011096C /* PushKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PushKit.framework; path = System/Library/Frameworks/PushKit.framework; sourceTree = SDKROOT; };
 		457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		45993F312058D7DB002276E9 /* Explodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Explodable.swift; sourceTree = "<group>"; };
 		459E61F02058BF00004C385A /* UIView+Thirty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Thirty.swift"; sourceTree = "<group>"; };
-		45BB11B3205E21370014F48C /* ringbackMorningSong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringbackMorningSong.mp3; sourceTree = "<group>"; };
 		45DB90DB205E292000591EC8 /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -161,8 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				455BDE7820621FD9009CA00A /* answeredChime.wav */,
-				454CD1B9206C7ED3006235C8 /* chillRingback.wav */,
-				45BB11B3205E21370014F48C /* ringbackMorningSong.mp3 */,
+				4542AAA1206E9800002A7FAD /* chill-ringback-quiet.m4a */,
 				45DB90DB205E292000591EC8 /* ringtone.mp3 */,
 			);
 			path = Sounds;
@@ -184,6 +197,7 @@
 		4500C77D1E4E8EE800AF54AA /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				450AB134206DBED400BCDBA3 /* Feature */,
 				4500C7841E4E92AF00AF54AA /* Welcome */,
 				4530A9021F033DB00039D303 /* Login */,
 				4530A9091F0451DD0039D303 /* Signup */,
@@ -205,10 +219,13 @@
 		4500C7811E4E924800AF54AA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				450AB12B206D7E8A00BCDBA3 /* Error+Thirty.swift */,
+				450AB12A206D7E8A00BCDBA3 /* UIViewController+Thirty.swift */,
 				4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */,
 				4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */,
 				4530A9171F05CF9E0039D303 /* JHSpinnerView+Thirty.swift */,
 				459E61F02058BF00004C385A /* UIView+Thirty.swift */,
+				450AB13B206DDDD500BCDBA3 /* UIImage+Thirty.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -241,6 +258,7 @@
 		4500C78E1E527ADA00AF54AA /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				454CD1BB206D77E3006235C8 /* Featured */,
 				457A9ABC1F57C056004FC8D1 /* Search */,
 				4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */,
 				4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */,
@@ -255,6 +273,15 @@
 				4500C7951E5286E000AF54AA /* CallViewController.xib */,
 			);
 			path = Call;
+			sourceTree = "<group>";
+		};
+		450AB134206DBED400BCDBA3 /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				450AB135206DBEEC00BCDBA3 /* FeatureViewController.swift */,
+				450AB136206DBEEC00BCDBA3 /* FeatureViewController.xib */,
+			);
+			path = Feature;
 			sourceTree = "<group>";
 		};
 		4530A9021F033DB00039D303 /* Login */ = {
@@ -279,9 +306,19 @@
 			isa = PBXGroup;
 			children = (
 				4530A9131F05BA3D0039D303 /* User.swift */,
+				450AB132206D8ADF00BCDBA3 /* FeaturedUser.swift */,
 				45407F5D20575A47008B05B3 /* Call.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		454CD1BB206D77E3006235C8 /* Featured */ = {
+			isa = PBXGroup;
+			children = (
+				454CD1BC206D77FA006235C8 /* FeaturedTableViewCell.swift */,
+				454CD1BD206D77FA006235C8 /* FeaturedTableViewCell.xib */,
+			);
+			path = Featured;
 			sourceTree = "<group>";
 		};
 		457A9ABC1F57C056004FC8D1 /* Search */ = {
@@ -332,7 +369,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Thirty;
 				TargetAttributes = {
 					4500C75A1E4BDD5A00AF54AA = {
@@ -378,16 +415,17 @@
 				455BDE7920621FD9009CA00A /* answeredChime.wav in Resources */,
 				4500C7881E4E92C200AF54AA /* WelcomeViewController.xib in Resources */,
 				4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */,
-				45BB11B4205E21370014F48C /* ringbackMorningSong.mp3 in Resources */,
 				45DB90DC205E292000591EC8 /* ringtone.mp3 in Resources */,
 				457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */,
+				4542AAA2206E9800002A7FAD /* chill-ringback-quiet.m4a in Resources */,
 				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
 				4530A90D1F0451FE0039D303 /* SignupViewController.xib in Resources */,
-				454CD1BA206C7ED3006235C8 /* chillRingback.wav in Resources */,
 				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
+				450AB138206DBEEC00BCDBA3 /* FeatureViewController.xib in Resources */,
 				4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */,
+				454CD1BF206D77FA006235C8 /* FeaturedTableViewCell.xib in Resources */,
 				4500C7641E4BDD5A00AF54AA /* Main.storyboard in Resources */,
 				4500C7921E527AFF00AF54AA /* HomeTableViewController.xib in Resources */,
 			);
@@ -469,12 +507,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				45100BB42052119A0000B254 /* TwilioSettings.swift in Sources */,
+				450AB137206DBEEC00BCDBA3 /* FeatureViewController.swift in Sources */,
 				45100BAE2051DE2A0000B254 /* PlatformUtils.swift in Sources */,
+				450AB13C206DDDD500BCDBA3 /* UIImage+Thirty.swift in Sources */,
 				4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */,
 				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
+				450AB12C206D7E8A00BCDBA3 /* UIViewController+Thirty.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
 				45407F5E20575A47008B05B3 /* Call.swift in Sources */,
 				45100BB2205211630000B254 /* TokenUtils.swift in Sources */,
+				450AB133206D8ADF00BCDBA3 /* FeaturedUser.swift in Sources */,
 				4500C78D1E5278AB00AF54AA /* UIAlertController+Thirty.swift in Sources */,
 				4530A9111F05B7F20039D303 /* Result.swift in Sources */,
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
@@ -485,11 +527,13 @@
 				45407F5C20571AB0008B05B3 /* CallManager.swift in Sources */,
 				4500C7871E4E92C200AF54AA /* WelcomeViewController.swift in Sources */,
 				4530A9141F05BA3D0039D303 /* User.swift in Sources */,
+				454CD1BE206D77FA006235C8 /* FeaturedTableViewCell.swift in Sources */,
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 				45993F322058D7DB002276E9 /* Explodable.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
 				4530A9161F05C59D0039D303 /* THError.swift in Sources */,
+				450AB12D206D7E8A00BCDBA3 /* Error+Thirty.swift in Sources */,
 				4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,6 +583,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -546,6 +591,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -594,6 +640,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -601,6 +648,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

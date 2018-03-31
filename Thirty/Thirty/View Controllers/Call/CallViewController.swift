@@ -30,14 +30,10 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     let timeRemainingLabelColor = UIColor.thPrimaryPurple.withAlphaComponent(0.5)
     let callTimeoutLength: Double = 45
     var callHasEnded = false
-    /**
-     * We will create an audio device and manage it's lifecycle in response to CallKit events.
-     */
+
     var room: TVIRoom?
     var camera: TVICameraCapturer?
-    // Create an audio track
     var localAudioTrack = TVILocalAudioTrack()
-    // Create a Capturer to provide content for the video track
     var localVideoTrack : TVILocalVideoTrack?
     var remoteParticipant: TVIRemoteParticipant?
     
@@ -65,6 +61,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        RootViewController.shared.showStatusBarBackground = false
         startLocalPreviewVideo()
         showCallSpinner()
         connectToRoom()
@@ -193,6 +190,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             } else {
                 print("successfully sent voIP push")
                 guard let strongSelf = self else { return }
+                guard !strongSelf.callHasEnded else { return }
                 CallManager.shared.performStartCallAction(call: strongSelf.call) { [weak self] error in
                     if let error = error {
                         let alertVC = UIAlertController.createSimpleAlert(withTitle: "Error", message: error.localizedDescription)  { action in

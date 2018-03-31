@@ -56,10 +56,11 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func playRingbackTone() {
-        let path = Bundle.main.path(forResource: "chillRingback.wav", ofType:nil)!
+        let path = Bundle.main.path(forResource: "chill-ringback-quiet.m4a", ofType:nil)!
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
         ringbackAudioPlayer?.numberOfLoops = -1
+        ringbackAudioPlayer?.prepareToPlay()
         ringbackAudioPlayer?.play()
     }
     
@@ -68,6 +69,7 @@ class CallManager: NSObject, CXProviderDelegate {
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
         ringbackAudioPlayer?.numberOfLoops = 0
+        ringbackAudioPlayer?.prepareToPlay()
         ringbackAudioPlayer?.play()
     }
     
@@ -197,6 +199,7 @@ class CallManager: NSObject, CXProviderDelegate {
     
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
         print("provider:didDeactivateAudioSession:")
+        stopRingbackTone()
     }
     
     func provider(_ provider: CXProvider, timedOutPerforming action: CXAction) {

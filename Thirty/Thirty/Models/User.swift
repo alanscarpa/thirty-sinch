@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct User {
+class User {
     var username: String = ""
     var email: String = ""
     var phoneNumber: String = ""
@@ -17,5 +17,14 @@ struct User {
         return username.lowercased()
     }
     var deviceToken: String?
+    
+    convenience init(username: String, email: String, phoneNumber: String, password: String, deviceToken: String?) {
+        self.init()
+        self.username = username
+        self.email = email
+        self.phoneNumber = phoneNumber
+        self.password = password
+        self.deviceToken = deviceToken
+    }
 }
 
