@@ -62,18 +62,18 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     func getContacts() {
         FirebaseManager.shared.getContacts { [weak self] result in
             switch result {
-            case .Success():
+            case .success():
                 FirebaseManager.shared.getFeaturedUsers { [weak self] result in
                     self?.tableView.reloadData()
                     switch result {
-                    case .Success():
+                    case .success():
                         break // no-op
-                    case .Failure(let error):
+                    case .failure(let error):
                         let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
                         self?.present(alertVC, animated: true, completion: nil)
                     }
                 }
-            case .Failure(let error):
+            case .failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts.", message: error.localizedDescription)
                 self?.present(alertVC, animated: true, completion: nil)
             }
@@ -113,7 +113,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         } else {
             FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
                 switch result {
-                case .Success(let user):
+                case .success(let user):
                     // TODO: Dont populate if user is currentUsername
                     if let user = user {
                         self?.searchResults = [user]
@@ -122,7 +122,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                         self?.searchResults = []
                     }
                     self?.tableView.reloadData()
-                case .Failure(let error):
+                case .failure(let error):
                     let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
                     self?.present(alertVC, animated: true, completion: nil)
                 }
@@ -203,10 +203,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         let tappedUser = searchResults[indexPath.row]
         FirebaseManager.shared.addUserAsFriend(username: tappedUser.username) { [weak self] result in
             switch result {
-            case .Success(_):
+            case .success(_):
                 UserManager.shared.contacts.append(tappedUser)
                 self?.resetTableView()
-            case .Failure(let error):
+            case .failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
                 self?.present(alertVC, animated: true, completion: nil)
             }

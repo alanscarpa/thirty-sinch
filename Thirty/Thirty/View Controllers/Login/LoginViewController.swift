@@ -38,9 +38,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             FirebaseManager.shared.logInUserWithUsername(userId, password: password) { [weak self] result in
                 THSpinner.dismiss()
                 switch result {
-                case .Success(_):
+                case .success(_):
                     self?.completeLoginProcess()
-                case .Failure(let error):
+                case .failure(let error):
                     let errorInfo = error.alertInfo
                     let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description, handler: nil)
                     self?.present(alert, animated: true, completion: nil)

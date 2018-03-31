@@ -65,9 +65,9 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         FirebaseManager.shared.createNewUser(user: user) { result in
             THSpinner.dismiss()
             switch result {
-            case .Success(_):
+            case .success(_):
                 RootViewController.shared.goToHomeVC()
-            case .Failure(let error):
+            case .failure(let error):
                 let errorInfo = error.alertInfo
                 self.present(UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description), animated: true, completion: nil)
             }
