@@ -27,26 +27,26 @@ class FirebaseManager {
 
     // MARK: Firebase Properties
 
-    private let databaseRef = FIRDatabase.database().reference()
-    private let usersRef = FIRDatabase.database().reference().child("users")
-    private let friendsRef = FIRDatabase.database().reference().child("friends")
-    private let activeCallsRef = FIRDatabase.database().reference().child("active-calls")
+    private let databaseRef = Database.database().reference()
+    private let usersRef = Database.database().reference().child("users")
+    private let friendsRef = Database.database().reference().child("friends")
+    private let activeCallsRef = Database.database().reference().child("active-calls")
 
-    var currentUsersFriendsRef: FIRDatabaseReference {
+    var currentUsersFriendsRef: DatabaseReference {
         return friendsRef.child(userManager.currentUserUsername.lowercased())
     }
 
-    var currentUser: FIRUser? {
-        return FIRAuth.auth()?.currentUser
+    var currentUser: Firebase.User? {
+        return Auth.auth().currentUser
     }
 
     var currentUserIsLoggedIn: Bool {
         return currentUser != nil
     }
     
-    private var authStateListener: FIRAuthStateDidChangeListenerHandle!
-    private var observeCallEndedStateHandle: FIRDatabaseHandle?
-    private var observeCallPendingStateHandle: FIRDatabaseHandle?
+    private var authStateListener: AuthStateDidChangeListenerHandle!
+    private var observeCallEndedStateHandle: DatabaseHandle?
+    private var observeCallPendingStateHandle: DatabaseHandle?
 
     // MARK: Init
 
@@ -57,14 +57,14 @@ class FirebaseManager {
     // MARK: Auth State Changes
     
     func listenForAuthStateChanges() {
-        authStateListener = FIRAuth.auth()?.addStateDidChangeListener(authStateChangedHandler)
+        authStateListener = Auth.auth().addStateDidChangeListener(authStateChangedHandler)
     }
     
     func stopListeningForAuthStateChanges() {
-        FIRAuth.auth()?.removeStateDidChangeListener(authStateListener)
+        Auth.auth().removeStateDidChangeListener(authStateListener)
     }
     
-    private func authStateChangedHandler(auth: FIRAuth, user: FIRUser?) {
+    private func authStateChangedHandler(auth: Auth, user: Firebase.User?) {
         if !currentUserIsLoggedIn {
             delegate?.currentUserDidLogOut?()
         }
@@ -73,7 +73,7 @@ class FirebaseManager {
     // MARK: Log In/Out
 
     func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
-        FIRAuth.auth()?.signInAnonymously { [weak self] (anonymousUser, error) in
+        Auth.auth().signInAnonymously { [weak self] (anonymousUser, error) in
             self?.databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
                 anonymousUser?.delete(completion: { deletionError in
                     if let deletionError = deletionError {
@@ -85,7 +85,7 @@ class FirebaseManager {
                         }
                         let value = snapshot.value as? NSDictionary
                         if let email = value?["email"] as? String {
-                            FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
+                            Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                                 if let error = error {
                                     completion(.failure(error))
                                 } else {
@@ -109,7 +109,7 @@ class FirebaseManager {
     
     func logOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
         do {
-            try FIRAuth.auth()?.signOut()
+            try Auth.auth().signOut()
             completion(.success)
         } catch {
             completion(.failure(error))
@@ -120,7 +120,7 @@ class FirebaseManager {
     
     func createNewUser(user: User, completion: @escaping (Result<Void>) -> Void) {
         // STEP 1 - First we create our user and sign in because sign in is required to access DB
-        FIRAuth.auth()?.createUser(withEmail: user.email, password: user.password) { [weak self] (fbUser, error) in
+        Auth.auth().createUser(withEmail: user.email, password: user.password) { [weak self] (fbUser, error) in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -133,8 +133,8 @@ class FirebaseManager {
                         })
                     } else {
                         // STEP 3 - We add a display name to the firebase auth user
-                        if let newlyCreatedUser = FIRAuth.auth()?.currentUser {
-                            let changeRequest = newlyCreatedUser.profileChangeRequest()
+                        if let newlyCreatedUser = Auth.auth().currentUser {
+                            let changeRequest = newlyCreatedUser.createProfileChangeRequest()
                             changeRequest.displayName = user.username
                             changeRequest.commitChanges { error in
                                 if let error = error {
