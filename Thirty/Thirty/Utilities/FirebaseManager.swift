@@ -12,32 +12,49 @@ import FirebaseAuth
 import FirebaseDatabase
 
 @objc protocol FirebaseObserverDelegate: class {
-    @objc optional func currentUserDidSignOut()
+    @objc optional func currentUserDidLogOut()
     @objc optional func callWasDeclinedByCallee()
 }
 
 class FirebaseManager {
-    
-    static let shared = FirebaseManager()
+    static let shared = FirebaseManager(userManager: UserManager.shared)
+
+    // MARK: Dependencies
+
+    private let userManager: UserManager
+
     weak var delegate: FirebaseObserverDelegate?
+
+    // MARK: Firebase Properties
+
     private let databaseRef = FIRDatabase.database().reference()
-    var activeCallsRef: FIRDatabaseReference {
-        return databaseRef.child("active-calls")
+    private let usersRef = FIRDatabase.database().reference().child("users")
+    private let friendsRef = FIRDatabase.database().reference().child("friends")
+    private let activeCallsRef = FIRDatabase.database().reference().child("active-calls")
+
+    var currentUsersFriendsRef: FIRDatabaseReference {
+        return friendsRef.child(userManager.currentUserUsername.lowercased())
     }
-    var currentUserIsSignedIn: Bool {
-        return FIRAuth.auth()?.currentUser != nil
-    }
-    private var currentUserIsSignedOut: Bool {
-        return FIRAuth.auth()?.currentUser == nil
-    }
+
     var currentUser: FIRUser? {
         return FIRAuth.auth()?.currentUser
+    }
+
+    var currentUserIsLoggedIn: Bool {
+        return currentUser != nil
     }
     
     private var authStateListener: FIRAuthStateDidChangeListenerHandle!
     private var observeCallEndedStateHandle: FIRDatabaseHandle?
     private var observeCallPendingStateHandle: FIRDatabaseHandle?
-    private init() {}
+
+    // MARK: Init
+
+    init(userManager: UserManager) {
+        self.userManager = userManager
+    }
+
+    // MARK: Auth State Changes
     
     func listenForAuthStateChanges() {
         authStateListener = FIRAuth.auth()?.addStateDidChangeListener(authStateChangedHandler)
@@ -47,13 +64,50 @@ class FirebaseManager {
         FIRAuth.auth()?.removeStateDidChangeListener(authStateListener)
     }
     
-    private func authStateChangedHandler(auth: FIRAuth, user: FIRUser?) -> Swift.Void {
-        if currentUserIsSignedOut {
-            delegate?.currentUserDidSignOut?()
+    private func authStateChangedHandler(auth: FIRAuth, user: FIRUser?) {
+        if !currentUserIsLoggedIn {
+            delegate?.currentUserDidLogOut?()
+        }
+    }
+
+    // MARK: Log In/Out
+
+    func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
+        FIRAuth.auth()?.signInAnonymously { [weak self] (anonymousUser, error) in
+            self?.databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
+                anonymousUser?.delete(completion: { deletionError in
+                    if let deletionError = deletionError {
+                        completion(.failure(deletionError))
+                    } else {
+                        guard snapshot.exists() else {
+                            completion(.failure(THError.usernameDoesNotExist))
+                            return
+                        }
+                        let value = snapshot.value as? NSDictionary
+                        if let email = value?["email"] as? String {
+                            FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
+                                if let error = error {
+                                    completion(.failure(error))
+                                } else {
+                                    if !TokenUtils.deviceToken.isEmpty {
+                                        self?.databaseRef.child("users")
+                                            .child(username.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
+                                    }
+                                    completion(.success)
+                                }
+                            }
+                        }
+                    }
+                })
+            }) { (error) in
+                anonymousUser?.delete(completion: { deletionError in
+                    completion(.failure(deletionError ?? error))
+                })
+            }
         }
     }
     
-    func signOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
+    func logOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
         do {
             try FIRAuth.auth()?.signOut()
             completion(.success)
@@ -61,90 +115,8 @@ class FirebaseManager {
             completion(.failure(error))
         }
     }
-    
-    func answeredCallWithRoomName(_ roomName: String) {
-        activeCallsRef.child(roomName).updateChildValues(["call-state": "active"])
-    }
-    
-    func endCallWithRoomName(_ roomName: String) {
-        activeCallsRef.child(roomName).observeSingleEvent(of: .value) { [weak self] snapshot in
-            if snapshot.exists() {
-                self?.activeCallsRef.child(roomName).updateChildValues(["call-state": "ended"]) { [weak self] (error, ref) in
-                    self?.activeCallsRef.child(roomName).removeValue()
-                }
-            }
-        }
-    }
-    
-    func declineCall(_ call: Call) {
-        activeCallsRef.child(call.roomName).child("call-state").observeSingleEvent(of: .value) { [weak self] snapshot in
-            guard let strongSelf = self else { return }
-            if let value = snapshot.value as? String {
-                let callState = CallState(rawValue: value)!
-                switch callState {
-                case .pending:
-                    strongSelf.activeCallsRef.child(call.roomName).updateChildValues(["call-state": "declined"]) { [weak self] (error, ref) in
-                        self?.activeCallsRef.child(call.roomName).removeValue()
-                    }
-                case .active, .declined, .ended:
-                    break
-                }
-            }
-        }
-    }
-    
-    func observeStatusForCallWithRoomName(_ roomName: String, completion: @escaping (CallState) -> Void) {
-        let callStateRef = activeCallsRef.child(roomName).child("call-state")
-        observeCallEndedStateHandle = callStateRef.observe(.value) { [weak self] snapshot in
-            guard let strongSelf = self else { return }
-            if let value = snapshot.value as? String {
-                let callState = CallState(rawValue: value)!
-                switch callState {
-                case .ended:
-                    callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
-                    completion(callState)
-                case .active:
-                    callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
-                case .declined, .pending:
-                    break // no-op
-                }
-            } else {
-                callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
-                // Value may return nil.  End call if that's the case.
-                completion(CallState(rawValue: "ended")!)
-            }
-        }
-    }
-    
-    func createCallStatusForCall(_ call: Call, completion: @escaping (Result<Void>) -> Void) {
-        let callStateRef = activeCallsRef.child(call.roomName).child("call-state")
-        callStateRef.setValue("pending") { (error, ref) in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success)
-            }
-        }
-        observeCallPendingStateHandle = callStateRef.observe(.value) { [weak self] snapshot in
-            guard let strongSelf = self else { return }
-            if let value = snapshot.value as? String {
-                let callState = CallState(rawValue: value)!
-                let cleanUpCall = {
-                    self?.activeCallsRef.child(call.roomName).removeValue()
-                    callStateRef.removeObserver(withHandle: strongSelf.observeCallPendingStateHandle!)
-                }
-                switch callState {
-                case .pending, .active:
-                    break
-                case .declined:
-                    self?.delegate?.callWasDeclinedByCallee?()
-                    cleanUpCall()
-                case .ended:
-                    cleanUpCall()
-                }
-            }
-        }
-    }
+
+    // MARK: Create User
     
     func createNewUser(user: User, completion: @escaping (Result<Void>) -> Void) {
         // STEP 1 - First we create our user and sign in because sign in is required to access DB
@@ -199,46 +171,9 @@ class FirebaseManager {
             }
         }
     }
-    
-    func updateDeviceToken() {
-        databaseRef.child("users").child(UserManager.shared.currentUserUsername.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
-    }
-    
-    func logInUserWithUsername(_ username: String, password: String, completion: @escaping (Result<Void>) -> Void) {
-        FIRAuth.auth()?.signInAnonymously { [weak self] (anonymousUser, error) in
-            self?.databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
-                anonymousUser?.delete(completion: { deletionError in
-                    if let deletionError = deletionError {
-                        completion(.failure(deletionError))
-                    } else {
-                        guard snapshot.exists() else {
-                            completion(.failure(THError.usernameDoesNotExist))
-                            return
-                        }
-                        let value = snapshot.value as? NSDictionary
-                        if let email = value?["email"] as? String {
-                            FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
-                                if let error = error {
-                                    completion(.failure(error))
-                                } else {
-                                    if !TokenUtils.deviceToken.isEmpty {
-                                        self?.databaseRef.child("users")
-                                            .child(username.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
-                                    }
-                                    completion(.success)
-                                }
-                            }
-                        }
-                    }
-                })
-            }) { (error) in
-                anonymousUser?.delete(completion: { deletionError in
-                    completion(.failure(deletionError ?? error))
-                })
-            }
-        }
-    }
-    
+
+    // MARK: Search Users
+
     func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {
         databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
             if let value = snapshot.value as? NSDictionary {
@@ -255,9 +190,11 @@ class FirebaseManager {
             completion(.failure(error))
         }
     }
+
+    // MARK: Friends
     
     func addUserAsFriend(username: String, completion: @escaping (Result<Void>) -> Void) {
-        databaseRef.child("friends")
+        friendsRef
             .child(UserManager.shared.currentUserUsername.lowercased())
             .setValue([username.lowercased(): true], withCompletionBlock: { [weak self] (error, ref) in
                         if let error = error {
@@ -275,38 +212,39 @@ class FirebaseManager {
                         }
             })
     }
-    
+
     func getContacts(completion: @escaping (Result<Void>) -> Void) {
-        databaseRef.child("friends").child(UserManager.shared.currentUserUsername.lowercased()).observeSingleEvent(of: .value, with: { [weak self] snapshot in
-            if let value = snapshot.value as? NSDictionary,
-                let usernames = value.allKeys as? [String] {
-                let dispatchGroup = DispatchGroup()
-                for username in usernames {
-                    dispatchGroup.enter()
-                    self?.databaseRef.child("users").child(username).observeSingleEvent(of: .value) { snapshot in
-                        let value = snapshot.value as! [String: Any]
-                        let user = User()
-                        user.username = value["display-name"] as! String
-                        user.deviceToken = value["device-token"] as? String
-                        user.email = value["email"] as! String
-                        user.phoneNumber = value["phone-number"] as! String
-                        UserManager.shared.contacts.append(user)
-                        dispatchGroup.leave()
-                    }
-                }
-                dispatchGroup.notify(queue: DispatchQueue.global(qos: .`default`)) {
-                    DispatchQueue.main.async {
-                        UserManager.shared.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
-                        completion(.success)
-                    }
-                }
-            } else {
-                completion(.failure(THError.unableToGetUsers))
+        let cancelBlock: (Error) -> Void = { completion(.failure($0) )}
+        currentUsersFriendsRef.observeSingleEvent(of: .value, with: { [weak self] snapshot in
+            guard let friends = snapshot.value as? [String : Any] else {
+                completion(.success) // user doesn't have any friends :(
+                return
             }
-        }) { (error) in
-            completion(.failure(error))
-        }
+            let usernames = friends.keys
+            let dispatchGroup = DispatchGroup()
+            usernames.forEach { username in
+                dispatchGroup.enter()
+                self?.usersRef.child(username).observeSingleEvent(of: .value) { snapshot in
+                    defer { dispatchGroup.leave() }
+                    guard
+                        let value = snapshot.value as? [String : Any],
+                        let name = value["display-name"] as? String,
+                        let email = value["email"] as? String,
+                        let number = value["phone-number"] as? String
+                        else { return }
+                    let token = value["device-token"] as? String
+                    let user = User(username: name, email: email, phoneNumber: number, password: "", deviceToken: token)
+                    self?.userManager.contacts.append(user)
+                }
+            }
+            dispatchGroup.notify(queue: .main) {
+                self?.userManager.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
+                completion(.success)
+            }
+            }, withCancel: cancelBlock)
     }
+
+    // MARK: Featured Users
     
     func getFeaturedUsers(completion: @escaping (Result<Void>) -> Void) {
         databaseRef.child("featured").observeSingleEvent(of: .value, with: { snapshot in
@@ -341,6 +279,12 @@ class FirebaseManager {
             completion(.failure(error))
         }
     }
+
+    // MARK: Device Token
+
+    func updateDeviceToken() {
+        databaseRef.child("users").child(UserManager.shared.currentUserUsername.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
+    }
     
     func getDeviceTokenForUsername(_ username: String, completion: @escaping (Result<String>) -> Void) {
         databaseRef.child("users").child(username).observeSingleEvent(of: .value, with: { snapshot in
@@ -352,6 +296,92 @@ class FirebaseManager {
             }
         }) { (error) in
             completion(.failure(error))
+        }
+    }
+
+    // MARK: Calls
+
+    func answeredCallWithRoomName(_ roomName: String) {
+        activeCallsRef.child(roomName).updateChildValues(["call-state": "active"])
+    }
+
+    func endCallWithRoomName(_ roomName: String) {
+        activeCallsRef.child(roomName).observeSingleEvent(of: .value) { [weak self] snapshot in
+            if snapshot.exists() {
+                self?.activeCallsRef.child(roomName).updateChildValues(["call-state": "ended"]) { [weak self] (error, ref) in
+                    self?.activeCallsRef.child(roomName).removeValue()
+                }
+            }
+        }
+    }
+
+    func declineCall(_ call: Call) {
+        activeCallsRef.child(call.roomName).child("call-state").observeSingleEvent(of: .value) { [weak self] snapshot in
+            guard let strongSelf = self else { return }
+            if let value = snapshot.value as? String {
+                let callState = CallState(rawValue: value)!
+                switch callState {
+                case .pending:
+                    strongSelf.activeCallsRef.child(call.roomName).updateChildValues(["call-state": "declined"]) { [weak self] (error, ref) in
+                        self?.activeCallsRef.child(call.roomName).removeValue()
+                    }
+                case .active, .declined, .ended:
+                    break
+                }
+            }
+        }
+    }
+
+    func observeStatusForCallWithRoomName(_ roomName: String, completion: @escaping (CallState) -> Void) {
+        let callStateRef = activeCallsRef.child(roomName).child("call-state")
+        observeCallEndedStateHandle = callStateRef.observe(.value) { [weak self] snapshot in
+            guard let strongSelf = self else { return }
+            if let value = snapshot.value as? String {
+                let callState = CallState(rawValue: value)!
+                switch callState {
+                case .ended:
+                    callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
+                    completion(callState)
+                case .active:
+                    callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
+                case .declined, .pending:
+                    break // no-op
+                }
+            } else {
+                callStateRef.removeObserver(withHandle: strongSelf.observeCallEndedStateHandle!)
+                // Value may return nil.  End call if that's the case.
+                completion(CallState(rawValue: "ended")!)
+            }
+        }
+    }
+
+    func createCallStatusForCall(_ call: Call, completion: @escaping (Result<Void>) -> Void) {
+        let callStateRef = activeCallsRef.child(call.roomName).child("call-state")
+        callStateRef.setValue("pending") { (error, ref) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success)
+            }
+        }
+        observeCallPendingStateHandle = callStateRef.observe(.value) { [weak self] snapshot in
+            guard let strongSelf = self else { return }
+            if let value = snapshot.value as? String {
+                let callState = CallState(rawValue: value)!
+                let cleanUpCall = {
+                    self?.activeCallsRef.child(call.roomName).removeValue()
+                    callStateRef.removeObserver(withHandle: strongSelf.observeCallPendingStateHandle!)
+                }
+                switch callState {
+                case .pending, .active:
+                    break
+                case .declined:
+                    self?.delegate?.callWasDeclinedByCallee?()
+                    cleanUpCall()
+                case .ended:
+                    cleanUpCall()
+                }
+            }
         }
     }
 }
