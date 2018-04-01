@@ -60,9 +60,9 @@ class FeatureViewController: UIViewController {
         addUserButton.isEnabled = false
         FirebaseManager.shared.addUserAsFriend(username: featuredUser.username) { [weak self] result in
             switch result {
-            case .Success():
+            case .success():
                 break // no-op
-            case .Failure(let error):
+            case .failure(let error):
                 self?.addUserButton.isEnabled = true
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
                 self?.present(alertVC, animated: true, completion: nil)

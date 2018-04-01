@@ -56,9 +56,9 @@ class FirebaseManager {
     func signOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
         do {
             try FIRAuth.auth()?.signOut()
-            completion(.Success)
+            completion(.success)
         } catch {
-            completion(.Failure(error))
+            completion(.failure(error))
         }
     }
     
@@ -120,9 +120,9 @@ class FirebaseManager {
         let callStateRef = activeCallsRef.child(call.roomName).child("call-state")
         callStateRef.setValue("pending") { (error, ref) in
             if let error = error {
-                completion(.Failure(error))
+                completion(.failure(error))
             } else {
-                completion(.Success)
+                completion(.success)
             }
         }
         observeCallPendingStateHandle = callStateRef.observe(.value) { [weak self] snapshot in
@@ -150,14 +150,14 @@ class FirebaseManager {
         // STEP 1 - First we create our user and sign in because sign in is required to access DB
         FIRAuth.auth()?.createUser(withEmail: user.email, password: user.password) { [weak self] (fbUser, error) in
             if let error = error {
-                completion(.Failure(error))
+                completion(.failure(error))
             } else {
                 // STEP 2 - Make sure the username is available
                 self?.databaseRef.child("users").child(user.userNameLowercased).observeSingleEvent(of: .value, with: { snapshot in
                     if snapshot.exists() {
                         // Delete our user from DB if username already exists
                         fbUser?.delete(completion: { error in
-                            completion(.Failure(error ?? THError.usernameAlreadyExists))
+                            completion(.failure(error ?? THError.usernameAlreadyExists))
                         })
                     } else {
                         // STEP 3 - We add a display name to the firebase auth user
@@ -166,7 +166,7 @@ class FirebaseManager {
                             changeRequest.displayName = user.username
                             changeRequest.commitChanges { error in
                                 if let error = error {
-                                    completion(.Failure(error))
+                                    completion(.failure(error))
                                 } else {
                                     // STEP 4 - Then we add details to user which allows a username sign-in
                                     if let fbUser = fbUser {
@@ -178,13 +178,13 @@ class FirebaseManager {
                                                        "email": user.email,
                                                        "device-token": user.deviceToken], withCompletionBlock: { (error, ref) in
                                                         if let error = error {
-                                                            completion(.Failure(error))
+                                                            completion(.failure(error))
                                                         } else {
-                                                            completion(.Success)
+                                                            completion(.success)
                                                         }
                                             })
                                     } else {
-                                        completion(.Failure(THError.blankFBUserReturned))
+                                        completion(.failure(THError.blankFBUserReturned))
                                     }
                                 }
                             }
@@ -193,7 +193,7 @@ class FirebaseManager {
                 }) { (error) in
                     // Delete our user if we were unable to access DB after creating user
                     fbUser?.delete(completion: { error in
-                        completion(.Failure(error ?? THError.usernameAlreadyExists))
+                        completion(.failure(error ?? THError.usernameAlreadyExists))
                     })
                 }
             }
@@ -209,23 +209,23 @@ class FirebaseManager {
             self?.databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
                 anonymousUser?.delete(completion: { deletionError in
                     if let deletionError = deletionError {
-                        completion(.Failure(deletionError))
+                        completion(.failure(deletionError))
                     } else {
                         guard snapshot.exists() else {
-                            completion(.Failure(THError.usernameDoesNotExist))
+                            completion(.failure(THError.usernameDoesNotExist))
                             return
                         }
                         let value = snapshot.value as? NSDictionary
                         if let email = value?["email"] as? String {
                             FIRAuth.auth()?.signIn(withEmail: email, password: password) { (user, error) in
                                 if let error = error {
-                                    completion(.Failure(error))
+                                    completion(.failure(error))
                                 } else {
                                     if !TokenUtils.deviceToken.isEmpty {
                                         self?.databaseRef.child("users")
                                             .child(username.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
                                     }
-                                    completion(.Success)
+                                    completion(.success)
                                 }
                             }
                         }
@@ -233,7 +233,7 @@ class FirebaseManager {
                 })
             }) { (error) in
                 anonymousUser?.delete(completion: { deletionError in
-                    completion(.Failure(deletionError ?? error))
+                    completion(.failure(deletionError ?? error))
                 })
             }
         }
@@ -247,12 +247,12 @@ class FirebaseManager {
                 let phoneNumber = value["phone-number"] as? String ?? ""
                 let deviceToken = value["device-token"] as? String ?? ""
                 let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "", deviceToken: deviceToken)
-                completion(.Success(user))
+                completion(.success(user))
             } else {
-                completion(.Success(nil))
+                completion(.success(nil))
             }
         }) { (error) in
-            completion(.Failure(error))
+            completion(.failure(error))
         }
     }
     
@@ -261,15 +261,15 @@ class FirebaseManager {
             .child(UserManager.shared.currentUserUsername.lowercased())
             .setValue([username.lowercased(): true], withCompletionBlock: { [weak self] (error, ref) in
                         if let error = error {
-                            completion(.Failure(error))
+                            completion(.failure(error))
                         } else {
                             self?.databaseRef.child("friends")
                                 .child(username.lowercased())
                                 .setValue([UserManager.shared.currentUserUsername.lowercased(): true], withCompletionBlock: { (error, ref) in
                                     if let error = error {
-                                        completion(.Failure(error))
+                                        completion(.failure(error))
                                     } else {
-                                        completion(.Success)
+                                        completion(.success)
                                     }
                                 })
                         }
@@ -297,14 +297,14 @@ class FirebaseManager {
                 dispatchGroup.notify(queue: DispatchQueue.global(qos: .`default`)) {
                     DispatchQueue.main.async {
                         UserManager.shared.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
-                        completion(.Success)
+                        completion(.success)
                     }
                 }
             } else {
-                completion(.Failure(THError.unableToGetUsers))
+                completion(.failure(THError.unableToGetUsers))
             }
         }) { (error) in
-            completion(.Failure(error))
+            completion(.failure(error))
         }
     }
     
@@ -333,12 +333,12 @@ class FirebaseManager {
                     UserManager.shared.featuredUsers.append(featuredUser)
                 }
                 UserManager.shared.featuredUsers.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
-                completion(.Success)
+                completion(.success)
             } else {
-                completion(.Failure(THError.unableToGetUsers))
+                completion(.failure(THError.unableToGetUsers))
             }
         }) { (error) in
-            completion(.Failure(error))
+            completion(.failure(error))
         }
     }
     
@@ -346,12 +346,12 @@ class FirebaseManager {
         databaseRef.child("users").child(username).observeSingleEvent(of: .value, with: { snapshot in
             let value = snapshot.value as? NSDictionary
             if let deviceToken = value?["device-token"] as? String {
-                completion(.Success(deviceToken))
+                completion(.success(deviceToken))
             } else {
-                completion(.Failure(THError.unableToGetDeviceToken))
+                completion(.failure(THError.unableToGetDeviceToken))
             }
         }) { (error) in
-            completion(.Failure(error))
+            completion(.failure(error))
         }
     }
 }

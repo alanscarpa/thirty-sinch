@@ -147,9 +147,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             FirebaseManager.shared.getDeviceTokenForUsername(call.callee) { [weak self] result in
                 guard let strongSelf = self else { return }
                 switch result {
-                case .Success(let token):
+                case .success(let token):
                     strongSelf.makeCallWithDeviceToken(token, toRoom: room)
-                case .Failure(let error):
+                case .failure(let error):
                     let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get user's device token.  Try again later.", message: error.localizedDescription) { action in
                         strongSelf.endCall()
                     }
@@ -163,13 +163,13 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         FirebaseManager.shared.createCallStatusForCall(call) { [weak self] result in
             guard let strongSelf = self else { return }
             switch result {
-            case .Success():
+            case .success():
                 var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString]
                 #if DEBUG
                     parameters["dev"] = true
                 #endif
                 strongSelf.sendVOIPPush(parameters)
-            case .Failure(let error):
+            case .failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to create call on FB.", message: error.localizedDescription) { action in
                     strongSelf.endCall()
                 }
