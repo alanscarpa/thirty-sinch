@@ -33,6 +33,7 @@ class SearchResultTableViewCell: UITableViewCell {
         usernameLabel.numberOfLines = 1
         usernameLabel.textAlignment = .left
         usernameLabel.textColor = .white
+        addButton.isHidden = false
     }
 
     func displayNoFriendsLabel() {

@@ -12,7 +12,7 @@ import AVFoundation
 
 class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate {
 
-    let searchController = UISearchController(searchResultsController: nil)
+    var searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
     
     var searchResults = [User]()
@@ -77,6 +77,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         searchController.searchBar.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
         definesPresentationContext = true
+        searchController.isActive = false
     }
     
     func getContacts() {
@@ -101,10 +102,11 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
+    
     // MARK: - UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
-        if !searchController.isActive { resetTableView() }
+        if !searchController.isActive && searchController.searchBar.text?.isEmpty == false { resetTableView() }
     }
     
     // MARK: - UISearchBarDelegate
@@ -117,7 +119,14 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         isSearching = true
         // This fires when user taps "x" and clears search field.
-        if searchText.isEmpty { resetTableView() }
+        if searchText.isEmpty {
+            resetTableView()
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        guard searchController.searchBar.text?.isEmpty == false else { return }
+        resetTableView()
     }
     
     func searchForContactWithString(_ query: String) {
@@ -170,11 +179,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if isFeaturedSection(section) {
-            return nil
-        } else {
-            return isSearching ? "Search Results" : "Friends"
-        }
+        return isSearching && !isFeaturedSection(section) ? "Search Results" : nil
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -185,7 +190,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-            if UserManager.shared.hasFriends {
+            if UserManager.shared.hasFriends || isSearching {
                 cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
                     UserManager.shared.contacts[indexPath.row].username
                 cell.addButton.isHidden = isSearching ? false : true
@@ -265,6 +270,11 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     func resetTableView() {
         searchResults = []
         isSearching = false
+        searchController.searchBar.text = nil
+        searchController.searchBar.endEditing(true)
+        searchController.searchBar.resignFirstResponder()
+        searchController.isActive = false
+        //searchController.dismiss(animated: true, completion: nil)
         tableView.reloadData()
     }
     
