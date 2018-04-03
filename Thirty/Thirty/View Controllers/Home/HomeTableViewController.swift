@@ -17,9 +17,11 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     var searchResults = [User]()
     var isVisible = false
-    
+    var loadingView = UIView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpLoaderView()
         getContacts()
         setUpSearchController()
         setUpTableView()
@@ -34,6 +36,24 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     // MARK: - Setup
+    
+    func setUpLoaderView() {
+        loadingView = UIView(frame: navigationController!.view.frame)
+        loadingView.backgroundColor = .thPrimaryPurple
+        THSpinner.showSpinnerOnView(loadingView)
+        navigationController?.view.addSubview(loadingView)
+    }
+    
+    func tearDownLoaderView() {
+        THSpinner.dismiss()
+        UIView.animate(withDuration: 0.5, animations: {
+            self.loadingView.alpha = 0
+        }) { complete in
+            if complete {
+                self.loadingView.removeFromSuperview()
+            }
+        }
+    }
     
     func setUpTableView() {
         // This prevents the gray view from being seen when user exposes the bounce area.
@@ -64,6 +84,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             switch result {
             case .success():
                 FirebaseManager.shared.getFeaturedUsers { [weak self] result in
+                    self?.tearDownLoaderView()
                     self?.tableView.reloadData()
                     switch result {
                     case .success():
@@ -139,8 +160,20 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isFeaturedSection(section) {
             return UserManager.shared.featuredUsers.count
+        } else if isSearching {
+            return searchResults.count
+        } else if UserManager.shared.hasFriends {
+            return UserManager.shared.numberOfFriends
         } else {
-            return isSearching ? searchResults.count : UserManager.shared.contacts.count
+            return 1
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if isFeaturedSection(section) {
+            return nil
+        } else {
+            return isSearching ? "Search Results" : "Friends"
         }
     }
     
@@ -152,10 +185,14 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-            cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
-                UserManager.shared.contacts[indexPath.row].username
-            cell.addButton.isHidden = isSearching ? false : true
-            cell.delegate = self
+            if UserManager.shared.hasFriends {
+                cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
+                    UserManager.shared.contacts[indexPath.row].username
+                cell.addButton.isHidden = isSearching ? false : true
+                cell.delegate = self
+            } else {
+                cell.displayNoFriendsLabel()
+            }
             return cell
         }
     }
@@ -167,7 +204,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         if isFeaturedSection(indexPath.section) {
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
-        } else {
+        } else if UserManager.shared.hasFriends {
             let user = UserManager.shared.contacts[indexPath.row]
             if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
                 if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
