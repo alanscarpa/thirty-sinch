@@ -16,7 +16,7 @@ class SearchResultTableViewCell: UITableViewCell {
 
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
-    @IBOutlet var addButtonWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var addButtonWidthConstraint: NSLayoutConstraint!
     weak var delegate: SearchResultsTableViewCellDelegate?
     static let nibName = "SearchResultTableViewCell"
     var addButtonIsHidden: Bool = false {
@@ -25,6 +25,7 @@ class SearchResultTableViewCell: UITableViewCell {
 
         }
     }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .thPrimaryPurple

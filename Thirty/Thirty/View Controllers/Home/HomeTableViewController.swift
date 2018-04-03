@@ -9,6 +9,7 @@
 import UIKit
 import SCLAlertView
 import AVFoundation
+import Contacts
 
 class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate {
 
@@ -18,6 +19,34 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var isVisible = false
     var loadingView = UIView()
     private let headerInSectionHeight: CGFloat = 24
+    let contactStore = CNContactStore()
+    var foundAddressBookContacts = [CNContact]()
+    lazy var allAddressBookContacts: [CNContact] = {
+        let contactStore = CNContactStore()
+        let keysToFetch = [CNContactGivenNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactFamilyNameKey]
+        
+        // Get all the containers
+        var allContainers: [CNContainer] = []
+        do {
+            allContainers = try contactStore.containers(matching: nil)
+        } catch {
+            print("Error fetching containers")
+        }
+        
+        var results: [CNContact] = []
+        
+        // Iterate all containers and append their contacts to our results array
+        for container in allContainers {
+            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+            do {
+                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as [CNKeyDescriptor])
+                results.append(contentsOf: containerResults)
+            } catch {
+                print("Error fetching results for container")
+            }
+        }
+        return results
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -230,19 +259,25 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             tableView.reloadData()
         } else {
             FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
+                guard let strongSelf = self else { return }
                 switch result {
                 case .success(let user):
                     // TODO: Dont populate if user is currentUsername
                     if let user = user {
-                        self?.searchResults = [user]
+                        strongSelf.searchResults = [user]
                     } else {
                         // TODO: Show "no user" cell
-                        self?.searchResults = []
+                        strongSelf.searchResults = []
+                        do {
+                            strongSelf.foundAddressBookContacts = try strongSelf.contactsFromAddressBook(query)
+                        } catch {
+                            print(error.localizedDescription)
+                        }
                     }
-                    self?.tableView.reloadData()
+                    strongSelf.tableView.reloadData()
                 case .failure(let error):
                     let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
-                    self?.present(alertVC, animated: true, completion: nil)
+                    strongSelf.present(alertVC, animated: true, completion: nil)
                 }
             }
         }
@@ -263,6 +298,75 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 self?.present(alertVC, animated: true, completion: nil)
             }
         }
+    }
+    
+    // MARK: - Contacts Search
+    
+    fileprivate func contactsFromAddressBook(_ query: String) throws -> [CNContact] {
+        var foundContacts = [CNContact]()
+        do {
+            if let contactsFromName = try contactsFromNameQuery(query) {
+                foundContacts.append(contentsOf: contactsFromName)
+            }
+            if let contactsFromPhoneNumber = contactsFromPhoneNumberQuery(query) {
+                foundContacts.append(contentsOf: contactsFromPhoneNumber)
+            }
+            if let contactsFromEmail = contactsFromEmailQuery(query) {
+                foundContacts.append(contentsOf: contactsFromEmail)
+            }
+            return Array(Set(foundContacts)).sorted(by: { (c1, c2) -> Bool in
+                c1.givenName < c2.givenName
+            })
+        } catch {
+            throw error
+        }
+    }
+    
+    fileprivate func contactsFromNameQuery(_ query: String) throws -> [CNContact]? {
+        let predicate = CNContact.predicateForContacts(matchingName: query)
+        let keys = [CNContactGivenNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactFamilyNameKey]
+        var contacts = [CNContact]()
+        do {
+            contacts = try contactStore.unifiedContacts(matching: predicate, keysToFetch: keys as [CNKeyDescriptor])
+            return !contacts.isEmpty ? contacts : nil
+        } catch {
+            throw error
+        }
+    }
+    
+    fileprivate func contactsFromPhoneNumberQuery(_ query: String) -> [CNContact]? {
+        var phoneNumberResults: [CNContact] = []
+        for contact in allAddressBookContacts {
+            if (!contact.phoneNumbers.isEmpty) {
+                let phoneNumberToCompareAgainst = query.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+                for phoneNumber in contact.phoneNumbers {
+                    let phoneNumberStruct = phoneNumber.value
+                    let phoneNumberString = phoneNumberStruct.stringValue
+                    let phoneNumberToCompare = phoneNumberString.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
+                    if phoneNumberToCompare == phoneNumberToCompareAgainst {
+                        phoneNumberResults.append(contact)
+                    }
+                }
+            }
+        }
+        return !phoneNumberResults.isEmpty ? phoneNumberResults : nil
+    }
+    
+    fileprivate func contactsFromEmailQuery(_ query: String) -> [CNContact]? {
+        var emailResults: [CNContact] = []
+        for contact in allAddressBookContacts {
+            if (!contact.emailAddresses.isEmpty) {
+                let emailToCompareAgainst = query.lowercased().components(separatedBy: NSCharacterSet.alphanumerics.inverted).joined(separator: "")
+                for email in contact.emailAddresses {
+                    let emailString = email.value.lowercased
+                    let emailToCompare = emailString.components(separatedBy: NSCharacterSet.alphanumerics.inverted).joined(separator: "")
+                    if emailToCompare == emailToCompareAgainst {
+                        emailResults.append(contact)
+                    }
+                }
+            }
+        }
+        return !emailResults.isEmpty ? emailResults : nil
     }
     
     // MARK: - Helpers
