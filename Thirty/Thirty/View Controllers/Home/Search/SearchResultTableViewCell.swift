@@ -16,15 +16,20 @@ class SearchResultTableViewCell: UITableViewCell {
 
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
-    
+    @IBOutlet var addButtonWidthConstraint: NSLayoutConstraint!
     weak var delegate: SearchResultsTableViewCellDelegate?
-    
     static let nibName = "SearchResultTableViewCell"
-    
+    var addButtonIsHidden: Bool = false {
+        didSet {
+            addButtonWidthConstraint.constant = addButtonIsHidden ? 0 : 54
+
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .thPrimaryPurple
         selectionStyle = .none
+        addButtonIsHidden = false
     }
     
     override func prepareForReuse() {
@@ -33,7 +38,7 @@ class SearchResultTableViewCell: UITableViewCell {
         usernameLabel.numberOfLines = 1
         usernameLabel.textAlignment = .left
         usernameLabel.textColor = .white
-        addButton.isHidden = false
+        addButtonIsHidden = false
     }
 
     func displayNoFriendsLabel() {
@@ -44,12 +49,11 @@ class SearchResultTableViewCell: UITableViewCell {
         usernameLabel.numberOfLines = 2
         usernameLabel.textAlignment = .center
         usernameLabel.text = "You haven't added any friends yet.  Search for friends and add to get started!"
-        addButton.isHidden = true
+        addButtonIsHidden = true
     }
     
     @IBAction func addButtonTapped(_ sender: Any) {
         delegate?.addButtonWasTapped(sender: self)
     }
-    
     
 }

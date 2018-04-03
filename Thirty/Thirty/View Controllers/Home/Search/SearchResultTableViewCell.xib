@@ -21,6 +21,9 @@
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VQM-9X-nhG">
                         <rect key="frame" x="250" y="4" width="54" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="54" id="o5i-sA-byB"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="14"/>
                         <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                         <state key="normal" title="Add+">
@@ -48,6 +51,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="addButton" destination="VQM-9X-nhG" id="QEP-S8-d7j"/>
+                <outlet property="addButtonWidthConstraint" destination="o5i-sA-byB" id="jWa-sK-2EX"/>
                 <outlet property="usernameLabel" destination="Mcq-oc-IRD" id="kTV-OG-DzN"/>
             </connections>
         </tableViewCell>
