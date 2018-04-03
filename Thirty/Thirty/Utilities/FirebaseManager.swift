@@ -196,13 +196,13 @@ class FirebaseManager {
     func addUserAsFriend(username: String, completion: @escaping (Result<Void>) -> Void) {
         friendsRef
             .child(UserManager.shared.currentUserUsername.lowercased())
-            .setValue([username.lowercased(): true], withCompletionBlock: { [weak self] (error, ref) in
+            .updateChildValues([username.lowercased(): true], withCompletionBlock: { [weak self] (error, ref) in
                         if let error = error {
                             completion(.failure(error))
                         } else {
                             self?.databaseRef.child("friends")
                                 .child(username.lowercased())
-                                .setValue([UserManager.shared.currentUserUsername.lowercased(): true], withCompletionBlock: { (error, ref) in
+                                .updateChildValues([UserManager.shared.currentUserUsername.lowercased(): true], withCompletionBlock: { (error, ref) in
                                     if let error = error {
                                         completion(.failure(error))
                                     } else {
