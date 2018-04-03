@@ -14,11 +14,11 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
 
     var searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
-    
     var searchResults = [User]()
     var isVisible = false
     var loadingView = UIView()
-
+    private let headerInSectionHeight: CGFloat = 24
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLoaderView()
@@ -120,8 +120,20 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return isSearching && !isFeaturedSection(section) ? "Search Results" : nil
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return  isSearching && !isFeaturedSection(section) ? headerInSectionHeight : 0
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard isSearching && !isFeaturedSection(section) else { return nil }
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
+        label.font = UIFont(name: "Avenir-Black", size: 12)!
+        label.textColor = .thPrimaryPurple
+        label.text = "SEARCH RESULTS"
+        view.addSubview(label)
+        view.backgroundColor = .white
+        return view
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
