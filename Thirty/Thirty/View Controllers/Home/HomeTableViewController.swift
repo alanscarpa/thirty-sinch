@@ -159,11 +159,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard searchResults.isEmpty else { return }
         if isFeaturedSection(indexPath.section) {
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
-        } else if UserManager.shared.hasFriends {
+        } else if UserManager.shared.hasFriends && !isSearching {
             let user = UserManager.shared.contacts[indexPath.row]
             if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
                 if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
