@@ -55,6 +55,19 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
+    func setUpSearchController() {
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.tintColor = .gray
+        searchController.searchBar.backgroundColor  = .thPrimaryPurple
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
+        textFieldInsideSearchBar?.textColor = .white
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        definesPresentationContext = true
+    }
+    
     func setUpTableView() {
         // This prevents the gray view from being seen when user exposes the bounce area.
         let backgroundView = UIView()
@@ -65,19 +78,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
         tableView.tableHeaderView = searchController.searchBar
-    }
-    
-    func setUpSearchController() {
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.tintColor = .gray
-        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
-        textFieldInsideSearchBar?.textColor = .white
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        searchController.hidesNavigationBarDuringPresentation = false
-        definesPresentationContext = true
-        searchController.isActive = false
     }
     
     func getContacts() {
@@ -98,64 +98,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             case .failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts.", message: error.localizedDescription)
                 self?.present(alertVC, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    
-    // MARK: - UISearchResultsUpdating
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        if !searchController.isActive && searchController.searchBar.text?.isEmpty == false { resetTableView() }
-    }
-    
-    // MARK: - UISearchBarDelegate
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let searchQuery = searchBar.text else { return }
-        searchForContactWithString(searchQuery)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        isSearching = true
-        // This fires when user taps "x" and clears search field.
-        if searchText.isEmpty {
-            resetTableView()
-        }
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        guard searchController.searchBar.text?.isEmpty == false else { return }
-        resetTableView()
-    }
-    
-    func searchForContactWithString(_ query: String) {
-        isSearching = true
-        guard query != UserManager.shared.currentUserUsername else {
-            tableView.reloadData()
-            return
-        }
-        if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.username == query }).first {
-            searchResults = [alreadyFriendedUser]
-            // Hacky way of hiding add button when reloading data.  Faster than querying entire contacts array for each cell though.
-            isSearching = false
-            tableView.reloadData()
-        } else {
-            FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
-                switch result {
-                case .success(let user):
-                    // TODO: Dont populate if user is currentUsername
-                    if let user = user {
-                        self?.searchResults = [user]
-                    } else {
-                        // TODO: Show "no user" cell
-                        self?.searchResults = []
-                    }
-                    self?.tableView.reloadData()
-                case .failure(let error):
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
-                    self?.present(alertVC, animated: true, completion: nil)
-                }
             }
         }
     }
@@ -238,6 +180,63 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
+    // MARK: - UISearchResultsUpdating
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if !searchController.isActive && searchController.searchBar.text?.isEmpty == false { resetTableView() }
+    }
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchQuery = searchBar.text else { return }
+        searchForContactWithString(searchQuery)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        isSearching = true
+        // This fires when user taps "x" and clears search field.
+        if searchText.isEmpty {
+            resetTableView(searchControllerIsActive: true)
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        guard searchController.searchBar.text?.isEmpty == false else { return }
+        resetTableView()
+    }
+    
+    func searchForContactWithString(_ query: String) {
+        isSearching = true
+        guard query != UserManager.shared.currentUserUsername else {
+            tableView.reloadData()
+            return
+        }
+        if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.username == query }).first {
+            searchResults = [alreadyFriendedUser]
+            // Hacky way of hiding add button when reloading data.  Faster than querying entire contacts array for each cell though.
+            isSearching = false
+            tableView.reloadData()
+        } else {
+            FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
+                switch result {
+                case .success(let user):
+                    // TODO: Dont populate if user is currentUsername
+                    if let user = user {
+                        self?.searchResults = [user]
+                    } else {
+                        // TODO: Show "no user" cell
+                        self?.searchResults = []
+                    }
+                    self?.tableView.reloadData()
+                case .failure(let error):
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
+                    self?.present(alertVC, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
     // MARK: SearchResultTableViewCellDelegate
     
     func addButtonWasTapped(sender: SearchResultTableViewCell) {
@@ -255,26 +254,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
-    // MARK: - UIResponder
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        let touch = event?.allTouches?.first
-        if touch?.view?.isKind(of: UITextField.self) == false {
-            view.endEditing(true)
-        }
-    }
-    
     // MARK: - Helpers
     
-    func resetTableView() {
+    func resetTableView(searchControllerIsActive: Bool = false) {
         searchResults = []
         isSearching = false
-        searchController.searchBar.text = nil
-        searchController.searchBar.endEditing(true)
-        searchController.searchBar.resignFirstResponder()
-        searchController.isActive = false
-        //searchController.dismiss(animated: true, completion: nil)
+        searchController.isActive = searchControllerIsActive
         tableView.reloadData()
     }
     
