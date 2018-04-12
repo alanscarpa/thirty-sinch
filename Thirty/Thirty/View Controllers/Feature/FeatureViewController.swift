@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class FeatureViewController: UIViewController {
     
@@ -61,12 +62,29 @@ class FeatureViewController: UIViewController {
         FirebaseManager.shared.addUserAsFriend(username: featuredUser.username) { [weak self] result in
             switch result {
             case .success():
-                break // no-op
+                self?.showShareAlert()
             case .failure(let error):
                 self?.addUserButton.isEnabled = true
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
                 self?.present(alertVC, animated: true, completion: nil)
             }
         }
+    }
+    
+    // MARK: - Helpers
+    
+    private func showShareAlert() {
+        let alertVC = UIAlertController(title: "You're now friends with \(featuredUser.username)!", message: "Want to increase your chances of getting your personal 30 from \(featuredUser.username)?  Text our download link to a friend!", preferredStyle: .alert)
+        let shareButton = UIAlertAction(title: "Text a friend", style: .cancel) { (action) in
+            if MFMessageComposeViewController.canSendText() {
+                let controller = MFMessageComposeViewController()
+                controller.body = "hey - download this app real quick.  it's a fun way to have 30 second video chats. https://that30app.com/download"
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
+        let cancelButton = UIAlertAction(title: "No thanks", style: .default)
+        alertVC.addAction(cancelButton)
+        alertVC.addAction(shareButton)
+        present(alertVC, animated: true, completion: nil)
     }
 }

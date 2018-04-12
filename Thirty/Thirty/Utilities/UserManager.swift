@@ -20,6 +20,14 @@ class UserManager {
         return featuredUsers.count > 0
     }
     
+    var numberOfFriends: Int {
+        return contacts.count
+    }
+    
+    var hasFriends: Bool {
+        return contacts.count > 0
+    }
+    
     var contacts = [User]()
     var featuredUsers = [FeaturedUser]()
 }

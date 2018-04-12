@@ -16,6 +16,7 @@ class User {
     var userNameLowercased: String {
         return username.lowercased()
     }
+    var doNotDisturb = false
     var deviceToken: String?
     
     convenience init(username: String, email: String, phoneNumber: String, password: String, deviceToken: String?) {

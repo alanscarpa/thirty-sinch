@@ -25,12 +25,12 @@
 	<string>You must allow camera permissions to properly send and receive 30s.</string>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>You must allow microphone permissions to properly send and receive 30s.</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>You must allow microphone permissions to properly send and receive 30s.</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -38,12 +38,14 @@
 	</dict>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -58,7 +60,7 @@
 	<array>
 		<string>INStartVideoCallIntent</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<key>NSContactsUsageDescription</key>
+	<string>This allows 30 to find friends for you to invite to the app.</string>
 </dict>
 </plist>
