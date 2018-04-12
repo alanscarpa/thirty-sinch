@@ -149,7 +149,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch sectionType(section) {
         case .searching:
-            return searchResults.count
+            return searchResults.isEmpty ? 1 : searchResults.count
         case .featured:
             return UserManager.shared.featuredUsers.count
         case .friends:
@@ -190,7 +190,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sectionType(indexPath.section)
-        print(indexPath.section)
         switch section {
         case .searching:
             let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
@@ -198,7 +197,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 cell.usernameLabel.text = searchResults[indexPath.row].username
                 cell.addButton.isHidden = false
             } else {
-                cell.usernameLabel.text = "No user found"
+                cell.usernameLabel.text = "Not yet on 30 ☹️"
                 cell.addButton.isHidden = true
             }
             cell.delegate = self
@@ -289,6 +288,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         resetTableView()
     }
     
+    // MARK: - Search
+    
     func searchForContactWithString(_ query: String) {
         isSearching = true
         guard query != UserManager.shared.currentUserUsername else {
@@ -301,6 +302,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             // isSearching = false
             tableView.reloadData()
         } else {
+            // TODO: Search for username/phone number/full name
             FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
                 guard let strongSelf = self else { return }
                 switch result {
@@ -425,6 +427,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func resetTableView(searchControllerIsActive: Bool = false) {
         searchResults = []
+        foundAddressBookContacts = []
         isSearching = false
         searchController.isActive = searchControllerIsActive
         tableView.reloadData()
@@ -484,7 +487,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     private func isAddressBookSection(_ section: Int) -> Bool {
         guard section > 0 else { return false }
-        if UserManager.shared.hasFeaturedUsers {
+        if isSearching {
+            return section == 1
+        } else if UserManager.shared.hasFeaturedUsers {
             return section == 2
         } else {
             return section == 1
