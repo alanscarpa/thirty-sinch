@@ -232,10 +232,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isFeaturedSection(indexPath.section) {
+        switch sectionType(indexPath.section) {
+        case .addressBook, .searching:
+            break // no-op
+        case .featured:
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
-        } else if UserManager.shared.hasFriends && !isSearching {
+        case .friends:
             let user = UserManager.shared.contacts[indexPath.row]
             if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
                 if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
@@ -248,7 +251,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     }
                 }
             } else {
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because of invalid device token.")
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Unable to call this user at this time because of invalid device token.")
                 DispatchQueue.main.async {
                     self.present(alertVC, animated: true, completion: nil)
                 }
