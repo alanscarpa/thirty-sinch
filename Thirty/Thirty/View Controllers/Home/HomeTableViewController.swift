@@ -17,6 +17,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var isSearching = false
     var searchResults = [User]()
     var isVisible = false
+    var hasLoaded = false
     var loadingView = UIView()
     let numberOfFriendsNeededToHideAddressBook = 5
     private let headerInSectionHeight: CGFloat = 24
@@ -115,6 +116,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             switch result {
             case .success():
                 FirebaseManager.shared.getFeaturedUsers { [weak self] result in
+                    self?.hasLoaded = true
                     self?.tearDownLoaderView()
                     self?.tableView.reloadData()
                     switch result {
@@ -151,7 +153,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         case .featured:
             return UserManager.shared.featuredUsers.count
         case .friends:
-            return UserManager.shared.numberOfFriends
+            return UserManager.shared.hasFriends ? UserManager.shared.numberOfFriends : 1
         case .addressBook:
             return allAddressBookContacts.count
         }
@@ -159,27 +161,31 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch sectionType(section) {
-        case .searching, .addressBook:
+        case .searching, .addressBook, .friends:
             return headerInSectionHeight
-        case .featured, .friends:
+        case .featured:
             return 0
         }
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
+        label.font = UIFont(name: "Avenir-Black", size: 12)!
+        label.textColor = .thPrimaryPurple
+        view.addSubview(label)
+        view.backgroundColor = .white
         switch sectionType(section) {
-        case .featured, .friends:
+        case .featured:
             return nil
-        case .searching, .addressBook:
-            let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
-            let label = UILabel(frame: CGRect(x: 10, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
-            label.font = UIFont(name: "Avenir-Black", size: 12)!
-            label.textColor = .thPrimaryPurple
-            label.text = isAddressBookSection(section) ? "ADDRESS BOOK" : "SEARCH RESULTS"
-            view.addSubview(label)
-            view.backgroundColor = .white
-            return view
+        case .searching:
+            label.text = "SEARCH RESULTS"
+        case .friends:
+            label.text = "FRIENDS"
+        case .addressBook:
+            label.text = "ADDRESS BOOK"
         }
+        return view
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
