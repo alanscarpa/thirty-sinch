@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,8 +20,11 @@
             <connections>
                 <outlet property="confirmPasswordTextField" destination="AND-0L-JpQ" id="O6N-k1-eU1"/>
                 <outlet property="emailTextField" destination="P6Z-y5-ow8" id="b4h-3X-bY1"/>
+                <outlet property="firstNameTextField" destination="4gz-Ul-WbH" id="epy-ck-g5z"/>
+                <outlet property="lastNameTextField" destination="9aS-rF-LYv" id="6TJ-t3-bZG"/>
                 <outlet property="passwordTextField" destination="aya-Vh-zpl" id="Gr9-SQ-V7S"/>
                 <outlet property="phoneNumberTextField" destination="0nT-vo-bSD" id="7Zr-lZ-nc0"/>
+                <outlet property="textFieldsStackView" destination="vuv-zv-KlT" id="4M7-6m-PIu"/>
                 <outlet property="usernameTextField" destination="fUF-Qk-Hwi" id="VLi-Hn-yBK"/>
                 <outlet property="view" destination="IlC-it-SIT" id="RRW-TW-w3b"/>
             </connections>
@@ -31,31 +34,98 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="EMAIL" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P6Z-y5-ow8">
-                    <rect key="frame" x="47" y="91" width="281" height="34"/>
-                    <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tVN-TT-zGh" userLabel="Top Center Spacer">
+                    <rect key="frame" x="187" y="44" width="0.0" height="203"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="34" id="dvu-gw-s6x"/>
+                        <constraint firstAttribute="width" id="Pn3-eh-3hT"/>
                     </constraints>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="hH8-pO-IWL"/>
-                    </connections>
-                </textField>
-                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="USERNAME" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fUF-Qk-Hwi">
-                    <rect key="frame" x="47" y="133" width="281" height="34"/>
-                    <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="zBA-1m-wN1"/>
-                    </connections>
-                </textField>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="700" verticalCompressionResistancePriority="1000" text="Let's 30!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kbW-Ta-KhU">
+                    <rect key="frame" x="127.33333333333334" y="128" width="120.33333333333334" height="35"/>
+                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="28"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="vuv-zv-KlT">
+                    <rect key="frame" x="37.666666666666657" y="247" width="300" height="328"/>
+                    <subviews>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="EMAIL" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P6Z-y5-ow8">
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="34"/>
+                            <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="34" id="dvu-gw-s6x"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="hH8-pO-IWL"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="USERNAME" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fUF-Qk-Hwi">
+                            <rect key="frame" x="0.0" y="49" width="300" height="34"/>
+                            <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="zBA-1m-wN1"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="PASSWORD" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aya-Vh-zpl">
+                            <rect key="frame" x="0.0" y="98" width="300" height="34"/>
+                            <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="MZh-PN-fj7"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="CONFIRM PW" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AND-0L-JpQ">
+                            <rect key="frame" x="0.0" y="147" width="300" height="34"/>
+                            <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="kw5-1U-UCp"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="PHONE NUMBER" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0nT-vo-bSD">
+                            <rect key="frame" x="0.0" y="196" width="300" height="34"/>
+                            <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="join" enablesReturnKeyAutomatically="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="pOd-pI-M1K"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="FIRST NAME (optional)" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4gz-Ul-WbH" userLabel="First Name">
+                            <rect key="frame" x="0.0" y="245" width="300" height="34"/>
+                            <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="y9K-vt-TZS"/>
+                            </connections>
+                        </textField>
+                        <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="LAST NAME (optional)" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9aS-rF-LYv" userLabel="Last Name">
+                            <rect key="frame" x="0.0" y="294" width="300" height="34"/>
+                            <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="TU8-Qm-lAO"/>
+                            </connections>
+                        </textField>
+                    </subviews>
+                </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jfq-mh-JAh">
-                    <rect key="frame" x="0.0" y="331" width="375" height="55"/>
+                    <rect key="frame" x="0.0" y="757" width="375" height="55"/>
                     <color key="backgroundColor" red="0.53725490196078429" green="0.0" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="55" id="bxQ-NO-KTz"/>
@@ -68,80 +138,20 @@
                         <action selector="signupButtonTapped" destination="-1" eventType="touchUpInside" id="Vvv-q4-WfB"/>
                     </connections>
                 </button>
-                <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="PASSWORD" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aya-Vh-zpl">
-                    <rect key="frame" x="47" y="175" width="281" height="34"/>
-                    <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="MZh-PN-fj7"/>
-                    </connections>
-                </textField>
-                <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="CONFIRM PW" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AND-0L-JpQ">
-                    <rect key="frame" x="47" y="217" width="281" height="34"/>
-                    <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="kw5-1U-UCp"/>
-                    </connections>
-                </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="(Used to connect with friends)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOo-Nb-Wep">
-                    <rect key="frame" x="103.66666666666667" y="301" width="169.33333333333331" height="14"/>
-                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="11"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="700" verticalCompressionResistancePriority="1000" text="Let's 30!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kbW-Ta-KhU">
-                    <rect key="frame" x="127" y="44" width="121" height="35"/>
-                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="28"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="roundedRect" placeholder="PHONE NUMBER" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0nT-vo-bSD">
-                    <rect key="frame" x="47" y="259" width="281" height="34"/>
-                    <color key="tintColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" name="LeagueSpartan-Bold" family="League Spartan" pointSize="20"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="join" enablesReturnKeyAutomatically="YES"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="pOd-pI-M1K"/>
-                    </connections>
-                </textField>
             </subviews>
             <color key="backgroundColor" red="0.25490196078431371" green="0.082352941176470587" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Jfq-mh-JAh" firstAttribute="top" secondItem="dOo-Nb-Wep" secondAttribute="bottom" priority="900" constant="16" id="2zR-5J-Mcw"/>
-                <constraint firstItem="dOo-Nb-Wep" firstAttribute="centerX" secondItem="AND-0L-JpQ" secondAttribute="centerX" id="5gj-1v-T68"/>
-                <constraint firstItem="0nT-vo-bSD" firstAttribute="height" secondItem="AND-0L-JpQ" secondAttribute="height" id="8YW-qG-Fw7"/>
-                <constraint firstItem="Jfq-mh-JAh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dOo-Nb-Wep" secondAttribute="bottom" constant="12" id="A2f-GK-vbY"/>
-                <constraint firstItem="fUF-Qk-Hwi" firstAttribute="width" secondItem="P6Z-y5-ow8" secondAttribute="width" id="D5i-E3-cBc"/>
-                <constraint firstItem="fUF-Qk-Hwi" firstAttribute="centerX" secondItem="P6Z-y5-ow8" secondAttribute="centerX" id="GKS-S0-eiE"/>
-                <constraint firstItem="P6Z-y5-ow8" firstAttribute="centerX" secondItem="IlC-it-SIT" secondAttribute="centerX" id="MGn-Fs-FV4"/>
-                <constraint firstItem="AND-0L-JpQ" firstAttribute="width" secondItem="aya-Vh-zpl" secondAttribute="width" id="R3e-aH-fpY"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Jfq-mh-JAh" secondAttribute="bottom" id="R8z-b7-ci0"/>
-                <constraint firstItem="aya-Vh-zpl" firstAttribute="width" secondItem="fUF-Qk-Hwi" secondAttribute="width" id="RWw-hS-jBj"/>
-                <constraint firstItem="kbW-Ta-KhU" firstAttribute="top" secondItem="mv9-Xs-pD2" secondAttribute="top" id="TUW-SW-jeG"/>
-                <constraint firstItem="AND-0L-JpQ" firstAttribute="top" secondItem="aya-Vh-zpl" secondAttribute="bottom" constant="8" id="UCX-Bu-YQU"/>
-                <constraint firstAttribute="bottom" secondItem="Jfq-mh-JAh" secondAttribute="bottom" priority="700" constant="77" id="WOO-Di-dYA"/>
-                <constraint firstItem="0nT-vo-bSD" firstAttribute="top" secondItem="AND-0L-JpQ" secondAttribute="bottom" constant="8" id="WlR-wM-irl"/>
-                <constraint firstItem="dOo-Nb-Wep" firstAttribute="top" secondItem="0nT-vo-bSD" secondAttribute="bottom" constant="8" id="Z5i-1c-ZRn"/>
-                <constraint firstItem="aya-Vh-zpl" firstAttribute="centerX" secondItem="fUF-Qk-Hwi" secondAttribute="centerX" id="Zc9-Z9-YTI"/>
-                <constraint firstItem="aya-Vh-zpl" firstAttribute="height" secondItem="fUF-Qk-Hwi" secondAttribute="height" id="dnq-za-efG"/>
+                <constraint firstItem="vuv-zv-KlT" firstAttribute="centerY" secondItem="mv9-Xs-pD2" secondAttribute="centerY" id="G9F-ae-99c"/>
+                <constraint firstItem="kbW-Ta-KhU" firstAttribute="centerY" secondItem="tVN-TT-zGh" secondAttribute="centerY" id="Gvs-5M-h3J"/>
+                <constraint firstItem="vuv-zv-KlT" firstAttribute="top" secondItem="tVN-TT-zGh" secondAttribute="bottom" id="O0h-cF-pRR"/>
+                <constraint firstAttribute="bottom" secondItem="Jfq-mh-JAh" secondAttribute="bottom" id="WOO-Di-dYA"/>
+                <constraint firstItem="tVN-TT-zGh" firstAttribute="centerX" secondItem="mv9-Xs-pD2" secondAttribute="centerX" id="aOY-oK-31o"/>
+                <constraint firstItem="vuv-zv-KlT" firstAttribute="width" secondItem="IlC-it-SIT" secondAttribute="width" multiplier="0.8" id="asv-md-Nvg"/>
                 <constraint firstAttribute="trailing" secondItem="Jfq-mh-JAh" secondAttribute="trailing" id="fph-Jb-iQF"/>
-                <constraint firstItem="AND-0L-JpQ" firstAttribute="height" secondItem="aya-Vh-zpl" secondAttribute="height" id="hZL-hB-yDz"/>
-                <constraint firstItem="0nT-vo-bSD" firstAttribute="centerX" secondItem="AND-0L-JpQ" secondAttribute="centerX" id="hoi-p1-XHL"/>
-                <constraint firstItem="0nT-vo-bSD" firstAttribute="width" secondItem="AND-0L-JpQ" secondAttribute="width" id="ilY-9u-tiD"/>
-                <constraint firstItem="fUF-Qk-Hwi" firstAttribute="top" secondItem="P6Z-y5-ow8" secondAttribute="bottom" constant="8" id="lFi-qp-WPw"/>
                 <constraint firstItem="kbW-Ta-KhU" firstAttribute="centerX" secondItem="IlC-it-SIT" secondAttribute="centerX" id="ldO-l9-vbN"/>
-                <constraint firstItem="fUF-Qk-Hwi" firstAttribute="height" secondItem="P6Z-y5-ow8" secondAttribute="height" id="qfy-rj-KrD"/>
+                <constraint firstItem="vuv-zv-KlT" firstAttribute="centerX" secondItem="mv9-Xs-pD2" secondAttribute="centerX" id="uxz-dk-km5"/>
                 <constraint firstItem="Jfq-mh-JAh" firstAttribute="leading" secondItem="IlC-it-SIT" secondAttribute="leading" id="vTj-2M-wGO"/>
-                <constraint firstItem="P6Z-y5-ow8" firstAttribute="width" secondItem="IlC-it-SIT" secondAttribute="width" multiplier="0.75" id="wlc-Uk-Az8"/>
-                <constraint firstItem="P6Z-y5-ow8" firstAttribute="top" secondItem="kbW-Ta-KhU" secondAttribute="bottom" constant="12" id="xBc-YD-sZf"/>
-                <constraint firstItem="aya-Vh-zpl" firstAttribute="top" secondItem="fUF-Qk-Hwi" secondAttribute="bottom" constant="8" id="yMT-nL-aDv"/>
-                <constraint firstItem="AND-0L-JpQ" firstAttribute="centerX" secondItem="aya-Vh-zpl" secondAttribute="centerX" id="yQz-kF-eW9"/>
+                <constraint firstItem="mv9-Xs-pD2" firstAttribute="top" secondItem="tVN-TT-zGh" secondAttribute="top" id="wYW-8x-v6G"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="mv9-Xs-pD2"/>
             <point key="canvasLocation" x="33" y="68"/>

@@ -23,16 +23,26 @@ class User {
     var doNotDisturb = false
 
     var fullName: String {
+        guard !firstName.isEmpty || !lastName.isEmpty else { return "" }
         return "\(firstName) \(lastName)"
     }
     
-    convenience init(username: String, email: String, phoneNumber: String, password: String, deviceToken: String?) {
+    convenience init(username: String,
+                     email: String,
+                     phoneNumber: String,
+                     password: String,
+                     deviceToken: String?,
+                     firstName: String = "",
+                     lastName: String = "") {
         self.init()
         self.username = username
         self.email = email
         self.phoneNumber = phoneNumber
         self.password = password
         self.deviceToken = deviceToken
+        self.firstName = firstName
+        self.lastName = lastName
     }
 }
+
 

@@ -182,6 +182,8 @@ class FirebaseManager {
                 let phoneNumber = value["phone-number"] as? String ?? ""
                 let deviceToken = value["device-token"] as? String ?? ""
                 let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "", deviceToken: deviceToken)
+                user.firstName = value["first-name"] as? String ?? ""
+                user.lastName = value["last-name"] as? String ?? ""
                 completion(.success(user))
             } else {
                 completion(.success(nil))
@@ -237,6 +239,8 @@ class FirebaseManager {
                     if let doNotDisturb = value["do-not-disturb"] as? Bool {
                         user.doNotDisturb = doNotDisturb
                     }
+                    user.firstName = value["first-name"] as? String ?? ""
+                    user.lastName = value["last-name"] as? String ?? ""
                     self?.userManager.contacts.append(user)
                 }
             }
