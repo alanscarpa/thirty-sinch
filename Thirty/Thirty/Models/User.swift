@@ -9,23 +9,35 @@
 import Foundation
 
 class User {
-    var username: String = ""
-    var email: String = ""
-    var phoneNumber: String = ""
-    var password: String = ""
-    var userNameLowercased: String {
-        return username.lowercased()
-    }
-    var doNotDisturb = false
+    var username = ""
+    var email = ""
+    var phoneNumber = ""
+    var password = ""
+    var firstName = ""
+    var lastName = ""
     var deviceToken: String?
+    var doNotDisturb = false
+    var fullName: String {
+        guard !firstName.isEmpty || !lastName.isEmpty else { return "" }
+        return "\(firstName) \(lastName)"
+    }
     
-    convenience init(username: String, email: String, phoneNumber: String, password: String, deviceToken: String?) {
+    convenience init(username: String,
+                     email: String,
+                     phoneNumber: String,
+                     password: String,
+                     deviceToken: String?,
+                     firstName: String = "",
+                     lastName: String = "") {
         self.init()
         self.username = username
         self.email = email
         self.phoneNumber = phoneNumber
         self.password = password
         self.deviceToken = deviceToken
+        self.firstName = firstName
+        self.lastName = lastName
     }
 }
+
 

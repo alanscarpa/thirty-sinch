@@ -125,7 +125,7 @@ class FirebaseManager {
                 completion(.failure(error))
             } else {
                 // STEP 2 - Make sure the username is available
-                self?.databaseRef.child("users").child(user.userNameLowercased).observeSingleEvent(of: .value, with: { snapshot in
+                self?.databaseRef.child("users").child(user.username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
                     if snapshot.exists() {
                         // Delete our user from DB if username already exists
                         fbUser?.delete(completion: { error in
@@ -148,7 +148,9 @@ class FirebaseManager {
                                                        "uid": fbUser.uid,
                                                        "display-name": user.username,
                                                        "email": user.email,
-                                                       "device-token": user.deviceToken], withCompletionBlock: { (error, ref) in
+                                                       "device-token": user.deviceToken,
+                                                       "first-name": user.firstName,
+                                                       "last-name": user.lastName], withCompletionBlock: { (error, ref) in
                                                         if let error = error {
                                                             completion(.failure(error))
                                                         } else {
@@ -177,11 +179,13 @@ class FirebaseManager {
     func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {
         databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
             if let value = snapshot.value as? NSDictionary {
-                let displayName = value["display-name"] as? String ?? ""
-                let email = value["email"] as? String ?? ""
-                let phoneNumber = value["phone-number"] as? String ?? ""
-                let deviceToken = value["device-token"] as? String ?? ""
-                let user = User(username: displayName, email: email, phoneNumber: phoneNumber, password: "", deviceToken: deviceToken)
+                let user = User(username: value["display-name"] as? String ?? "",
+                                email: value["email"] as? String ?? "",
+                                phoneNumber: value["phone-number"] as? String ?? "",
+                                password: "",
+                                deviceToken: value["device-token"] as? String ?? "",
+                                firstName: value["first-name"] as? String ?? "",
+                                lastName: value["last-name"] as? String ?? "")
                 completion(.success(user))
             } else {
                 completion(.success(nil))
@@ -233,7 +237,9 @@ class FirebaseManager {
                         let number = value["phone-number"] as? String
                         else { return }
                     let token = value["device-token"] as? String
-                    let user = User(username: name, email: email, phoneNumber: number, password: "", deviceToken: token)
+                    let firstName = value["first-name"] as? String ?? ""
+                    let lastName = value["last-name"] as? String ?? ""
+                    let user = User(username: name, email: email, phoneNumber: number, password: "", deviceToken: token, firstName: firstName, lastName: lastName)
                     if let doNotDisturb = value["do-not-disturb"] as? Bool {
                         user.doNotDisturb = doNotDisturb
                     }
