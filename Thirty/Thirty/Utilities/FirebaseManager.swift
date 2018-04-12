@@ -234,6 +234,9 @@ class FirebaseManager {
                         else { return }
                     let token = value["device-token"] as? String
                     let user = User(username: name, email: email, phoneNumber: number, password: "", deviceToken: token)
+                    if let doNotDisturb = value["do-not-disturb"] as? Bool {
+                        user.doNotDisturb = doNotDisturb
+                    }
                     self?.userManager.contacts.append(user)
                 }
             }

@@ -240,7 +240,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
         case .friends:
             let user = UserManager.shared.contacts[indexPath.row]
-            if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+            if user.doNotDisturb {
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time.", message: "This user has do not disturb mode enabled.  Try again later.")
+                DispatchQueue.main.async {
+                    self.present(alertVC, animated: true, completion: nil)
+                }
+            } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
                 if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
                     requestCameraAndMicrophonePermissions()
                 } else {
