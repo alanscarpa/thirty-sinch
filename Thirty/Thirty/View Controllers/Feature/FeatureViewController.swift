@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class FeatureViewController: UIViewController {
+class FeatureViewController: UIViewController, MFMessageComposeViewControllerDelegate {
     
     var featuredUser: FeaturedUser
     
@@ -71,6 +71,12 @@ class FeatureViewController: UIViewController {
         }
     }
     
+    // MARK: - MFMessageComposeViewControllerDelegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
     // MARK: - Helpers
     
     private func showShareAlert() {
@@ -79,6 +85,7 @@ class FeatureViewController: UIViewController {
             if MFMessageComposeViewController.canSendText() {
                 let controller = MFMessageComposeViewController()
                 controller.body = "hey - download this app real quick.  it's a fun way to have 30 second video chats. https://that30app.com/download"
+                controller.messageComposeDelegate = self
                 self.present(controller, animated: true, completion: nil)
             }
         }

@@ -12,7 +12,7 @@ import AVFoundation
 import Contacts
 import MessageUI
 
-class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate {
+class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate, MFMessageComposeViewControllerDelegate {
     
     var searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
@@ -348,10 +348,15 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             let contact = isSearching ? foundAddressBookContacts[indexPath.row] : allAddressBookContacts[indexPath.row]
             guard let phoneNumber = contact.phoneNumbers.first?.value.stringValue else { return }
             if MFMessageComposeViewController.canSendText() {
-                let controller = MFMessageComposeViewController()
-                controller.body = "hey - download this app real quick.  it's a fun way to have 30 second video chats. https://that30app.com/download"
-                controller.recipients = [phoneNumber]
-                present(controller, animated: true, completion: nil)
+                let messageComposeVC = MFMessageComposeViewController()
+                messageComposeVC.body = "hey - download this app real quick.  it's a fun way to have 30 second video chats. https://that30app.com/download"
+                messageComposeVC.recipients = [phoneNumber]
+                messageComposeVC.messageComposeDelegate = self
+                // WTFFF
+                UINavigationBar.appearance().tintColor = .thPrimaryPurple
+                messageComposeVC.navigationBar.barTintColor = .thPrimaryPurple
+                messageComposeVC.navigationBar.tintColor = .thPrimaryPurple
+                present(messageComposeVC, animated: true, completion: nil)
             }
         case .searching:
             let tappedUser = searchResults[indexPath.row]
@@ -463,6 +468,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 }
             }
         }
+    }
+    
+    // MARK: - MFMessageComposeViewControllerDelegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Section Logic
