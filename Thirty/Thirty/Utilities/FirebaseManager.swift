@@ -125,7 +125,7 @@ class FirebaseManager {
                 completion(.failure(error))
             } else {
                 // STEP 2 - Make sure the username is available
-                self?.databaseRef.child("users").child(user.userNameLowercased).observeSingleEvent(of: .value, with: { snapshot in
+                self?.databaseRef.child("users").child(user.username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
                     if snapshot.exists() {
                         // Delete our user from DB if username already exists
                         fbUser?.delete(completion: { error in

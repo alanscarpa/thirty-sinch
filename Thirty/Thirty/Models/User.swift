@@ -16,12 +16,7 @@ class User {
     var firstName = ""
     var lastName = ""
     var deviceToken: String?
-
-    var userNameLowercased: String {
-        return username.lowercased()
-    }
     var doNotDisturb = false
-
     var fullName: String {
         guard !firstName.isEmpty || !lastName.isEmpty else { return "" }
         return "\(firstName) \(lastName)"
