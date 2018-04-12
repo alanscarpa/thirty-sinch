@@ -13,7 +13,7 @@ import Contacts
 import MessageUI
 
 class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate {
-
+    
     var searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
     var searchResults = [User]()
@@ -120,7 +120,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     self?.tableView.reloadData()
                     switch result {
                     case .success():
-                        break // no-op
+                    break // no-op
                     case .failure(let error):
                         let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
                         self?.present(alertVC, animated: true, completion: nil)
@@ -230,12 +230,20 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - UITableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isFeaturedSection(indexPath.section) {
+        switch sectionType(indexPath.section) {
+        case .addressBook, .searching:
+        break // no-op
+        case .featured:
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
-        } else if UserManager.shared.hasFriends && !isSearching {
+        case .friends:
             let user = UserManager.shared.contacts[indexPath.row]
-            if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+            if user.doNotDisturb {
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time.", message: "This user has do not disturb mode enabled.  Try again later.")
+                DispatchQueue.main.async {
+                    self.present(alertVC, animated: true, completion: nil)
+                }
+            } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
                 if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
                     requestCameraAndMicrophonePermissions()
                 } else {
@@ -246,7 +254,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     }
                 }
             } else {
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Note to BETA users:  Unable to call this user at this time because of invalid device token.")
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Unable to call this user at this time because of invalid device token.")
                 DispatchQueue.main.async {
                     self.present(alertVC, animated: true, completion: nil)
                 }
@@ -298,6 +306,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
         if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.username == query }).first {
             searchResults = [alreadyFriendedUser]
+            // Hacky way of hiding add button when reloading data.  Faster than querying entire contacts array for each cell though.
+            // isSearching = false
             tableView.reloadData()
         } else {
             // TODO: Search for username/phone number/full name
@@ -309,6 +319,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     if let user = user {
                         strongSelf.searchResults = [user]
                     } else {
+                        // TODO: Show "no user" cell
                         strongSelf.searchResults = []
                         do {
                             strongSelf.foundAddressBookContacts = try strongSelf.contactsFromAddressBook(query)
@@ -332,7 +343,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         let section = sectionType(indexPath.section)
         switch section {
         case .friends, .featured:
-            break // no-op
+        break // no-op
         case .addressBook:
             let contact = isSearching ? foundAddressBookContacts[indexPath.row] : allAddressBookContacts[indexPath.row]
             guard let phoneNumber = contact.phoneNumbers.first?.value.stringValue else { return }
