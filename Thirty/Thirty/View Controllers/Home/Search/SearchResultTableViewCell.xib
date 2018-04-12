@@ -20,11 +20,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VQM-9X-nhG">
-                        <rect key="frame" x="250" y="4" width="54" height="36"/>
+                        <rect key="frame" x="229" y="5" width="75" height="34"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="54" id="o5i-sA-byB"/>
+                            <constraint firstAttribute="width" constant="75" id="o5i-sA-byB"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="13"/>
                         <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                         <state key="normal" title="Add+">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,8 +34,8 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mcq-oc-IRD">
-                        <rect key="frame" x="16" y="7.5" width="222" height="29"/>
-                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="21"/>
+                        <rect key="frame" x="16" y="10" width="201" height="25"/>
+                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="18"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>

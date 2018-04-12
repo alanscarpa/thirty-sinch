@@ -10,6 +10,7 @@ import UIKit
 import SCLAlertView
 import AVFoundation
 import Contacts
+import MessageUI
 
 class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate {
 
@@ -223,6 +224,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             cell.usernameLabel.text = contact.givenName + " " + contact.familyName
             cell.addButton.isHidden = false
             cell.delegate = self
+            cell.displayInviteButton()
             return cell
         }
     }
@@ -337,8 +339,14 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         case .friends, .featured:
             break // no-op
         case .addressBook:
-            // TODO: SEND INVITE TEXT
-            break
+            let contact = isSearching ? foundAddressBookContacts[indexPath.row] : allAddressBookContacts[indexPath.row]
+            guard let phoneNumber = contact.phoneNumbers.first?.value.stringValue else { return }
+            if MFMessageComposeViewController.canSendText() {
+                let controller = MFMessageComposeViewController()
+                controller.body = "hey - download this app real quick.  it's a fun way to have 30 second video chats. https://that30app.com/download"
+                controller.recipients = [phoneNumber]
+                present(controller, animated: true, completion: nil)
+            }
         case .searching:
             let tappedUser = searchResults[indexPath.row]
             FirebaseManager.shared.addUserAsFriend(username: tappedUser.username) { [weak self] result in

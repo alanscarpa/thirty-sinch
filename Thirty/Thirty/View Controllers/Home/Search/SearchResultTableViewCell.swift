@@ -17,11 +17,12 @@ class SearchResultTableViewCell: UITableViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var addButtonWidthConstraint: NSLayoutConstraint!
+    
     weak var delegate: SearchResultsTableViewCellDelegate?
     static let nibName = "SearchResultTableViewCell"
     var addButtonIsHidden: Bool = false {
         didSet {
-            addButtonWidthConstraint.constant = addButtonIsHidden ? 0 : 54
+            addButtonWidthConstraint.constant = addButtonIsHidden ? 0 : 75
 
         }
     }
@@ -51,6 +52,11 @@ class SearchResultTableViewCell: UITableViewCell {
         usernameLabel.textAlignment = .center
         usernameLabel.text = "You haven't added any friends yet.  Search for friends and add to get started!"
         addButtonIsHidden = true
+    }
+    
+    func displayInviteButton() {
+        addButtonIsHidden = false
+        addButton.setTitle("Invite +", for: .normal)
     }
     
     @IBAction func addButtonTapped(_ sender: Any) {
