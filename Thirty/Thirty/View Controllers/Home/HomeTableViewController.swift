@@ -149,13 +149,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch sectionType(section) {
         case .searching:
-            return searchResults.count + foundAddressBookContacts.count
+            return searchResults.count
         case .featured:
             return UserManager.shared.featuredUsers.count
         case .friends:
             return UserManager.shared.hasFriends ? UserManager.shared.numberOfFriends : 1
         case .addressBook:
-            return allAddressBookContacts.count
+            return isSearching ? foundAddressBookContacts.count : allAddressBookContacts.count
         }
     }
     
@@ -194,8 +194,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         switch section {
         case .searching:
             let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-            cell.usernameLabel.text = searchResults[indexPath.row].username
-            cell.addButton.isHidden = false
+            if searchResults.count > 0 {
+                cell.usernameLabel.text = searchResults[indexPath.row].username
+                cell.addButton.isHidden = false
+            } else {
+                cell.usernameLabel.text = "No user found"
+                cell.addButton.isHidden = true
+            }
             cell.delegate = self
             return cell
         case .featured:
@@ -452,7 +457,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     private func sectionType(_ section: Int) -> SectionType {
         if isSearching {
-            return SectionType.searching
+            return isAddressBookSection(section) ? SectionType.addressBook : SectionType.searching
         } else if isFeaturedSection(section) {
             return SectionType.featured
         } else if isFriendsSection(section) {
