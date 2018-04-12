@@ -18,6 +18,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var searchResults = [User]()
     var isVisible = false
     var loadingView = UIView()
+    let numberOfFriendsNeededToHideAddressBook = 5
     private let headerInSectionHeight: CGFloat = 24
     let contactStore = CNContactStore()
     var foundAddressBookContacts = [CNContact]()
@@ -134,53 +135,84 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - TableViewDataSource
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return UserManager.shared.hasFeaturedUsers ? 2 : 1
+        if isSearching {
+            return foundAddressBookContacts.count > 0 ? 2 : 1
+        } else if UserManager.shared.numberOfFriends < numberOfFriendsNeededToHideAddressBook {
+            return UserManager.shared.hasFeaturedUsers ? 3 : 2
+        } else {
+            return UserManager.shared.hasFeaturedUsers ? 2 : 1
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isFeaturedSection(section) {
+        switch sectionType(section) {
+        case .searching:
+            return searchResults.count + foundAddressBookContacts.count
+        case .featured:
             return UserManager.shared.featuredUsers.count
-        } else if isSearching {
-            return searchResults.count
-        } else if UserManager.shared.hasFriends {
+        case .friends:
             return UserManager.shared.numberOfFriends
-        } else {
-            return 1
+        case .addressBook:
+            return allAddressBookContacts.count
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return  isSearching && !isFeaturedSection(section) ? headerInSectionHeight : 0
+        switch sectionType(section) {
+        case .searching, .addressBook:
+            return headerInSectionHeight
+        case .featured, .friends:
+            return 0
+        }
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard isSearching && !isFeaturedSection(section) else { return nil }
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
-        let label = UILabel(frame: CGRect(x: 10, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
-        label.font = UIFont(name: "Avenir-Black", size: 12)!
-        label.textColor = .thPrimaryPurple
-        label.text = "SEARCH RESULTS"
-        view.addSubview(label)
-        view.backgroundColor = .white
-        return view
+        switch sectionType(section) {
+        case .featured, .friends:
+            return nil
+        case .searching, .addressBook:
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
+            let label = UILabel(frame: CGRect(x: 10, y: 0, width: tableView.frame.size.width, height: headerInSectionHeight))
+            label.font = UIFont(name: "Avenir-Black", size: 12)!
+            label.textColor = .thPrimaryPurple
+            label.text = isAddressBookSection(section) ? "ADDRESS BOOK" : "SEARCH RESULTS"
+            view.addSubview(label)
+            view.backgroundColor = .white
+            return view
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if isFeaturedSection(indexPath.section) {
+        let section = sectionType(indexPath.section)
+        print(indexPath.section)
+        switch section {
+        case .searching:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
+            cell.usernameLabel.text = searchResults[indexPath.row].username
+            cell.addButton.isHidden = false
+            cell.delegate = self
+            return cell
+        case .featured:
             let cell = tableView.dequeueReusableCell(withIdentifier: FeaturedTableViewCell.nibName, for: indexPath) as! FeaturedTableViewCell
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             cell.setUpForFeaturedUser(featuredUser)
             return cell
-        } else {
+        case .friends:
             let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-            if UserManager.shared.hasFriends || isSearching {
-                cell.usernameLabel.text = isSearching ? searchResults[indexPath.row].username :
-                    UserManager.shared.contacts[indexPath.row].username
-                cell.addButton.isHidden = isSearching ? false : true
-                cell.delegate = self
-            } else {
+            if !UserManager.shared.hasFriends {
                 cell.displayNoFriendsLabel()
+            } else {
+                cell.usernameLabel.text = UserManager.shared.contacts[indexPath.row].username
+                cell.addButton.isHidden = true
+                cell.delegate = self
             }
+            return cell
+        case .addressBook:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
+            let contact =  allAddressBookContacts[indexPath.row]
+            cell.usernameLabel.text = contact.givenName + " " + contact.familyName
+            cell.addButton.isHidden = false
+            cell.delegate = self
             return cell
         }
     }
@@ -255,7 +287,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.username == query }).first {
             searchResults = [alreadyFriendedUser]
             // Hacky way of hiding add button when reloading data.  Faster than querying entire contacts array for each cell though.
-            isSearching = false
+            // isSearching = false
             tableView.reloadData()
         } else {
             FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
@@ -396,8 +428,47 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
+    enum SectionType {
+        case featured
+        case friends
+        case addressBook
+        case searching
+    }
+    
+    private func sectionType(_ section: Int) -> SectionType {
+        if isSearching {
+            return SectionType.searching
+        } else if isFeaturedSection(section) {
+            return SectionType.featured
+        } else if isFriendsSection(section) {
+            return SectionType.friends
+        } else {
+            return SectionType.addressBook
+        }
+    }
+    
     private func isFeaturedSection(_ section: Int) -> Bool {
+        guard !isSearching else { return false }
         return UserManager.shared.hasFeaturedUsers && section == 0
+    }
+    
+    private func isFriendsSection(_ section: Int) -> Bool {
+        if isSearching {
+            return section == 0
+        } else if UserManager.shared.hasFeaturedUsers {
+            return section == 1
+        } else {
+            return section == 0
+        }
+    }
+    
+    private func isAddressBookSection(_ section: Int) -> Bool {
+        guard section > 0 else { return false }
+        if UserManager.shared.hasFeaturedUsers {
+            return section == 2
+        } else {
+            return section == 1
+        }
     }
     
 }
