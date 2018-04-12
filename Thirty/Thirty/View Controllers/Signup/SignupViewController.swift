@@ -109,7 +109,6 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         } else {
             textField.resignFirstResponder()
         }
-
     }
 
     @objc func nextTapped(_ sender: Any) {
