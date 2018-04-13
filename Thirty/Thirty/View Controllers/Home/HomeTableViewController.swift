@@ -271,11 +271,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
                 if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
                     requestCameraAndMicrophonePermissions { granted in
-                        guard granted else { return }
-                        self.makeCall(call)
+                        RootViewController.shared.pushCallVCWithCall(call)
                     }
                 } else {
-                    makeCall(call)
+                    RootViewController.shared.pushCallVCWithCall(call)
                 }
             } else {
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Unable to call this user at this time because of invalid device token.")
@@ -462,13 +461,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     // MARK: - Helpers
     
-    private func makeCall(_ call: Call) {
-        CallManager.shared.call = call
-        DispatchQueue.main.async {
-            RootViewController.shared.pushCallVCWithCall(call)
-        }
-    }
-    
     func resetTableView(searchControllerIsActive: Bool = false) {
         searchResults = []
         foundAddressBookContacts = []
@@ -481,18 +473,18 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         AVCaptureDevice.requestAccess(for: AVMediaType.video) { granted in
             if granted {
                 AVAudioSession.sharedInstance().requestRecordPermission({ granted in
-                    if !granted {
-                        DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        if !granted {
                             SCLAlertView().showError("Please enable microphone permission", subTitle: "You won't be able to 30 unlesss you enable microphone permissions.  Go to Settings > Privacy > Microphone and please enable.", colorStyle: UIColor.thPrimaryPurple.toHex())
                         }
+                        completion(granted)
                     }
-                    completion(granted)
                 })
             } else {
                 DispatchQueue.main.async {
                     SCLAlertView().showError("Please enable video permission", subTitle: "You won't be able to  30 unlesss you enable video permissions.  Go to Settings > Privacy > Camera and please enable.", colorStyle: UIColor.thPrimaryPurple.toHex())
+                    completion(granted)
                 }
-                completion(granted)
             }
         }
     }

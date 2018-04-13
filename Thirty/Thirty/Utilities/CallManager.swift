@@ -51,8 +51,9 @@ class CallManager: NSObject, CXProviderDelegate {
         callKitProvider?.setDelegate(self, queue: nil)
     }
     
-    func setCallToActive() {
-        call!.state = .active
+    func setCallToActive(_ call: Call) {
+        self.call = call
+        self.call!.state = .active
     }
     
     func playRingbackTone() {

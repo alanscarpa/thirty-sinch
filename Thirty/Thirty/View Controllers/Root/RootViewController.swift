@@ -32,7 +32,7 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
             rootNavigationController.setToolbarHidden(!showToolBar, animated: true)
         }
     }
-    
+        
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
