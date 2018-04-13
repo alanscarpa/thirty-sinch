@@ -24,6 +24,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     let contactStore = CNContactStore()
     var foundAddressBookContacts = [CNContact]()
     lazy var allAddressBookContacts: [CNContact] = {
+        guard CNContactStore.authorizationStatus(for: .contacts) == .authorized else { return [CNContact]() }
+ 
         let contactStore = CNContactStore()
         let keysToFetch = [CNContactGivenNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactFamilyNameKey]
         
@@ -63,7 +65,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
         RootViewController.shared.showStatusBarBackground = true
-        requestCameraAndMicrophonePermissions()
     }
     
     // MARK: - Setup
@@ -138,8 +139,14 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func numberOfSections(in tableView: UITableView) -> Int {
         if isSearching {
             return foundAddressBookContacts.count > 0 ? 2 : 1
-        } else if UserManager.shared.numberOfFriends < numberOfFriendsNeededToHideAddressBook {
+        } else if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
             return UserManager.shared.hasFeaturedUsers ? 3 : 2
+        } else if CNContactStore.authorizationStatus(for: .contacts) == .authorized {
+            if UserManager.shared.numberOfFriends < numberOfFriendsNeededToHideAddressBook {
+                return UserManager.shared.hasFeaturedUsers ? 3 : 2
+            } else {
+                return UserManager.shared.hasFeaturedUsers ? 2 : 1
+            }
         } else {
             return UserManager.shared.hasFeaturedUsers ? 2 : 1
         }
@@ -154,7 +161,11 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         case .friends:
             return UserManager.shared.hasFriends ? UserManager.shared.numberOfFriends : 1
         case .addressBook:
-            return isSearching ? foundAddressBookContacts.count : allAddressBookContacts.count
+            if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
+                return 1
+            } else {
+                return isSearching ? foundAddressBookContacts.count : allAddressBookContacts.count
+            }
         }
     }
     
@@ -218,12 +229,17 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             return cell
         case .addressBook:
             let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-            let contact =  allAddressBookContacts[indexPath.row]
-            cell.usernameLabel.text = contact.givenName + " " + contact.familyName
-            cell.addButton.isHidden = false
-            cell.delegate = self
-            cell.displayInviteButton()
-            return cell
+            if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
+                cell.displayAskForContactPermission()
+                return cell
+            } else {
+                let contact =  allAddressBookContacts[indexPath.row]
+                cell.usernameLabel.text = contact.givenName + " " + contact.familyName
+                cell.addButton.isHidden = false
+                cell.delegate = self
+                cell.displayInviteButton()
+                return cell
+            }
         }
     }
     
@@ -231,8 +247,16 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch sectionType(indexPath.section) {
-        case .addressBook, .searching:
-        break // no-op
+        case .addressBook:
+            if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
+                CNContactStore().requestAccess(for: .contacts) { (granted, _) in
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        case .searching:
+            break // no-op
         case .featured:
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
@@ -244,14 +268,14 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     self.present(alertVC, animated: true, completion: nil)
                 }
             } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+                let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
                 if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
-                    requestCameraAndMicrophonePermissions()
-                } else {
-                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
-                    CallManager.shared.call = call
-                    DispatchQueue.main.async {
-                        RootViewController.shared.pushCallVCWithCall(call)
+                    requestCameraAndMicrophonePermissions { granted in
+                        guard granted else { return }
+                        self.makeCall(call)
                     }
+                } else {
+                    makeCall(call)
                 }
             } else {
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Unable to call this user at this time because of invalid device token.")
@@ -306,8 +330,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
         if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.username == query }).first {
             searchResults = [alreadyFriendedUser]
-            // Hacky way of hiding add button when reloading data.  Faster than querying entire contacts array for each cell though.
-            // isSearching = false
             tableView.reloadData()
         } else {
             // TODO: Search for username/phone number/full name
@@ -440,6 +462,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     // MARK: - Helpers
     
+    private func makeCall(_ call: Call) {
+        CallManager.shared.call = call
+        DispatchQueue.main.async {
+            RootViewController.shared.pushCallVCWithCall(call)
+        }
+    }
+    
     func resetTableView(searchControllerIsActive: Bool = false) {
         searchResults = []
         foundAddressBookContacts = []
@@ -448,7 +477,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         tableView.reloadData()
     }
     
-    private func requestCameraAndMicrophonePermissions() {
+    private func requestCameraAndMicrophonePermissions(completion: @escaping (Bool) -> Void) {
         AVCaptureDevice.requestAccess(for: AVMediaType.video) { granted in
             if granted {
                 AVAudioSession.sharedInstance().requestRecordPermission({ granted in
@@ -457,11 +486,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                             SCLAlertView().showError("Please enable microphone permission", subTitle: "You won't be able to 30 unlesss you enable microphone permissions.  Go to Settings > Privacy > Microphone and please enable.", colorStyle: UIColor.thPrimaryPurple.toHex())
                         }
                     }
+                    completion(granted)
                 })
             } else {
                 DispatchQueue.main.async {
                     SCLAlertView().showError("Please enable video permission", subTitle: "You won't be able to  30 unlesss you enable video permissions.  Go to Settings > Privacy > Camera and please enable.", colorStyle: UIColor.thPrimaryPurple.toHex())
                 }
+                completion(granted)
             }
         }
     }

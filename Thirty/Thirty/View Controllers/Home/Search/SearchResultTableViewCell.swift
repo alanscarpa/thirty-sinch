@@ -59,6 +59,11 @@ class SearchResultTableViewCell: UITableViewCell {
         addButton.setTitle("Invite +", for: .normal)
     }
     
+    func displayAskForContactPermission() {
+        addButtonIsHidden = true
+        usernameLabel.text = "Click here to find your friends already using 30!"
+    }
+    
     @IBAction func addButtonTapped(_ sender: Any) {
         delegate?.addButtonWasTapped(sender: self)
     }
