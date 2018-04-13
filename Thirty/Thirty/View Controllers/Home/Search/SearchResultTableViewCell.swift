@@ -23,7 +23,6 @@ class SearchResultTableViewCell: UITableViewCell {
     var addButtonIsHidden: Bool = false {
         didSet {
             addButtonWidthConstraint.constant = addButtonIsHidden ? 0 : 75
-
         }
     }
     
@@ -61,6 +60,8 @@ class SearchResultTableViewCell: UITableViewCell {
     
     func displayAskForContactPermission() {
         addButtonIsHidden = true
+        usernameLabel.textAlignment = .center
+        usernameLabel.numberOfLines = 2
         usernameLabel.text = "Click here to find your friends already using 30!"
     }
     
