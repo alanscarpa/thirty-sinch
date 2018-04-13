@@ -47,7 +47,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 print("Error fetching results for container")
             }
         }
-        return results
+        return results.sorted(by: { $0.givenName < $1.givenName })
     }()
     
     override func viewDidLoad() {
