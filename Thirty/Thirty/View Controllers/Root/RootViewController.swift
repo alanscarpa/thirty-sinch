@@ -50,8 +50,6 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.view.backgroundColor = .thPrimaryPurple
         let titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont(name: "Avenir-Black", size: 18)!] as [NSAttributedStringKey : Any]
         rootNavigationController.navigationBar.titleTextAttributes = titleTextAttributes
-        // We can make custom back button and apply it if needed instead.
-        UIBarButtonItem.appearance().setTitleTextAttributes(titleTextAttributes, for: .normal)
         thAddChildViewController(rootNavigationController)
     }
     

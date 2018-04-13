@@ -71,12 +71,6 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
         }
     }
     
-    // MARK: - MFMessageComposeViewControllerDelegate
-    
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
     // MARK: - Helpers
     
     private func showShareAlert() {
@@ -93,5 +87,11 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
         alertVC.addAction(cancelButton)
         alertVC.addAction(shareButton)
         present(alertVC, animated: true, completion: nil)
+    }
+    
+    // MARK: - MFMessageComposeViewControllerDelegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

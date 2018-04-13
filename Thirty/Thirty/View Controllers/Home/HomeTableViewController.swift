@@ -352,10 +352,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 messageComposeVC.body = "hey - download this app real quick.  it's a fun way to have 30 second video chats. https://that30app.com/download"
                 messageComposeVC.recipients = [phoneNumber]
                 messageComposeVC.messageComposeDelegate = self
-                // WTFFF
-                UINavigationBar.appearance().tintColor = .thPrimaryPurple
-                messageComposeVC.navigationBar.barTintColor = .thPrimaryPurple
-                messageComposeVC.navigationBar.tintColor = .thPrimaryPurple
                 present(messageComposeVC, animated: true, completion: nil)
             }
         case .searching:
