@@ -12,7 +12,7 @@ import AVFoundation
 import Contacts
 import MessageUI
 
-class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate, MFMessageComposeViewControllerDelegate {
+class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate, UIGestureRecognizerDelegate, MFMessageComposeViewControllerDelegate {
     
     var searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
@@ -110,6 +110,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
         tableView.tableHeaderView = searchController.searchBar
+        
+        let swipeLeftGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedLeft))
+        swipeLeftGestureRecognizer.delegate = self
+        swipeLeftGestureRecognizer.direction = .left
+        
+        tableView.addGestureRecognizer(swipeLeftGestureRecognizer)
     }
     
     func getContacts() {
@@ -487,6 +493,19 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 }
             }
         }
+    }
+    
+    // MARK: - UIGestureRecognizerDelegate
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let location = gestureRecognizer.location(in: tableView)
+        print(location.x)
+        print(tableView.frame.size.width)
+        return location.x > tableView.frame.size.width / 2 ? true : false
+    }
+    
+    @objc func swipedLeft() {
+        print("swiped")
     }
     
     // MARK: - MFMessageComposeViewControllerDelegate
