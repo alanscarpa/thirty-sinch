@@ -20,7 +20,6 @@
 		4500C7921E527AFF00AF54AA /* HomeTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */; };
 		4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4500C7941E5286E000AF54AA /* CallViewController.swift */; };
 		4500C7971E5286E000AF54AA /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4500C7951E5286E000AF54AA /* CallViewController.xib */; };
-		450AB12C206D7E8A00BCDBA3 /* UIViewController+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB12A206D7E8A00BCDBA3 /* UIViewController+Thirty.swift */; };
 		450AB12D206D7E8A00BCDBA3 /* Error+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB12B206D7E8A00BCDBA3 /* Error+Thirty.swift */; };
 		450AB133206D8ADF00BCDBA3 /* FeaturedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB132206D8ADF00BCDBA3 /* FeaturedUser.swift */; };
 		450AB137206DBEEC00BCDBA3 /* FeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450AB135206DBEEC00BCDBA3 /* FeatureViewController.swift */; };
@@ -54,6 +53,8 @@
 		45993F322058D7DB002276E9 /* Explodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45993F312058D7DB002276E9 /* Explodable.swift */; };
 		459E61F12058BF00004C385A /* UIView+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459E61F02058BF00004C385A /* UIView+Thirty.swift */; };
 		45DB90DC205E292000591EC8 /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45DB90DB205E292000591EC8 /* ringtone.mp3 */; };
+		45FC90092087C84300FC9422 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FC90072087C84300FC9422 /* SettingsViewController.swift */; };
+		45FC900A2087C84300FC9422 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45FC90082087C84300FC9422 /* SettingsViewController.xib */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,7 +77,6 @@
 		4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTableViewController.xib; sourceTree = "<group>"; };
 		4500C7941E5286E000AF54AA /* CallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		4500C7951E5286E000AF54AA /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
-		450AB12A206D7E8A00BCDBA3 /* UIViewController+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Thirty.swift"; sourceTree = "<group>"; };
 		450AB12B206D7E8A00BCDBA3 /* Error+Thirty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Thirty.swift"; sourceTree = "<group>"; };
 		450AB132206D8ADF00BCDBA3 /* FeaturedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedUser.swift; sourceTree = "<group>"; };
 		450AB135206DBEEC00BCDBA3 /* FeatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +111,8 @@
 		45993F312058D7DB002276E9 /* Explodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Explodable.swift; sourceTree = "<group>"; };
 		459E61F02058BF00004C385A /* UIView+Thirty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Thirty.swift"; sourceTree = "<group>"; };
 		45DB90DB205E292000591EC8 /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
+		45FC90072087C84300FC9422 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		45FC90082087C84300FC9422 /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,6 +199,7 @@
 		4500C77D1E4E8EE800AF54AA /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				45FC90062087C83500FC9422 /* Settings */,
 				450AB134206DBED400BCDBA3 /* Feature */,
 				4500C7841E4E92AF00AF54AA /* Welcome */,
 				4530A9021F033DB00039D303 /* Login */,
@@ -220,7 +223,6 @@
 			isa = PBXGroup;
 			children = (
 				450AB12B206D7E8A00BCDBA3 /* Error+Thirty.swift */,
-				450AB12A206D7E8A00BCDBA3 /* UIViewController+Thirty.swift */,
 				4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */,
 				4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */,
 				4530A9171F05CF9E0039D303 /* JHSpinnerView+Thirty.swift */,
@@ -330,6 +332,15 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		45FC90062087C83500FC9422 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				45FC90072087C84300FC9422 /* SettingsViewController.swift */,
+				45FC90082087C84300FC9422 /* SettingsViewController.xib */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		5F79CDBE4E61312569B51CAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -412,6 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4530A9011F0331500039D303 /* leaguespartan-bold.ttf in Resources */,
+				45FC900A2087C84300FC9422 /* SettingsViewController.xib in Resources */,
 				455BDE7920621FD9009CA00A /* answeredChime.wav in Resources */,
 				4500C7881E4E92C200AF54AA /* WelcomeViewController.xib in Resources */,
 				4530A9061F033DDD0039D303 /* LoginViewController.xib in Resources */,
@@ -514,7 +526,6 @@
 				450AB13C206DDDD500BCDBA3 /* UIImage+Thirty.swift in Sources */,
 				4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */,
 				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
-				450AB12C206D7E8A00BCDBA3 /* UIViewController+Thirty.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
 				45407F5E20575A47008B05B3 /* Call.swift in Sources */,
 				45100BB2205211630000B254 /* TokenUtils.swift in Sources */,
@@ -531,6 +542,7 @@
 				4530A9141F05BA3D0039D303 /* User.swift in Sources */,
 				454CD1BE206D77FA006235C8 /* FeaturedTableViewCell.swift in Sources */,
 				4530A90C1F0451FE0039D303 /* SignupViewController.swift in Sources */,
+				45FC90092087C84300FC9422 /* SettingsViewController.swift in Sources */,
 				4500C75F1E4BDD5A00AF54AA /* AppDelegate.swift in Sources */,
 				45993F322058D7DB002276E9 /* Explodable.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,

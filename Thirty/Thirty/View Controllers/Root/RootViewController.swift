@@ -8,11 +8,12 @@
 
 import UIKit
 
-class RootViewController: UIViewController, UINavigationControllerDelegate {
+class RootViewController: UIPageViewController, UIPageViewControllerDataSource, UINavigationControllerDelegate {
     
     static let shared = RootViewController()
     
     private let rootNavigationController = UINavigationController()
+    private let settingsViewController = SettingsViewController()
     
     var showNavigationBar = false {
         didSet {
@@ -32,7 +33,23 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
             rootNavigationController.setToolbarHidden(!showToolBar, animated: true)
         }
     }
-        
+    
+    lazy var allViewControllers: [UIViewController] = {
+        return [rootNavigationController, settingsViewController]
+    }()
+    var numberOfViewControllers: Int {
+        return allViewControllers.count
+    }
+    private var currentVCIndex = 0
+    
+    required override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]? = nil) {
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -40,6 +57,8 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         view.backgroundColor = .thPrimaryPurple
         setUpRootNavigationController()
         setUpAppearances()
+        dataSource = self
+        setViewControllers([allViewControllers.first!], direction: .forward, animated: true, completion: nil)
     }
     
     // MARK: - Setup
@@ -50,7 +69,6 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
         rootNavigationController.view.backgroundColor = .thPrimaryPurple
         let titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont(name: "Avenir-Black", size: 18)!] as [NSAttributedStringKey : Any]
         rootNavigationController.navigationBar.titleTextAttributes = titleTextAttributes
-        thAddChildViewController(rootNavigationController)
     }
     
     private func setUpAppearances() {
@@ -101,6 +119,31 @@ class RootViewController: UIViewController, UINavigationControllerDelegate {
     func pushFeatureVCWithFeaturedUser(_ featuredUser: FeaturedUser) {
         let featureVC = FeatureViewController(featuredUser: featuredUser)
         rootNavigationController.pushViewController(featureVC, animated: true)
+    }
+    
+    // MARK: - UIPageViewControllerDataSource
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let viewControllerIndex = indexOfViewController(viewController) else { return nil }
+        let previousIndex = viewControllerIndex - 1
+        guard previousIndex >= 0 && numberOfViewControllers > previousIndex else { return nil }
+        currentVCIndex = previousIndex
+        return allViewControllers[previousIndex]
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let viewControllerIndex = indexOfViewController(viewController) else { return nil }
+        let nextIndex = viewControllerIndex + 1
+        guard numberOfViewControllers != nextIndex && numberOfViewControllers > nextIndex else { return nil }
+        currentVCIndex = nextIndex
+        return allViewControllers[nextIndex]
+    }
+    
+    // MARK: - Helpers
+    
+    private func indexOfViewController(_ viewController: UIViewController) -> Int? {
+        guard let viewControllerIndex = allViewControllers.index(of: viewController) else { return nil }
+        return viewControllerIndex
     }
     
 }
