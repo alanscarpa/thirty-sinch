@@ -237,6 +237,7 @@ class FirebaseManager {
     
     func searchForUserWithFullName(_ fullName: String, completion: @escaping (Result<User?>) -> Void) {
         usersRef.queryOrdered(byChild: "full-name").queryEqual(toValue: fullName).observeSingleEvent(of: .value, with: { snapshot in
+            print(snapshot.value)
             if let value = snapshot.value as? NSDictionary {
                 let user = User(username: value["display-name"] as? String ?? "",
                                 email: value["email"] as? String ?? "",
