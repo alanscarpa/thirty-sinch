@@ -158,13 +158,17 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
                 // I dont know if/how we're using it, or keeping that info secure (eg - "salting" the database).
                 if text.isEmpty {
                     results = (false, "Please enter your phone number, we use it to connect you with friends!", textField)
-                } else if text.count != 9 {
+                } else if text.count != 10 {
                     results = (false, "Please enter a valid U.S. phone number (no spaces or special characters).", textField)
                 }
-            case firstNameTextField,
-                 lastNameTextField:
-                // optional; no validation necessary
-                break
+            case firstNameTextField:
+                if text.isEmpty {
+                    results = (false, "Please enter your first name.", textField)
+                }
+            case lastNameTextField:
+                if text.isEmpty {
+                    results = (false, "Please enter your last name.", textField)
+                }
             default:
                 assertionFailure("Each user input field must be explicitly handled in \(type(of: self)).\(#function).")
             }

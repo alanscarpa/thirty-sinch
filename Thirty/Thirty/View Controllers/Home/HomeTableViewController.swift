@@ -271,6 +271,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
         case .friends:
+            guard UserManager.shared.hasFriends else { return }
             let user = UserManager.shared.contacts[indexPath.row]
             if user.doNotDisturb {
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time.", message: "This user has do not disturb mode enabled.  Try again later.")
