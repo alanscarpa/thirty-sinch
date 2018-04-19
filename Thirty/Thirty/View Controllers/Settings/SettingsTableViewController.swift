@@ -51,7 +51,8 @@ class SettingsTableViewController: UITableViewController, SettingsTableViewCellD
     // MARK: - SettingsTableViewCellDelegate
     
     func didTapLogoutButton() {
-        print("logout")
+        UserManager.shared.logOut()
+        RootViewController.shared.logOut()
     }
     
 }

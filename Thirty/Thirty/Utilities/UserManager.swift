@@ -32,4 +32,10 @@ class UserManager {
     
     var contacts = [User]()
     var featuredUsers = [FeaturedUser]()
+    
+    func logOut() {
+        currentUser = User()
+        contacts = [User]()
+        featuredUsers = [FeaturedUser]()
+    }
 }

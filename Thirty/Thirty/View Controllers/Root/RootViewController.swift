@@ -13,7 +13,6 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     static let shared = RootViewController()
     
     private let rootNavigationController = UINavigationController()
-    private let settingsTableViewController = SettingsTableViewController()
     
     var showNavigationBar = false {
         didSet {
@@ -34,9 +33,10 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         }
     }
     
-    lazy var allViewControllers: [UIViewController] = {
-        return [rootNavigationController, settingsTableViewController]
-    }()
+    var allViewControllers: [UIViewController] {
+        return [rootNavigationController, SettingsTableViewController()]
+    }
+    
     var numberOfViewControllers: Int {
         return allViewControllers.count
     }
@@ -89,12 +89,6 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         rootNavigationController.setViewControllers([WelcomeViewController()], animated: true)
     }
     
-    func goToWelcomeVCWithBetaMessage() {
-        let welcomeVC = WelcomeViewController()
-        welcomeVC.hasBetaMessage = true
-        rootNavigationController.setViewControllers([welcomeVC], animated: true)
-    }
-    
     func goToLoginVC() {
         rootNavigationController.pushViewController(LoginViewController(), animated: true)
     }
@@ -121,6 +115,11 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         rootNavigationController.pushViewController(featureVC, animated: true)
     }
     
+    func logOut() {
+        goToWelcomeVC()
+        setViewControllers([allViewControllers.first!], direction: .reverse, animated: true, completion: nil)
+    }
+    
     // MARK: - UIPageViewControllerDataSource
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -133,6 +132,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let viewControllerIndex = indexOfViewController(viewController) else { return nil }
+        guard viewControllerIndex == 0, rootNavigationController.topViewController?.isKind(of: HomeTableViewController.self) == true else { return nil }
         let nextIndex = viewControllerIndex + 1
         guard numberOfViewControllers != nextIndex && numberOfViewControllers > nextIndex else { return nil }
         currentVCIndex = nextIndex
