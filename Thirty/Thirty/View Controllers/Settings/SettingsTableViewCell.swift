@@ -21,26 +21,37 @@ class SettingsTableViewCell: UITableViewCell {
         }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    override func prepareForReuse() {
+        genericButton.isHidden = true
+        titleLabel.isHidden = false
+        detailLabel.isHidden = false
     }
     
     private func updateUI() {
-        let currentUser = FirebaseManager.shared.currentUser
+        let currentUser = UserManager.shared.currentUser
         switch setting! {
         case .firstName:
             titleLabel.text = "First Name"
-            //detailLabel.text = 
+            detailLabel.text = currentUser.firstName
         case .lastName:
-            break
+            titleLabel.text = "Last Name"
+            detailLabel.text = currentUser.lastName
         case .username:
-            break
+            titleLabel.text = "Username"
+            detailLabel.text = currentUser.username
         case .phoneNumber:
-            break
+            titleLabel.text = "Phone Number"
+            detailLabel.text = currentUser.phoneNumber
         case .logout:
-            break
+            genericButton.setTitle("Log Out", for: .normal)
+            showGenericButton()
         }
+    }
+    
+    private func showGenericButton() {
+        genericButton.isHidden = false
+        titleLabel.isHidden = true
+        detailLabel.isHidden = true
     }
     
 }
