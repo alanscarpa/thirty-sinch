@@ -160,7 +160,8 @@ class FirebaseManager {
                                                        "email": user.email,
                                                        "device-token": user.deviceToken,
                                                        "first-name": user.firstName,
-                                                       "last-name": user.lastName], withCompletionBlock: { (error, ref) in
+                                                       "last-name": user.lastName,
+                                                       "full-name": user.firstName + " " +  user.lastName], withCompletionBlock: { (error, ref) in
                                                         if let error = error {
                                                             completion(.failure(error))
                                                         } else {
@@ -217,6 +218,25 @@ class FirebaseManager {
 
     func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {
         databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
+            if let value = snapshot.value as? NSDictionary {
+                let user = User(username: value["display-name"] as? String ?? "",
+                                email: value["email"] as? String ?? "",
+                                phoneNumber: value["phone-number"] as? String ?? "",
+                                password: "",
+                                deviceToken: value["device-token"] as? String ?? "",
+                                firstName: value["first-name"] as? String ?? "",
+                                lastName: value["last-name"] as? String ?? "")
+                completion(.success(user))
+            } else {
+                completion(.success(nil))
+            }
+        }) { (error) in
+            completion(.failure(error))
+        }
+    }
+    
+    func searchForUserWithFullName(_ fullName: String, completion: @escaping (Result<User?>) -> Void) {
+        usersRef.queryOrdered(byChild: "full-name").queryEqual(toValue: fullName).observeSingleEvent(of: .value, with: { snapshot in
             if let value = snapshot.value as? NSDictionary {
                 let user = User(username: value["display-name"] as? String ?? "",
                                 email: value["email"] as? String ?? "",
