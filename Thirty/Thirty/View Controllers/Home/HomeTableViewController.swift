@@ -288,7 +288,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     RootViewController.shared.pushCallVCWithCall(call)
                 }
             } else {
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make call", message: "Unable to call this user at this time because of invalid device token.")
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make 30", message: "This user is currently logged out and unable to receive 30s at this time 😞")
                 DispatchQueue.main.async {
                     self.present(alertVC, animated: true, completion: nil)
                 }
