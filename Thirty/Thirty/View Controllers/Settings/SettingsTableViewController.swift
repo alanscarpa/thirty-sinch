@@ -43,6 +43,7 @@ class SettingsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.nibName, for: indexPath) as! SettingsTableViewCell
+        cell.setting = settings[indexPath.row]
         return cell
     }
     

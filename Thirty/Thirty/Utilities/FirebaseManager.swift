@@ -35,6 +35,10 @@ class FirebaseManager {
     var currentUsersFriendsRef: DatabaseReference {
         return friendsRef.child(userManager.currentUserUsername.lowercased())
     }
+    
+    var currentUserRef: DatabaseReference {
+        return usersRef.child(userManager.currentUserUsername.lowercased())
+    }
 
     var currentUser: Firebase.User? {
         return Auth.auth().currentUser
@@ -172,6 +176,35 @@ class FirebaseManager {
                 }
             }
         }
+    }
+    
+    // MARK: - Current User
+    
+    func getCurrentUserDetails(completion: @escaping (Result<Void>) -> Void) {
+        let cancelBlock: (Error) -> Void = { completion(.failure($0) )}
+        currentUserRef.observeSingleEvent(of: .value, with: { snapshot in
+            guard let user = snapshot.value as? [String : Any] else {
+                completion(.failure(THError.noCurrentUser))
+                return
+            }
+            guard
+                let name = user["display-name"] as? String,
+                let email = user["email"] as? String,
+                let number = user["phone-number"] as? String
+                else {
+                    completion(.failure(THError.noCurrentUser))
+                    return
+            }
+            let token = user["device-token"] as? String
+            let firstName = user["first-name"] as? String ?? ""
+            let lastName = user["last-name"] as? String ?? ""
+            let currentUser = User(username: name, email: email, phoneNumber: number, password: "", deviceToken: token, firstName: firstName, lastName: lastName)
+            if let doNotDisturb = user["do-not-disturb"] as? Bool {
+                currentUser.doNotDisturb = doNotDisturb
+            }
+            UserManager.shared.currentUser = currentUser
+            completion(.success)
+        }, withCancel: cancelBlock)
     }
 
     // MARK: Search Users

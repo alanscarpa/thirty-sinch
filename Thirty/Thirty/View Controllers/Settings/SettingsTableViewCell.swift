@@ -15,15 +15,32 @@ class SettingsTableViewCell: UITableViewCell {
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var genericButton: UIButton!
     
+    var setting: Setting? {
+        didSet {
+            updateUI()
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    private func updateUI() {
+        let currentUser = FirebaseManager.shared.currentUser
+        switch setting! {
+        case .firstName:
+            titleLabel.text = "First Name"
+            //detailLabel.text = 
+        case .lastName:
+            break
+        case .username:
+            break
+        case .phoneNumber:
+            break
+        case .logout:
+            break
+        }
     }
     
 }

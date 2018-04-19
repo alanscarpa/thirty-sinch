@@ -55,7 +55,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLoaderView()
-        getContacts()
+        getData()
         setUpSearchController()
         setUpTableView()
         FirebaseManager.shared.updateDeviceToken()
@@ -112,23 +112,33 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         tableView.tableHeaderView = searchController.searchBar
     }
     
-    func getContacts() {
-        FirebaseManager.shared.getContacts { [weak self] result in
+    func getData() {
+        FirebaseManager.shared.getCurrentUserDetails { [weak self] result in
             switch result {
             case .success():
-                FirebaseManager.shared.getFeaturedUsers { [weak self] result in
-                    self?.tearDownLoaderView()
-                    self?.tableView.reloadData()
+                FirebaseManager.shared.getContacts { [weak self] result in
                     switch result {
                     case .success():
-                    break // no-op
+                        FirebaseManager.shared.getFeaturedUsers { [weak self] result in
+                            self?.tearDownLoaderView()
+                            self?.tableView.reloadData()
+                            switch result {
+                            case .success():
+                            break // no-op
+                            case .failure(let error):
+                                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
+                                self?.present(alertVC, animated: true, completion: nil)
+                            }
+                        }
                     case .failure(let error):
-                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
+                        self?.tearDownLoaderView()
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts.", message: error.localizedDescription)
                         self?.present(alertVC, animated: true, completion: nil)
                     }
                 }
             case .failure(let error):
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts.", message: error.localizedDescription)
+                self?.tearDownLoaderView()
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get current user.", message: error.localizedDescription)
                 self?.present(alertVC, animated: true, completion: nil)
             }
         }

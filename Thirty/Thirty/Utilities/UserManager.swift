@@ -12,6 +12,8 @@ class UserManager {
     static let shared = UserManager()
     private init(){}
 
+    var currentUser = User()
+    
     var currentUserUsername: String {
         return FirebaseManager.shared.currentUser!.displayName!
     }
