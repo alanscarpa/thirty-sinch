@@ -112,11 +112,17 @@ class FirebaseManager {
     }
     
     func logOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
-        do {
-            try Auth.auth().signOut()
-            completion(.success)
-        } catch {
-            completion(.failure(error))
+        currentUserRef.updateChildValues(["device-token":""]) { (error, ref) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                do {
+                    try Auth.auth().signOut()
+                    completion(.success)
+                } catch {
+                    completion(.failure(error))
+                }
+            }
         }
     }
 
