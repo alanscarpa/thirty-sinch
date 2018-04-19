@@ -8,12 +8,17 @@
 
 import UIKit
 
+protocol SettingsTableViewCellDelegte: class {
+    func didTapLogoutButton()
+}
+
 class SettingsTableViewCell: UITableViewCell {
     static let nibName = "SettingsTableViewCell"
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var genericButton: UIButton!
+    weak var delegate: SettingsTableViewCellDelegte?
     
     var setting: Setting? {
         didSet {
@@ -21,7 +26,13 @@ class SettingsTableViewCell: UITableViewCell {
         }
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .none
+    }
+    
     override func prepareForReuse() {
+        super.prepareForReuse()
         genericButton.isHidden = true
         titleLabel.isHidden = false
         detailLabel.isHidden = false
@@ -54,4 +65,11 @@ class SettingsTableViewCell: UITableViewCell {
         detailLabel.isHidden = true
     }
     
+    // MARK: - Actions
+    
+    @IBAction func tappedGenericButton() {
+        if setting == .logout {
+            delegate?.didTapLogoutButton()
+        }
+    }
 }

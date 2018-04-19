@@ -16,7 +16,7 @@ enum Setting {
     case logout
 }
 
-class SettingsTableViewController: UITableViewController {
+class SettingsTableViewController: UITableViewController, SettingsTableViewCellDelegte {
     
     let settings: [Setting] = [.username,
                                .firstName,
@@ -44,7 +44,14 @@ class SettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.nibName, for: indexPath) as! SettingsTableViewCell
         cell.setting = settings[indexPath.row]
+        cell.delegate = self
         return cell
+    }
+    
+    // MARK: - SettingsTableViewCellDelegate
+    
+    func didTapLogoutButton() {
+        print("logout")
     }
     
 }

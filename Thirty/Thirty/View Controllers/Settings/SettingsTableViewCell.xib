@@ -41,6 +41,9 @@
                         <state key="normal" title="Button">
                             <color key="titleColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
+                        <connections>
+                            <action selector="tappedGenericButton" destination="cQg-sy-ZdM" eventType="touchUpInside" id="Kb2-br-bwm"/>
+                        </connections>
                     </button>
                 </subviews>
                 <color key="backgroundColor" red="0.396078431372549" green="0.0" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
