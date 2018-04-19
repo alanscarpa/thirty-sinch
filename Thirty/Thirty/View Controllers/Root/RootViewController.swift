@@ -13,7 +13,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     static let shared = RootViewController()
     
     private let rootNavigationController = UINavigationController()
-    private let settingsViewController = SettingsViewController()
+    private let settingsTableViewController = SettingsTableViewController()
     
     var showNavigationBar = false {
         didSet {
@@ -35,7 +35,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     }
     
     lazy var allViewControllers: [UIViewController] = {
-        return [rootNavigationController, settingsViewController]
+        return [rootNavigationController, settingsTableViewController]
     }()
     var numberOfViewControllers: Int {
         return allViewControllers.count
