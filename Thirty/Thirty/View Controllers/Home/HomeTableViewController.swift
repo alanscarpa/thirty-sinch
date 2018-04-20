@@ -479,24 +479,35 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - Helpers
     
     private func callUser(_ user: User) {
-        if user.doNotDisturb {
-            let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time.", message: "This user has do not disturb mode enabled.  Try again later.")
-            DispatchQueue.main.async {
-                self.present(alertVC, animated: true, completion: nil)
-            }
-        } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
-            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
-            if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
-                requestCameraAndMicrophonePermissions { granted in
-                    RootViewController.shared.pushCallVCWithCall(call)
+        FirebaseManager.shared.getCurrentDetailsForUser(user) { [weak self] result in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .success(let user):
+                if user.doNotDisturb {
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time.", message: "This user has do not disturb mode enabled.  Try again later.")
+                    DispatchQueue.main.async {
+                        strongSelf.present(alertVC, animated: true, completion: nil)
+                    }
+                } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+                    if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
+                        strongSelf.requestCameraAndMicrophonePermissions { granted in
+                            RootViewController.shared.pushCallVCWithCall(call)
+                        }
+                    } else {
+                        RootViewController.shared.pushCallVCWithCall(call)
+                    }
+                } else {
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make 30", message: "This user is currently logged out and unable to receive 30s at this time 😞")
+                    DispatchQueue.main.async {
+                        strongSelf.present(alertVC, animated: true, completion: nil)
+                    }
                 }
-            } else {
-                RootViewController.shared.pushCallVCWithCall(call)
-            }
-        } else {
-            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make 30", message: "This user is currently logged out and unable to receive 30s at this time 😞")
-            DispatchQueue.main.async {
-                self.present(alertVC, animated: true, completion: nil)
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to call user.", message: error.localizedDescription)
+                    strongSelf.present(alertVC, animated: true, completion: nil)
+                }
             }
         }
     }

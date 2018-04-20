@@ -185,7 +185,7 @@ class FirebaseManager {
         }
     }
     
-    // MARK: - Current User
+    // MARK: - Users
     
     func getCurrentUserDetails(completion: @escaping (Result<Void>) -> Void) {
         let cancelBlock: (Error) -> Void = { completion(.failure($0) )}
@@ -213,6 +213,35 @@ class FirebaseManager {
             completion(.success)
         }, withCancel: cancelBlock)
     }
+    
+    // MARK: - Current User
+    
+    func getCurrentDetailsForUser(_ user: User, completion: @escaping (Result<User>) -> Void) {
+        let cancelBlock: (Error) -> Void = { completion(.failure($0) )}
+        usersRef.child(user.username).observeSingleEvent(of: .value, with: { snapshot in
+            guard let user = snapshot.value as? [String : Any] else {
+                completion(.failure(THError.usernameDoesNotExist))
+                return
+            }
+            guard
+                let name = user["display-name"] as? String,
+                let email = user["email"] as? String,
+                let number = user["phone-number"] as? String
+                else {
+                    completion(.failure(THError.usernameDoesNotExist))
+                    return
+            }
+            let token = user["device-token"] as? String
+            let firstName = user["first-name"] as? String ?? ""
+            let lastName = user["last-name"] as? String ?? ""
+            let mostUpToDateUser = User(username: name, email: email, phoneNumber: number, password: "", deviceToken: token, firstName: firstName, lastName: lastName)
+            if let doNotDisturb = user["do-not-disturb"] as? Bool {
+                mostUpToDateUser.doNotDisturb = doNotDisturb
+            }
+            completion(.success(mostUpToDateUser))
+        }, withCancel: cancelBlock)
+    }
+
 
     // MARK: Search Users
 
