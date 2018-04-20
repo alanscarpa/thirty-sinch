@@ -214,8 +214,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         case .searching:
             let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
             if searchResults.count > 0 {
-                cell.usernameLabel.text = searchResults[indexPath.row].username
-                cell.addButton.isHidden = false
+                let username = searchResults[indexPath.row].username
+                cell.usernameLabel.text = username
+                cell.addButton.isHidden = UserManager.shared.contacts.contains(where: { $0.username == username })
             } else {
                 cell.usernameLabel.text = "Not yet on 30 ☹️"
                 cell.addButton.isHidden = true
@@ -243,9 +244,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 cell.displayAskForContactPermission()
                 return cell
             } else {
-                let contact =  allAddressBookContacts[indexPath.row]
+                let contact = isSearching ? foundAddressBookContacts[indexPath.row] : allAddressBookContacts[indexPath.row]
                 cell.usernameLabel.text = contact.givenName + " " + contact.familyName
-                cell.addButton.isHidden = false
                 cell.delegate = self
                 cell.displayInviteButton()
                 return cell
@@ -266,33 +266,17 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 }
             }
         case .searching:
-            break // no-op
+            let user = searchResults[indexPath.row]
+            if UserManager.shared.contacts.contains(where: { $0.username == user.username }) {
+                callUser(user)
+            }
         case .featured:
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
             RootViewController.shared.pushFeatureVCWithFeaturedUser(featuredUser)
         case .friends:
             guard UserManager.shared.hasFriends else { return }
             let user = UserManager.shared.contacts[indexPath.row]
-            if user.doNotDisturb {
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time.", message: "This user has do not disturb mode enabled.  Try again later.")
-                DispatchQueue.main.async {
-                    self.present(alertVC, animated: true, completion: nil)
-                }
-            } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
-                let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
-                if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
-                    requestCameraAndMicrophonePermissions { granted in
-                        RootViewController.shared.pushCallVCWithCall(call)
-                    }
-                } else {
-                    RootViewController.shared.pushCallVCWithCall(call)
-                }
-            } else {
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make 30", message: "This user is currently logged out and unable to receive 30s at this time 😞")
-                DispatchQueue.main.async {
-                    self.present(alertVC, animated: true, completion: nil)
-                }
-            }
+            callUser(user)
         }
     }
     
@@ -486,6 +470,29 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     // MARK: - Helpers
+    
+    private func callUser(_ user: User) {
+        if user.doNotDisturb {
+            let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time.", message: "This user has do not disturb mode enabled.  Try again later.")
+            DispatchQueue.main.async {
+                self.present(alertVC, animated: true, completion: nil)
+            }
+        } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+            if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
+                requestCameraAndMicrophonePermissions { granted in
+                    RootViewController.shared.pushCallVCWithCall(call)
+                }
+            } else {
+                RootViewController.shared.pushCallVCWithCall(call)
+            }
+        } else {
+            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make 30", message: "This user is currently logged out and unable to receive 30s at this time 😞")
+            DispatchQueue.main.async {
+                self.present(alertVC, animated: true, completion: nil)
+            }
+        }
+    }
     
     func resetTableView(searchControllerIsActive: Bool = false) {
         searchResults = []

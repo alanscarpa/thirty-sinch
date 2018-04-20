@@ -236,7 +236,7 @@ class FirebaseManager {
     }
     
     func searchForUserWithFullName(_ fullName: String, completion: @escaping (Result<[User]?>) -> Void) {
-        usersRef.queryOrdered(byChild: "full-name").queryEqual(toValue: fullName).observeSingleEvent(of: .value, with: { snapshot in
+        usersRef.queryOrdered(byChild: "full-name").queryEqual(toValue: fullName.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
             if let foundUsers = snapshot.value as? [String: Any] {
                 var users = [User]()
                 let usernames = foundUsers.keys
