@@ -107,6 +107,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         tableView.backgroundView = backgroundView
         tableView.register(UINib(nibName: FeaturedTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: FeaturedTableViewCell.nibName)
         tableView.register(UINib(nibName: SearchResultTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultTableViewCell.nibName)
+        tableView.register(UINib(nibName: ContactTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: ContactTableViewCell.nibName)
         tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
         tableView.tableHeaderView = searchController.searchBar
@@ -229,13 +230,11 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             cell.setUpForFeaturedUser(featuredUser)
             return cell
         case .friends:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-            if !UserManager.shared.hasFriends {
-                cell.displayNoFriendsLabel()
+            let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.nibName, for: indexPath) as! ContactTableViewCell
+            if UserManager.shared.hasFriends {
+                cell.setUpForUser(UserManager.shared.contacts[indexPath.row])
             } else {
-                cell.usernameLabel.text = UserManager.shared.contacts[indexPath.row].username
-                cell.addButton.isHidden = true
-                cell.delegate = self
+                 cell.displayNoFriendsLabel()
             }
             return cell
         case .addressBook:

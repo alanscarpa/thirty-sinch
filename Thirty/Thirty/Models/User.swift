@@ -18,7 +18,7 @@ class User {
     var deviceToken: String?
     var doNotDisturb = false
     var fullName: String {
-        guard !firstName.isEmpty || !lastName.isEmpty else { return "" }
+        guard !firstName.isEmpty || !lastName.isEmpty else { return username }
         return "\(firstName) \(lastName)"
     }
     

@@ -26,7 +26,7 @@
                         </constraints>
                         <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="12"/>
                         <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
-                        <state key="normal" title="Add+">
+                        <state key="normal" title="Invite+">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>

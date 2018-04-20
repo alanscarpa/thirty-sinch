@@ -41,17 +41,6 @@ class SearchResultTableViewCell: UITableViewCell {
         usernameLabel.textColor = .white
         addButtonIsHidden = false
     }
-
-    func displayNoFriendsLabel() {
-        usernameLabel.textColor = .thGray
-        usernameLabel.clipsToBounds = true
-        usernameLabel.adjustsFontSizeToFitWidth = true
-        usernameLabel.minimumScaleFactor = 0.4
-        usernameLabel.numberOfLines = 2
-        usernameLabel.textAlignment = .center
-        usernameLabel.text = "You haven't added any friends yet.  Search for friends and add to get started!"
-        addButtonIsHidden = true
-    }
     
     func displayInviteButton() {
         addButtonIsHidden = false

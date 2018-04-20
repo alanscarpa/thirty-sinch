@@ -52,6 +52,8 @@
 		45670EEF208817B00012BAC1 /* SettingsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45670EED208817B00012BAC1 /* SettingsTableViewController.xib */; };
 		45670EF220881CF00012BAC1 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45670EF020881CF00012BAC1 /* SettingsTableViewCell.swift */; };
 		45670EF320881CF00012BAC1 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45670EF120881CF00012BAC1 /* SettingsTableViewCell.xib */; };
+		45670EF6208A74880012BAC1 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45670EF4208A74880012BAC1 /* ContactTableViewCell.swift */; };
+		45670EF7208A74880012BAC1 /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45670EF5208A74880012BAC1 /* ContactTableViewCell.xib */; };
 		457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */; };
 		457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */; };
 		45993F322058D7DB002276E9 /* Explodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45993F312058D7DB002276E9 /* Explodable.swift */; };
@@ -112,6 +114,8 @@
 		45670EED208817B00012BAC1 /* SettingsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewController.xib; sourceTree = "<group>"; };
 		45670EF020881CF00012BAC1 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		45670EF120881CF00012BAC1 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
+		45670EF4208A74880012BAC1 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
+		45670EF5208A74880012BAC1 /* ContactTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
 		457A9ABD1F57C09F004FC8D1 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		45993F312058D7DB002276E9 /* Explodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Explodable.swift; sourceTree = "<group>"; };
@@ -268,6 +272,8 @@
 				457A9ABC1F57C056004FC8D1 /* Search */,
 				4500C78F1E527AFF00AF54AA /* HomeTableViewController.swift */,
 				4500C7901E527AFF00AF54AA /* HomeTableViewController.xib */,
+				45670EF4208A74880012BAC1 /* ContactTableViewCell.swift */,
+				45670EF5208A74880012BAC1 /* ContactTableViewCell.xib */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -436,6 +442,7 @@
 				45670EF320881CF00012BAC1 /* SettingsTableViewCell.xib in Resources */,
 				45DB90DC205E292000591EC8 /* ringtone.mp3 in Resources */,
 				457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */,
+				45670EF7208A74880012BAC1 /* ContactTableViewCell.xib in Resources */,
 				4542AAA2206E9800002A7FAD /* chill-ringback-quiet.m4a in Resources */,
 				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
@@ -533,6 +540,7 @@
 				450AB13C206DDDD500BCDBA3 /* UIImage+Thirty.swift in Sources */,
 				4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */,
 				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
+				45670EF6208A74880012BAC1 /* ContactTableViewCell.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
 				45407F5E20575A47008B05B3 /* Call.swift in Sources */,
 				45670EF220881CF00012BAC1 /* SettingsTableViewCell.swift in Sources */,
