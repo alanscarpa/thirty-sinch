@@ -65,10 +65,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print(payload.dictionaryPayload)
         if payload.type == .voIP {
             if let roomName = (payload.dictionaryPayload["info"] as? NSDictionary)?["roomname"] as? String,
+                let callerFullName = (payload.dictionaryPayload["info"] as? NSDictionary)?["callerFullName"] as? String,
                 let uuidString = (payload.dictionaryPayload["info"] as? NSDictionary)?["uuid"] as? String, let uuid = UUID(uuidString: uuidString) {
                 // TODO: Test if this check is still necessary - push registry was called more than once in pst
                 if roomName != UserManager.shared.currentUserUsername {
-                    let call = Call(uuid: uuid, caller: roomName, callee: "", calleeDeviceToken: nil, direction: .incoming)
+                    let call = Call(uuid: uuid, caller: roomName, callerFullName: callerFullName, callee: "", calleeDeviceToken: nil, direction: .incoming)
                     reportIncomingCall(call)
                 }
             }
@@ -113,9 +114,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let callDirection: CallDirection = CallManager.shared.call == nil ? .outgoing : .incoming
             if callDirection == .outgoing {
                 if loggedIn  {
-                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: personHandle, calleeDeviceToken: nil, direction: .outgoing)
-                    CallManager.shared.call = call
-                    RootViewController.shared.pushCallVCWithCall(call)
+                    FirebaseManager.shared.getCurrentUserDetails { result in
+                        switch result {
+                        case .success:
+                            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callerFullName: UserManager.shared.currentUser.fullName, callee: personHandle, calleeDeviceToken: nil, direction: .outgoing)
+                            CallManager.shared.call = call
+                            RootViewController.shared.pushCallVCWithCall(call)
+                        case .failure(_):
+                            RootViewController.shared.goToHomeVC()
+                        }
+                    }
                 } else {
                     RootViewController.shared.goToWelcomeVC()
                 }

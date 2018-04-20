@@ -23,6 +23,7 @@ enum CallState: String {
 class Call {
     var uuid: UUID!
     var caller: String
+    var callerFullName: String
     var callee: String
     var calleeDeviceToken: String?
     var direction: CallDirection
@@ -31,9 +32,10 @@ class Call {
     }
     var state: CallState = .pending
     
-    init(uuid: UUID, caller: String, callee: String, calleeDeviceToken: String?, direction: CallDirection) {
+    init(uuid: UUID, caller: String, callerFullName: String, callee: String, calleeDeviceToken: String?, direction: CallDirection) {
         self.uuid = uuid
         self.caller = caller
+        self.callerFullName = callerFullName
         self.callee = callee
         self.calleeDeviceToken = calleeDeviceToken
         self.direction = direction

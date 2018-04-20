@@ -479,12 +479,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             switch result {
             case .success(let user):
                 if user.doNotDisturb {
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time.", message: "This user has do not disturb mode enabled.  Try again later.")
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time 🤷‍♂️", message: "This user has do not disturb mode enabled.  💤  Try again later.")
                     DispatchQueue.main.async {
                         strongSelf.present(alertVC, animated: true, completion: nil)
                     }
                 } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
-                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callerFullName: UserManager.shared.currentUser.fullName, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
                     if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
                         strongSelf.requestCameraAndMicrophonePermissions { granted in
                             RootViewController.shared.pushCallVCWithCall(call)

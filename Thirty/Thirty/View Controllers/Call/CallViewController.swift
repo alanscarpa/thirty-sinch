@@ -63,8 +63,13 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
         super.viewWillAppear(animated)
         RootViewController.shared.showStatusBarBackground = false
         startLocalPreviewVideo()
-        showCallSpinner()
         connectToRoom()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showCallSpinner()
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -150,7 +155,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                 case .success(let token):
                     strongSelf.makeCallWithDeviceToken(token, toRoom: room)
                 case .failure(let error):
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get user's device token.  Try again later.", message: error.localizedDescription) { action in
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "User has logged out of 30.  Please try again later.", message: error.localizedDescription) { action in
                         strongSelf.endCall()
                     }
                     strongSelf.present(alertVC, animated: true, completion: nil)
@@ -164,7 +169,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             guard let strongSelf = self else { return }
             switch result {
             case .success():
-                var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString]
+                var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString, "caller_full_name" : strongSelf.call.callerFullName]
                 #if DEBUG
                     parameters["dev"] = true
                 #endif

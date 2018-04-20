@@ -109,7 +109,11 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func reportIncomingCall(_ call: Call, completion: @escaping ((Error?) -> Void)) {
-        let callHandle = CXHandle(type: .generic, value: call.roomName)
+        var handleValue = call.roomName
+        if call.callerFullName.lowercased() != call.roomName.lowercased() {
+            handleValue += " (\(call.callerFullName))"
+        }
+        let callHandle = CXHandle(type: .generic, value: handleValue)
         let callUpdate = CXCallUpdate()
         callUpdate.remoteHandle = callHandle
         callUpdate.supportsDTMF = false
