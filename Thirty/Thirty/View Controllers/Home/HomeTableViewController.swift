@@ -298,7 +298,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchQuery = searchBar.text else { return }
-        searchForContactWithString(searchQuery)
+        searchForContactWithString(searchQuery.lowercased())
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -323,37 +323,43 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             tableView.reloadData()
             return
         }
-        if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.username == query }).first {
-            searchResults = [alreadyFriendedUser]
-            tableView.reloadData()
-            return
-        } else if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.fullName == query }).first {
-            searchResults.append(alreadyFriendedUser)
-            tableView.reloadData()
+        if let user = UserManager.shared.contacts.filter({ $0.username.lowercased() == query }).first {
+            appendUserToSearchResults(user)
+        } else if let user = UserManager.shared.contacts.filter({ $0.fullName == query }).first {
+            appendUserToSearchResults(user)
         }
+        let usersWithFirstname = UserManager.shared.contacts.filter({ $0.firstName == query })
+        usersWithFirstname.forEach { user in
+            appendUserToSearchResults(user)
+        }
+        let usersWithLastName = UserManager.shared.contacts.filter({ $0.lastName == query })
+        usersWithLastName.forEach { user in
+            appendUserToSearchResults(user)
+        }
+        
         FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
             guard let strongSelf = self else { return }
             switch result {
             case .success(let user):
                 if let user = user {
-                    if user.username != UserManager.shared.currentUserUsername {
-                        strongSelf.searchResults.append(user)
-                    }
+                    strongSelf.appendUserToSearchResults(user)
                     strongSelf.tableView.reloadData()
                 } else {
                     FirebaseManager.shared.searchForUserWithFullName(query) { [weak self] result in
+                        strongSelf.tableView.reloadData()
                         guard let strongSelf = self else { return }
                         switch result {
                         case .success(let users):
                             if let users = users, !users.isEmpty {
-                                strongSelf.searchResults.append(contentsOf: users.filter({ $0.username != UserManager.shared.currentUserUsername }))
+                                users.forEach { user in
+                                    strongSelf.appendUserToSearchResults(user)
+                                }
                             }
                             do {
                                 strongSelf.foundAddressBookContacts = try strongSelf.contactsFromAddressBook(query)
                             } catch {
                                 print(error.localizedDescription)
                             }
-                            strongSelf.tableView.reloadData()
                         case .failure(let error):
                             let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
                             strongSelf.present(alertVC, animated: true, completion: nil)
@@ -363,6 +369,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             case .failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
                 strongSelf.present(alertVC, animated: true, completion: nil)
+                strongSelf.tableView.reloadData()
             }
         }
     }
@@ -494,7 +501,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
-    func resetTableView(searchControllerIsActive: Bool = false) {
+    private func appendUserToSearchResults(_ user: User) {
+        guard user.username != UserManager.shared.currentUserUsername else { return }
+        guard !searchResults.contains(where: { $0.username == user.username }) else { return }
+        searchResults.append(user)
+    }
+    
+    private func resetTableView(searchControllerIsActive: Bool = false) {
         searchResults = []
         foundAddressBookContacts = []
         isSearching = false
