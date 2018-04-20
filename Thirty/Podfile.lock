@@ -39,6 +39,7 @@ PODS:
   - GTMSessionFetcher/Core (1.1.14)
   - IQKeyboardManagerSwift (5.0.8)
   - JHSpinner (0.2.1)
+  - Kingfisher (4.6.4)
   - leveldb-library (1.20)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
@@ -55,6 +56,7 @@ DEPENDENCIES:
   - Firebase/Database (~> 4.0)
   - IQKeyboardManagerSwift
   - JHSpinner
+  - Kingfisher (~> 4.0)
   - SCLAlertView
   - TwilioVideo (= 2.0.0-beta3)
 
@@ -70,11 +72,12 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 390ea358e5a0d0133153806f744662dad933d06b
   IQKeyboardManagerSwift: 2e7dc7f98c111458c1ea2b373f893e8cf95e2b97
   JHSpinner: bf7cc91a7e0ccad6336d2b0a3429dd34e7325e65
+  Kingfisher: 68498a706e46c2a050b0c9572f100e5db407f6e0
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
   TwilioVideo: 08cada2c04a7a908655fd80a1423a9c762344625
 
-PODFILE CHECKSUM: e8a999e3c1f3ece0ae696d241aa9100b0fc92061
+PODFILE CHECKSUM: 1624824a04ee1a65ca9a8b7e38302fc4a15db120
 
 COCOAPODS: 1.4.0

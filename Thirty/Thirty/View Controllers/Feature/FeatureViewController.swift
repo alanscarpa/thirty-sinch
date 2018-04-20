@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageUI
+import Kingfisher
 
 class FeatureViewController: UIViewController, MFMessageComposeViewControllerDelegate {
     
@@ -53,6 +54,10 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
         addUserButton.setTitle("ADD \(featuredUser.username.uppercased())", for: .normal)
         addUserButton.setBackgroundImage(UIImage(color: .darkGray, size: addUserButton.frame.size), for: .disabled)
         addUserButton.isEnabled = UserManager.shared.contacts.filter({ $0.username == featuredUser.username }).isEmpty
+        if let urlString = featuredUser.photoUrlString {
+            let url = URL(string: urlString)
+            photoImageView.kf.setImage(with: url)
+        }
     }
 
     // MARK: - Actions

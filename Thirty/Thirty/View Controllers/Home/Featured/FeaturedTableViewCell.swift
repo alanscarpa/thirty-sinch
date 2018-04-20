@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class FeaturedTableViewCell: UITableViewCell {
 
@@ -23,6 +24,10 @@ class FeaturedTableViewCell: UITableViewCell {
     
     func setUpForFeaturedUser(_ featuredUser: FeaturedUser) {
         titleLabel.text = featuredUser.username.uppercased()
+        if let urlString = featuredUser.photoUrlString {
+            let url = URL(string: urlString)
+            photoImageView.kf.setImage(with: url)
+        }
     }
 
 }

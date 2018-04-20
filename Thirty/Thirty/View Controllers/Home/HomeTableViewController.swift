@@ -125,7 +125,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                             self?.tableView.reloadData()
                             switch result {
                             case .success():
-                            break // no-op
+                                break // no-op
                             case .failure(let error):
                                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
                                 self?.present(alertVC, animated: true, completion: nil)

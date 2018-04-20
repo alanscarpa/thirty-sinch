@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14105" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14111" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -19,7 +19,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="455" height="99.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smallpools" translatesAutoresizingMaskIntoConstraints="NO" id="Pht-mm-dOe">
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="VaK-be-IHC">
+                        <rect key="frame" x="44" y="39" width="20" height="20"/>
+                    </activityIndicatorView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Pht-mm-dOe">
                         <rect key="frame" x="14" y="9" width="80" height="80"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="80" id="IDG-cX-oTd"/>
@@ -47,8 +50,10 @@
                 </subviews>
                 <color key="backgroundColor" red="0.396078431372549" green="0.0" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
+                    <constraint firstItem="VaK-be-IHC" firstAttribute="centerY" secondItem="Pht-mm-dOe" secondAttribute="centerY" id="LXI-nn-0Tk"/>
                     <constraint firstItem="c0c-f1-7X7" firstAttribute="centerX" secondItem="r6p-O6-cfY" secondAttribute="centerX" id="Piw-vu-E2f"/>
                     <constraint firstItem="Qb8-dM-Ejh" firstAttribute="centerX" secondItem="r6p-O6-cfY" secondAttribute="centerX" id="RsL-kf-B8U"/>
+                    <constraint firstItem="VaK-be-IHC" firstAttribute="centerX" secondItem="Pht-mm-dOe" secondAttribute="centerX" id="S5S-dA-MR2"/>
                     <constraint firstItem="r6p-O6-cfY" firstAttribute="leading" secondItem="Pht-mm-dOe" secondAttribute="trailing" constant="14" id="Xou-Bc-Slv"/>
                     <constraint firstItem="Pht-mm-dOe" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Yjm-lH-wKk"/>
                     <constraint firstItem="r6p-O6-cfY" firstAttribute="top" secondItem="c0c-f1-7X7" secondAttribute="bottom" constant="4" id="pEO-PM-1kx"/>
@@ -69,7 +74,4 @@
             <point key="canvasLocation" x="101.5" y="130"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="smallpools" width="2176" height="1450"/>
-    </resources>
 </document>

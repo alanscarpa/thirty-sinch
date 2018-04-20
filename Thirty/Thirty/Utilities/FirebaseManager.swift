@@ -361,10 +361,9 @@ class FirebaseManager {
                     if let date = (value[featuredUserName] as? NSDictionary)?["feature-date"] as? Double {
                         featuredUser.featureDate = Date(timeIntervalSince1970: date)
                     }
-                    // TODO: photo from fb storage
-//                    if let photoLink = (value[featuredUserName] as? NSDictionary)?["photo"] as? Data {
-//
-//                    }
+                    if let photoUrlString = (value[featuredUserName] as? NSDictionary)?["photo-url"] as? String {
+                        featuredUser.photoUrlString = photoUrlString
+                    }
                     if let promoDetails = (value[featuredUserName] as? NSDictionary)?["promo-details"] as? String {
                         featuredUser.promoDetails = promoDetails
                     }

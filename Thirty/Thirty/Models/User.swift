@@ -15,6 +15,7 @@ class User {
     var password = ""
     var firstName = ""
     var lastName = ""
+    var photoUrlString: String?
     var deviceToken: String?
     var doNotDisturb = false
     var fullName: String {
@@ -28,7 +29,8 @@ class User {
                      password: String,
                      deviceToken: String?,
                      firstName: String = "",
-                     lastName: String = "") {
+                     lastName: String = "",
+                     photoUrlString: String? = nil) {
         self.init()
         self.username = username
         self.email = email
@@ -37,6 +39,7 @@ class User {
         self.deviceToken = deviceToken
         self.firstName = firstName
         self.lastName = lastName
+        self.photoUrlString = photoUrlString
     }
 }
 
