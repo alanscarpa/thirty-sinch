@@ -30,7 +30,7 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
-                            <action selector="addButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="vco-15-Yms"/>
+                            <action selector="inviteButtonTapped" destination="KGk-i7-Jjw" eventType="touchUpInside" id="wGM-v5-gbU"/>
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mcq-oc-IRD">
@@ -40,7 +40,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="0.52384120980000004" green="0.2426977713" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="VQM-9X-nhG" firstAttribute="leading" secondItem="Mcq-oc-IRD" secondAttribute="trailing" constant="12" id="4yM-2a-jlj"/>
                     <constraint firstItem="VQM-9X-nhG" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="OQ5-t4-y20"/>

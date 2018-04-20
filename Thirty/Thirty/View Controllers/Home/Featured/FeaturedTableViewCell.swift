@@ -17,6 +17,7 @@ class FeaturedTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = .thPrimaryPurple
+        selectionStyle = .none
         photoImageView.makeCircle()
     }
     

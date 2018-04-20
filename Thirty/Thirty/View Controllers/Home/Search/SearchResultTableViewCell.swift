@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SearchResultsTableViewCellDelegate: class {
-    func addButtonWasTapped(sender: SearchResultTableViewCell)
+    func inviteButtonWasTapped(sender: SearchResultTableViewCell)
 }
 
 class SearchResultTableViewCell: UITableViewCell {
@@ -30,21 +30,6 @@ class SearchResultTableViewCell: UITableViewCell {
         super.awakeFromNib()
         contentView.backgroundColor = .thPrimaryPurple
         selectionStyle = .none
-        addButtonIsHidden = false
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        usernameLabel.adjustsFontSizeToFitWidth = false
-        usernameLabel.numberOfLines = 1
-        usernameLabel.textAlignment = .left
-        usernameLabel.textColor = .white
-        addButtonIsHidden = false
-    }
-    
-    func displayInviteButton() {
-        addButtonIsHidden = false
-        addButton.setTitle("Invite +", for: .normal)
     }
     
     func displayAskForContactPermission() {
@@ -54,8 +39,7 @@ class SearchResultTableViewCell: UITableViewCell {
         usernameLabel.text = "Click here to find your friends already using 30!"
     }
     
-    @IBAction func addButtonTapped(_ sender: Any) {
-        delegate?.addButtonWasTapped(sender: self)
+    @IBAction func inviteButtonTapped() {
+        delegate?.inviteButtonWasTapped(sender: self)
     }
-    
 }

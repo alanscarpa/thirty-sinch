@@ -12,14 +12,14 @@ import AVFoundation
 import Contacts
 import MessageUI
 
-class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate, MFMessageComposeViewControllerDelegate {
+class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, ContactTableViewCellDelegate {
     
     var searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
     var searchResults = [User]()
     var isVisible = false
     var loadingView = UIView()
-    let numberOfFriendsNeededToHideAddressBook = 5
+    let numberOfFriendsNeededToHideAddressBook = 15
     private let headerInSectionHeight: CGFloat = 24
     let contactStore = CNContactStore()
     var foundAddressBookContacts = [CNContact]()
@@ -213,16 +213,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         let section = sectionType(indexPath.section)
         switch section {
         case .searching:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SearchResultTableViewCell.nibName, for: indexPath) as! SearchResultTableViewCell
-            if searchResults.count > 0 {
-                let username = searchResults[indexPath.row].username
-                cell.usernameLabel.text = username
-                cell.addButton.isHidden = UserManager.shared.contacts.contains(where: { $0.username == username })
-            } else {
-                cell.usernameLabel.text = "Not yet on 30 ☹️"
-                cell.addButton.isHidden = true
-            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.nibName, for: indexPath) as! ContactTableViewCell
             cell.delegate = self
+            if searchResults.count > 0 {
+                cell.setUpForUser(searchResults[indexPath.row])
+            } else {
+                cell.displayNoResultsLabel()
+            }
             return cell
         case .featured:
             let cell = tableView.dequeueReusableCell(withIdentifier: FeaturedTableViewCell.nibName, for: indexPath) as! FeaturedTableViewCell
@@ -231,6 +228,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             return cell
         case .friends:
             let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.nibName, for: indexPath) as! ContactTableViewCell
+            cell.delegate = self
             if UserManager.shared.hasFriends {
                 cell.setUpForUser(UserManager.shared.contacts[indexPath.row])
             } else {
@@ -246,7 +244,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 let contact = isSearching ? foundAddressBookContacts[indexPath.row] : allAddressBookContacts[indexPath.row]
                 cell.usernameLabel.text = contact.givenName + " " + contact.familyName
                 cell.delegate = self
-                cell.displayInviteButton()
                 return cell
             }
         }
@@ -345,7 +342,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     strongSelf.tableView.reloadData()
                 } else {
                     FirebaseManager.shared.searchForUserWithFullName(query) { [weak self] result in
-                        strongSelf.tableView.reloadData()
                         guard let strongSelf = self else { return }
                         switch result {
                         case .success(let users):
@@ -363,6 +359,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                             let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
                             strongSelf.present(alertVC, animated: true, completion: nil)
                         }
+                        strongSelf.tableView.reloadData()
                     }
                 }
             case .failure(let error):
@@ -373,36 +370,35 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         }
     }
     
-    // MARK: SearchResultTableViewCellDelegate
+    // MARK: - ContactTableViewCellDelegate
     
-    func addButtonWasTapped(sender: SearchResultTableViewCell) {
+    func addButtonWasTapped(sender: ContactTableViewCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
-        let section = sectionType(indexPath.section)
-        switch section {
-        case .friends, .featured:
-        break // no-op
-        case .addressBook:
-            let contact = isSearching ? foundAddressBookContacts[indexPath.row] : allAddressBookContacts[indexPath.row]
-            guard let phoneNumber = contact.phoneNumbers.first?.value.stringValue else { return }
-            if MFMessageComposeViewController.canSendText() {
-                let messageComposeVC = MFMessageComposeViewController()
-                messageComposeVC.body = "hey - download this app real quick.  it's a fun way to have 30 second video chats. https://that30app.com/download"
-                messageComposeVC.recipients = [phoneNumber]
-                messageComposeVC.messageComposeDelegate = self
-                present(messageComposeVC, animated: true, completion: nil)
+        let tappedUser = searchResults[indexPath.row]
+        FirebaseManager.shared.addUserAsFriend(username: tappedUser.username) { [weak self] result in
+            switch result {
+            case .success(_):
+                UserManager.shared.contacts.append(tappedUser)
+                self?.resetTableView()
+            case .failure(let error):
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
+                self?.present(alertVC, animated: true, completion: nil)
             }
-        case .searching:
-            let tappedUser = searchResults[indexPath.row]
-            FirebaseManager.shared.addUserAsFriend(username: tappedUser.username) { [weak self] result in
-                switch result {
-                case .success(_):
-                    UserManager.shared.contacts.append(tappedUser)
-                    self?.resetTableView()
-                case .failure(let error):
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
-                    self?.present(alertVC, animated: true, completion: nil)
-                }
-            }
+        }
+    }
+    
+    // MARK: - SearchResultTableViewCellDelegate
+    
+    func inviteButtonWasTapped(sender: SearchResultTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: sender) else { return }
+        let contact = isSearching ? foundAddressBookContacts[indexPath.row] : allAddressBookContacts[indexPath.row]
+        guard let phoneNumber = contact.phoneNumbers.first?.value.stringValue else { return }
+        if MFMessageComposeViewController.canSendText() {
+            let messageComposeVC = MFMessageComposeViewController()
+            messageComposeVC.body = "hey - download this app real quick.  it's a fun way to have 30 second video chats. https://that30app.com/download"
+            messageComposeVC.recipients = [phoneNumber]
+            messageComposeVC.messageComposeDelegate = self
+            present(messageComposeVC, animated: true, completion: nil)
         }
     }
     

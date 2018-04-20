@@ -37,12 +37,28 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6vc-4q-dpE">
+                        <rect key="frame" x="348" y="15" width="75" height="33"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="75" id="di4-FA-Ox3"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="12"/>
+                        <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                        <state key="normal" title="Add+">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="tappedAddButton" destination="1Ek-a3-P9V" eventType="touchUpInside" id="0Sj-wh-Vwa"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="6vc-4q-dpE" secondAttribute="trailing" constant="16" id="3nn-OX-rZr"/>
                     <constraint firstItem="4Vn-uH-Pk1" firstAttribute="centerY" secondItem="Frm-er-yDs" secondAttribute="centerY" id="8VO-QL-1t1"/>
                     <constraint firstAttribute="trailing" secondItem="4Vn-uH-Pk1" secondAttribute="trailing" constant="16" id="9D1-it-8qO"/>
                     <constraint firstItem="VoX-EP-bZr" firstAttribute="top" secondItem="Frm-er-yDs" secondAttribute="top" constant="8" id="AC2-hX-OW6"/>
+                    <constraint firstItem="6vc-4q-dpE" firstAttribute="centerY" secondItem="Frm-er-yDs" secondAttribute="centerY" id="BeW-kP-KaW"/>
                     <constraint firstItem="4Vn-uH-Pk1" firstAttribute="leading" secondItem="Frm-er-yDs" secondAttribute="leading" constant="16" id="UbQ-J7-QZH"/>
                     <constraint firstItem="4Vn-uH-Pk1" firstAttribute="centerY" secondItem="Frm-er-yDs" secondAttribute="centerY" id="VtN-6J-1S3"/>
                     <constraint firstAttribute="leadingMargin" secondItem="VoX-EP-bZr" secondAttribute="leading" id="Wak-bN-pYk"/>
@@ -52,6 +68,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="addButton" destination="6vc-4q-dpE" id="9kx-Sk-B9e"/>
                 <outlet property="fullNameLabel" destination="IyR-pd-zsa" id="VrL-5c-1VW"/>
                 <outlet property="noFriendsLabel" destination="4Vn-uH-Pk1" id="KEp-l0-YHX"/>
                 <outlet property="usernameLabel" destination="VoX-EP-bZr" id="qe1-fV-PVk"/>
