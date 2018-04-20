@@ -161,7 +161,7 @@ class FirebaseManager {
                                                        "device-token": user.deviceToken,
                                                        "first-name": user.firstName,
                                                        "last-name": user.lastName,
-                                                       "full-name": user.firstName + " " +  user.lastName], withCompletionBlock: { (error, ref) in
+                                                       "full-name": user.firstName.lowercased() + " " +  user.lastName.lowercased()], withCompletionBlock: { (error, ref) in
                                                         if let error = error {
                                                             completion(.failure(error))
                                                         } else {
@@ -235,18 +235,23 @@ class FirebaseManager {
         }
     }
     
-    func searchForUserWithFullName(_ fullName: String, completion: @escaping (Result<User?>) -> Void) {
+    func searchForUserWithFullName(_ fullName: String, completion: @escaping (Result<[User]?>) -> Void) {
         usersRef.queryOrdered(byChild: "full-name").queryEqual(toValue: fullName).observeSingleEvent(of: .value, with: { snapshot in
-            print(snapshot.value)
-            if let value = snapshot.value as? NSDictionary {
-                let user = User(username: value["display-name"] as? String ?? "",
-                                email: value["email"] as? String ?? "",
-                                phoneNumber: value["phone-number"] as? String ?? "",
-                                password: "",
-                                deviceToken: value["device-token"] as? String ?? "",
-                                firstName: value["first-name"] as? String ?? "",
-                                lastName: value["last-name"] as? String ?? "")
-                completion(.success(user))
+            if let foundUsers = snapshot.value as? [String: Any] {
+                var users = [User]()
+                let usernames = foundUsers.keys
+                usernames.forEach { username in
+                    guard let foundUser = foundUsers[username] as? [String: Any] else { return }
+                    let user = User(username: foundUser["display-name"] as? String ?? "",
+                                    email: foundUser["email"] as? String ?? "",
+                                    phoneNumber: foundUser["phone-number"] as? String ?? "",
+                                    password: "",
+                                    deviceToken: foundUser["device-token"] as? String ?? "",
+                                    firstName: foundUser["first-name"] as? String ?? "",
+                                    lastName: foundUser["last-name"] as? String ?? "")
+                    users.append(user)
+                }
+                completion(.success(users))
             } else {
                 completion(.success(nil))
             }

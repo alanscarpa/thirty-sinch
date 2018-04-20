@@ -334,6 +334,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func searchForContactWithString(_ query: String) {
         isSearching = true
+        searchResults = []
         guard query != UserManager.shared.currentUserUsername else {
             tableView.reloadData()
             return
@@ -341,46 +342,43 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.username == query }).first {
             searchResults = [alreadyFriendedUser]
             tableView.reloadData()
+            return
         } else if let alreadyFriendedUser = UserManager.shared.contacts.filter({ $0.fullName == query }).first {
-            searchResults = [alreadyFriendedUser]
+            searchResults.append(alreadyFriendedUser)
             tableView.reloadData()
-        } else {
-            // TODO: Search for username/phone number/full name
-            FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
-                guard let strongSelf = self else { return }
-                switch result {
-                case .success(let user):
-                    // TODO: Dont populate if user is currentUsername
-                    if let user = user {
-                        strongSelf.searchResults = [user]
-                    } else {
-                        FirebaseManager.shared.searchForUserWithFullName(query) { [weak self] result in
-                            guard let strongSelf = self else { return }
-                            switch result {
-                            case .success(let user):
-                                // TODO: Dont populate if user is currentUsername
-                                if let user = user {
-                                    strongSelf.searchResults = [user]
-                                } else {
-                                    // TODO: Show "no user" cell
-                                    strongSelf.searchResults = []
-                                    do {
-                                        strongSelf.foundAddressBookContacts = try strongSelf.contactsFromAddressBook(query)
-                                    } catch {
-                                        print(error.localizedDescription)
-                                    }
-                                }
-                                strongSelf.tableView.reloadData()
-                            case .failure(let error):
-                                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
-                                strongSelf.present(alertVC, animated: true, completion: nil)
+        }
+        FirebaseManager.shared.searchForUserWithUsername(query) { [weak self] result in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .success(let user):
+                if let user = user {
+                    if user.username != UserManager.shared.currentUserUsername {
+                        strongSelf.searchResults.append(user)
+                    }
+                    strongSelf.tableView.reloadData()
+                } else {
+                    FirebaseManager.shared.searchForUserWithFullName(query) { [weak self] result in
+                        guard let strongSelf = self else { return }
+                        switch result {
+                        case .success(let users):
+                            if let users = users, !users.isEmpty {
+                                strongSelf.searchResults.append(contentsOf: users.filter({ $0.username != UserManager.shared.currentUserUsername }))
                             }
+                            do {
+                                strongSelf.foundAddressBookContacts = try strongSelf.contactsFromAddressBook(query)
+                            } catch {
+                                print(error.localizedDescription)
+                            }
+                            strongSelf.tableView.reloadData()
+                        case .failure(let error):
+                            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
+                            strongSelf.present(alertVC, animated: true, completion: nil)
                         }
                     }
-                case .failure(let error):
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
-                    strongSelf.present(alertVC, animated: true, completion: nil)
                 }
+            case .failure(let error):
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Search Failed (FB)", message: error.localizedDescription)
+                strongSelf.present(alertVC, animated: true, completion: nil)
             }
         }
     }
