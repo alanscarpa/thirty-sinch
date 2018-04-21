@@ -101,6 +101,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     }
     
     func setUpTableView() {
+        tableView.keyboardDismissMode = .onDrag
         // This prevents the gray view from being seen when user exposes the bounce area.
         let backgroundView = UIView()
         backgroundView.backgroundColor = .thPrimaryPurple
