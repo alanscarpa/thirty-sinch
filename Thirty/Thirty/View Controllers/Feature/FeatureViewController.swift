@@ -48,7 +48,6 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
     func setUpUI() {
         title = "30 PRESENTS..."
         photoImageView.makeCircle()
-        // TODO: Load uiimageview image from featured user.  Right now, it's a hardcoded Smallpools image.
         titleLabel.text = featuredUser.username.uppercased()
         detailsLabel.text = featuredUser.promoDetails
         addUserButton.setTitle("ADD \(featuredUser.username.uppercased())", for: .normal)
