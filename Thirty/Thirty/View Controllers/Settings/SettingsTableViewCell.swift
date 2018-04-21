@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SettingsTableViewCellDelegte: class {
-    func didTapLogoutButton()
+    func didTapSettingButton(_ setting: Setting)
 }
 
 class SettingsTableViewCell: UITableViewCell {
@@ -56,6 +56,12 @@ class SettingsTableViewCell: UITableViewCell {
         case .logout:
             genericButton.setTitle("Log Out", for: .normal)
             showGenericButton()
+        case .termsOfService:
+            genericButton.setTitle("Terms", for: .normal)
+            showGenericButton()
+        case .privacyPolicy:
+            genericButton.setTitle("Privacy Policy", for: .normal)
+            showGenericButton()
         }
     }
     
@@ -68,8 +74,7 @@ class SettingsTableViewCell: UITableViewCell {
     // MARK: - Actions
     
     @IBAction func tappedGenericButton() {
-        if setting == .logout {
-            delegate?.didTapLogoutButton()
-        }
+        guard let setting = setting else { return }
+        delegate?.didTapSettingButton(setting)
     }
 }

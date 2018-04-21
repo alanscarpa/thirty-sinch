@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import SafariServices
 
 enum Setting {
     case username
     case firstName
     case lastName
     case phoneNumber
+    case termsOfService
+    case privacyPolicy
     case logout
 }
 
@@ -22,6 +25,8 @@ class SettingsTableViewController: UITableViewController, SettingsTableViewCellD
                                .firstName,
                                .lastName,
                                .phoneNumber,
+                               .termsOfService,
+                               .privacyPolicy,
                                .logout]
     
     override func viewDidLoad() {
@@ -50,19 +55,33 @@ class SettingsTableViewController: UITableViewController, SettingsTableViewCellD
     
     // MARK: - SettingsTableViewCellDelegate
     
-    func didTapLogoutButton() {
-        THSpinner.showSpinnerOnView(view)
-        FirebaseManager.shared.logOutCurrentUser { result in
-            THSpinner.dismiss()
-            switch result {
-            case .success(_):
-                UserManager.shared.logOut()
-                RootViewController.shared.logOut()
-            case .failure(let error):
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to log out.  Try again.", message: error.localizedDescription)
-                self.present(alertVC, animated: true, completion: nil)
+    func didTapSettingButton(_ setting: Setting) {
+        switch setting {
+        case .username, .firstName, .lastName, .phoneNumber:
+            break // no-op
+        case .termsOfService:
+            guard let url = URL(string: "https://that30app.com/terms-of-service") else { return }
+            let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+            vc.modalPresentationStyle = .overFullScreen
+            present(vc, animated: true)
+        case .privacyPolicy:
+            guard let url = URL(string: "https://that30app.com/privacy-policy") else { return }
+            let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+            vc.modalPresentationStyle = .overFullScreen
+            present(vc, animated: true)
+        case .logout:
+            THSpinner.showSpinnerOnView(view)
+            FirebaseManager.shared.logOutCurrentUser { result in
+                THSpinner.dismiss()
+                switch result {
+                case .success(_):
+                    UserManager.shared.logOut()
+                    RootViewController.shared.logOut()
+                case .failure(let error):
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to log out.  Try again.", message: error.localizedDescription)
+                    self.present(alertVC, animated: true, completion: nil)
+                }
             }
         }
     }
-    
 }
