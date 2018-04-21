@@ -10,8 +10,9 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 import JHSpinner
+import SafariServices
 
-class SignupViewController: UIViewController, UITextFieldDelegate {
+class SignupViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -20,17 +21,25 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumberTextField: UITextField!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
-
     @IBOutlet weak var textFieldsStackView: UIStackView!
-
+    @IBOutlet weak var termsTextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
         textFieldsStackView.arrangedSubviews.forEach { view in
             guard view is UITextField else { return }
-            view.keyboardDistanceFromTextField = 24
+            view.keyboardDistanceFromTextField = 44
             view.addPreviousNextDoneOnKeyboardWithTarget(self, previousAction: #selector(previousTapped(_:)), nextAction: #selector(nextTapped(_:)), doneAction: #selector(doneTapped(_:)))
         }
+        let attributedString = NSMutableAttributedString(string: "By signing up, you agree to our Terms and Privacy Policy.", attributes: [NSAttributedStringKey.font: UIFont(name: "Avenir-Black", size: 9)!])
+        let style = NSMutableParagraphStyle()
+        style.alignment = NSTextAlignment.center
+        attributedString.addAttribute(.paragraphStyle, value: style, range: NSMakeRange(0, attributedString.length))
+        attributedString.addAttribute(.link, value: "https://that30app.com/terms-of-service", range: NSRange(location: 32, length: 5))
+        attributedString.addAttribute(.link, value: "https://that30app.com/privacy-policy", range: NSRange(location: 41, length: 16))
+        termsTextView.attributedText = attributedString
+        termsTextView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,6 +57,15 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             textField.resignFirstResponder()
             signupButtonTapped()
         }
+        return false
+    }
+    
+    // MARK: - UITextViewDelegate
+    
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        let vc = SFSafariViewController(url: URL, entersReaderIfAvailable: true)
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true)
         return false
     }
     
@@ -112,12 +130,16 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc func nextTapped(_ sender: Any) {
-        let textFields = textFieldsStackView.arrangedSubviews
+        var textFields = textFieldsStackView.arrangedSubviews
+        // The last view in our textFields is our terms of service textview.
+        textFields.removeLast()
         guard
             let textField = textFields.first(where: { $0.isFirstResponder }) as? UITextField,
             let offset = textFields.index(of: textField)
             else { return }
         if textFields.indices.contains(offset + 1) {
+            // The last view in our textFields is our terms of service textview.
+            //guard offset != textFields.count - 1 else { textField.resignFirstResponder(); return }
             (textFields[offset + 1] as? UITextField)?.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
