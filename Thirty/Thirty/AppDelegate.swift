@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType, completion: @escaping () -> Void) {
-        // TODO: MAKE SURE NO PUSHES ARE RECEIVED WHEN APP IS LOGGED OUT OR DELETED
+        // TODO: MAKE SURE NO PUSHES ARE RECEIVED WHEN APP IS DELETED
         print(payload.dictionaryPayload)
         if payload.type == .voIP {
             if let roomName = (payload.dictionaryPayload["info"] as? NSDictionary)?["roomname"] as? String,
@@ -147,7 +147,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         center.requestAuthorization(options: options) {
             (granted, error) in
             if !granted {
-                print("Something went wrong")
+                print("Permission not granted")
             }
         }
         center.getNotificationSettings { (settings) in
