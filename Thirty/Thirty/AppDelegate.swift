@@ -31,10 +31,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
-        setUpLocalNotification()
-        
         // TODO: Set up when we have reason for remote notifications
-        //setUpRemoteNotificationsForApplication(application)
+        // setUpRemoteNotificationsForApplication(application)
+        // TODO: Set up when we have a good time to ask for notification permissions
+        // setUpLocalNotification()
         
         let registry = PKPushRegistry(queue: nil)
         registry.delegate = self
@@ -207,7 +207,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if !application.isRegisteredForRemoteNotifications {
             let center = UNUserNotificationCenter.current()
             center.delegate = self
-            center.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (granted, error) in
+            center.requestAuthorization(options: [.sound, .alert], completionHandler: { (granted, error) in
                 if granted {
                     DispatchQueue.main.async {
                         application.registerForRemoteNotifications()
