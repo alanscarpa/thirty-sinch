@@ -30,12 +30,21 @@ class UserManager {
         return contacts.count > 0
     }
     
-    var contacts = [User]()
+    var contacts: [User] {
+        return rawContacts
+    }
+    private var rawContacts = [User]()
+    
     var featuredUsers = [FeaturedUser]()
+    
+    func addUserAsContact(_ contact: User) {
+        rawContacts.append(contact)
+        rawContacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
+    }
     
     func logOut() {
         currentUser = User()
-        contacts = [User]()
+        rawContacts = [User]()
         featuredUsers = [FeaturedUser]()
     }
 }

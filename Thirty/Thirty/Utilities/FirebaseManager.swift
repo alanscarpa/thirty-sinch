@@ -337,11 +337,10 @@ class FirebaseManager {
                     if let doNotDisturb = value["do-not-disturb"] as? Bool {
                         user.doNotDisturb = doNotDisturb
                     }
-                    self?.userManager.contacts.append(user)
+                    self?.userManager.addUserAsContact(user)
                 }
             }
             dispatchGroup.notify(queue: .main) {
-                self?.userManager.contacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
                 completion(.success)
             }
             }, withCancel: cancelBlock)

@@ -74,7 +74,7 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
             guard let strongSelf = self else { return }
             switch result {
             case .success():
-                UserManager.shared.contacts.append(strongSelf.featuredUser)
+                UserManager.shared.addUserAsContact(strongSelf.featuredUser)
                 strongSelf.showShareAlert()
             case .failure(let error):
                 strongSelf.addUserButton.isHidden = false

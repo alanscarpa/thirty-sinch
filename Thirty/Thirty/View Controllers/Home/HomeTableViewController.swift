@@ -385,7 +385,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         FirebaseManager.shared.addUserAsFriend(username: tappedUser.username) { [weak self] result in
             switch result {
             case .success(_):
-                UserManager.shared.contacts.append(tappedUser)
+                UserManager.shared.addUserAsContact(tappedUser)
                 self?.resetTableView()
             case .failure(let error):
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
