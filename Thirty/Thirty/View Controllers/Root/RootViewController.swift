@@ -107,7 +107,9 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     
     func pushCallVCWithCall(_ call: Call) {
         let callVC = CallViewController(call: call)
-        rootNavigationController.pushViewController(callVC, animated: true)
+        setViewControllers([allViewControllers.first!], direction: .forward, animated: false) { complete in
+            self.rootNavigationController.pushViewController(callVC, animated: true)
+        }
     }
     
     func pushFeatureVCWithFeaturedUser(_ featuredUser: FeaturedUser) {

@@ -62,6 +62,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showStatusBarBackground = false
+        RootViewController.shared.showNavigationBar = false
         startLocalPreviewVideo()
         connectToRoom()
     }
@@ -69,7 +70,6 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showCallSpinner()
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {
