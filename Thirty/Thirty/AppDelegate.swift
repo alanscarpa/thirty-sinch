@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registry.delegate = self
         registry.desiredPushTypes = [PKPushType.voIP]
         
-        if self.loggedIn {
+        if loggedIn {
             RootViewController.shared.goToHomeVC()
         } else {
             RootViewController.shared.goToWelcomeVC()

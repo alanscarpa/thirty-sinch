@@ -115,6 +115,11 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         rootNavigationController.pushViewController(featureVC, animated: true)
     }
     
+    func presentLockScreenTipVC() {
+        let lockScreenTipVC = LockScreenTipViewController()
+        rootNavigationController.present(lockScreenTipVC, animated: true, completion: nil)
+    }
+    
     func logOut() {
         goToWelcomeVC()
         setViewControllers([allViewControllers.first!], direction: .reverse, animated: true, completion: nil)

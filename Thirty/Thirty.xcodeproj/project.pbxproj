@@ -58,6 +58,9 @@
 		457A9AC01F57C09F004FC8D1 /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */; };
 		45993F322058D7DB002276E9 /* Explodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45993F312058D7DB002276E9 /* Explodable.swift */; };
 		459E61F12058BF00004C385A /* UIView+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459E61F02058BF00004C385A /* UIView+Thirty.swift */; };
+		45A3489D208CFCD100810EFB /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A3489C208CFCD100810EFB /* UserDefaultsManager.swift */; };
+		45A348A8208D8D2D00810EFB /* LockScreenTipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A348A6208D8D2D00810EFB /* LockScreenTipViewController.swift */; };
+		45A348A9208D8D2D00810EFB /* LockScreenTipViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45A348A7208D8D2D00810EFB /* LockScreenTipViewController.xib */; };
 		45DB90DC205E292000591EC8 /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45DB90DB205E292000591EC8 /* ringtone.mp3 */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
@@ -120,6 +123,9 @@
 		457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		45993F312058D7DB002276E9 /* Explodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Explodable.swift; sourceTree = "<group>"; };
 		459E61F02058BF00004C385A /* UIView+Thirty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Thirty.swift"; sourceTree = "<group>"; };
+		45A3489C208CFCD100810EFB /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		45A348A6208D8D2D00810EFB /* LockScreenTipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenTipViewController.swift; sourceTree = "<group>"; };
+		45A348A7208D8D2D00810EFB /* LockScreenTipViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LockScreenTipViewController.xib; sourceTree = "<group>"; };
 		45DB90DB205E292000591EC8 /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,6 +213,7 @@
 		4500C77D1E4E8EE800AF54AA /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				45A348A5208D8D1300810EFB /* Quick Tips */,
 				45FC90062087C83500FC9422 /* Settings */,
 				450AB134206DBED400BCDBA3 /* Feature */,
 				4500C7841E4E92AF00AF54AA /* Welcome */,
@@ -261,6 +268,7 @@
 				4530A9151F05C59D0039D303 /* THError.swift */,
 				45407F5B20571AB0008B05B3 /* CallManager.swift */,
 				45993F312058D7DB002276E9 /* Explodable.swift */,
+				45A3489C208CFCD100810EFB /* UserDefaultsManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -340,6 +348,15 @@
 				457A9ABE1F57C09F004FC8D1 /* SearchResultTableViewCell.xib */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		45A348A5208D8D1300810EFB /* Quick Tips */ = {
+			isa = PBXGroup;
+			children = (
+				45A348A6208D8D2D00810EFB /* LockScreenTipViewController.swift */,
+				45A348A7208D8D2D00810EFB /* LockScreenTipViewController.xib */,
+			);
+			path = "Quick Tips";
 			sourceTree = "<group>";
 		};
 		45FC90062087C83500FC9422 /* Settings */ = {
@@ -446,6 +463,7 @@
 				4542AAA2206E9800002A7FAD /* chill-ringback-quiet.m4a in Resources */,
 				4530A9081F044CDC0039D303 /* GoogleService-Info.plist in Resources */,
 				4500C7691E4BDD5A00AF54AA /* LaunchScreen.storyboard in Resources */,
+				45A348A9208D8D2D00810EFB /* LockScreenTipViewController.xib in Resources */,
 				4530A90D1F0451FE0039D303 /* SignupViewController.xib in Resources */,
 				454CC70D1E57D4F60087FAAD /* Localizable.strings in Resources */,
 				4500C7661E4BDD5A00AF54AA /* Assets.xcassets in Resources */,
@@ -542,6 +560,7 @@
 				450AB13C206DDDD500BCDBA3 /* UIImage+Thirty.swift in Sources */,
 				4530A90F1F05B7A80039D303 /* FirebaseManager.swift in Sources */,
 				4500C7961E5286E000AF54AA /* CallViewController.swift in Sources */,
+				45A3489D208CFCD100810EFB /* UserDefaultsManager.swift in Sources */,
 				45670EF6208A74880012BAC1 /* ContactTableViewCell.swift in Sources */,
 				4500C7831E4E926500AF54AA /* UIColor+Thirty.swift in Sources */,
 				45407F5E20575A47008B05B3 /* Call.swift in Sources */,
@@ -554,6 +573,7 @@
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
 				4530A9181F05CF9E0039D303 /* JHSpinnerView+Thirty.swift in Sources */,
 				4500C7911E527AFF00AF54AA /* HomeTableViewController.swift in Sources */,
+				45A348A8208D8D2D00810EFB /* LockScreenTipViewController.swift in Sources */,
 				459E61F12058BF00004C385A /* UIView+Thirty.swift in Sources */,
 				457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */,
 				45407F5C20571AB0008B05B3 /* CallManager.swift in Sources */,

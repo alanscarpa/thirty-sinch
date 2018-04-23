@@ -39,6 +39,12 @@ class SearchResultTableViewCell: UITableViewCell {
         usernameLabel.text = "Click here to find your friends already using 30!"
     }
     
+    func setUpForContactName(_ contactName: String) {
+        usernameLabel.text = contactName
+        usernameLabel.textAlignment = .left
+        addButtonIsHidden = false
+    }
+    
     @IBAction func inviteButtonTapped() {
         delegate?.inviteButtonWasTapped(sender: self)
     }

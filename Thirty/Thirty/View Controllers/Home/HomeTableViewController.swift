@@ -59,6 +59,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         setUpSearchController()
         setUpTableView()
         FirebaseManager.shared.updateDeviceToken()
+        if !UserDefaultsManager.shared.hasLaunchedApp {
+            RootViewController.shared.presentLockScreenTipVC()
+            UserDefaultsManager.shared.hasLaunchedApp = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -243,7 +247,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 return cell
             } else {
                 let contact = isSearching ? foundAddressBookContacts[indexPath.row] : allAddressBookContacts[indexPath.row]
-                cell.usernameLabel.text = contact.givenName + " " + contact.familyName
+                cell.setUpForContactName(contact.givenName + " " + contact.familyName)
                 cell.delegate = self
                 return cell
             }
