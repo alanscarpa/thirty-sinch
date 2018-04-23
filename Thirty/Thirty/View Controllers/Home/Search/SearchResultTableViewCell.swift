@@ -30,6 +30,7 @@ class SearchResultTableViewCell: UITableViewCell {
         super.awakeFromNib()
         contentView.backgroundColor = .thPrimaryPurple
         selectionStyle = .none
+        addButton.setButtonStyle()
     }
     
     func displayAskForContactPermission() {

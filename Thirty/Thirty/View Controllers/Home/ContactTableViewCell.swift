@@ -26,6 +26,7 @@ class ContactTableViewCell: UITableViewCell {
         super.awakeFromNib()
         contentView.backgroundColor = .thPrimaryPurple
         selectionStyle = .none
+        addButton.setButtonStyle()
     }
     
     func setUpForUser(_ user: User) {

@@ -12,6 +12,11 @@ extension UIView: Explodable {}
 
 extension UIView {
     
+    func setButtonStyle() {
+        backgroundColor = .thSecondaryPurple
+        layer.cornerRadius = 7
+    }
+    
     func makeCircle() {
         clipsToBounds = true
         layer.cornerRadius = frame.size.width / 2
