@@ -360,7 +360,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             room?.disconnect()
             CallManager.shared.performEndCallAction(uuid: call.uuid)
             FirebaseManager.shared.endCallWithRoomName(call.roomName)
-            RootViewController.shared.popViewController()
+            dismiss(animated: true, completion: nil)
             CallManager.shared.stopRingbackTone()
         }
     }
