@@ -105,6 +105,6 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>
     <resources>
-        <image name="lockScreenTip" width="1125" height="1769"/>
+        <image name="lockScreenTip" width="375" height="589"/>
     </resources>
 </document>

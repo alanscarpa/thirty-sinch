@@ -21,6 +21,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var loadingView = UIView()
     let numberOfFriendsNeededToHideAddressBook = 15
     private let headerInSectionHeight: CGFloat = 24
+    
     let contactStore = CNContactStore()
     var foundAddressBookContacts = [CNContact]()
     lazy var allAddressBookContacts: [CNContact] = {
@@ -492,7 +493,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callerFullName: UserManager.shared.currentUser.fullName, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
                     if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
                         strongSelf.requestCameraAndMicrophonePermissions { granted in
-                            RootViewController.shared.pushCallVCWithCall(call)
+                            if granted {
+                                RootViewController.shared.pushCallVCWithCall(call)
+                            }
                         }
                     } else {
                         RootViewController.shared.pushCallVCWithCall(call)
@@ -526,24 +529,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         tableView.reloadData()
     }
     
+    var permissionCompletion: ((Bool) -> Void)?
+    
     private func requestCameraAndMicrophonePermissions(completion: @escaping (Bool) -> Void) {
-        AVCaptureDevice.requestAccess(for: AVMediaType.video) { granted in
-            if granted {
-                AVAudioSession.sharedInstance().requestRecordPermission({ granted in
-                    DispatchQueue.main.async {
-                        if !granted {
-                            SCLAlertView().showError("Please enable microphone permission", subTitle: "You won't be able to 30 unlesss you enable microphone permissions.  Go to Settings > Privacy > Microphone and please enable.", colorStyle: UIColor.thPrimaryPurple.toHex())
-                        }
-                        completion(granted)
-                    }
-                })
-            } else {
-                DispatchQueue.main.async {
-                    SCLAlertView().showError("Please enable video permission", subTitle: "You won't be able to  30 unlesss you enable video permissions.  Go to Settings > Privacy > Camera and please enable.", colorStyle: UIColor.thPrimaryPurple.toHex())
-                    completion(granted)
-                }
-            }
-        }
+        let permissionsVC = CameraMicrophoneTipViewController()
+        permissionsVC.permissionsCompletion = completion
+        present(permissionsVC, animated: true, completion: nil)
     }
     
     // MARK: - MFMessageComposeViewControllerDelegate
