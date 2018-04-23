@@ -31,11 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
-        // TODO: Set up when we have reason for remote notifications
-        // setUpRemoteNotificationsForApplication(application)
-        // TODO: Set up when we have a good time to ask for notification permissions
-        // setUpLocalNotification()
-        
         let registry = PKPushRegistry(queue: nil)
         registry.delegate = self
         registry.desiredPushTypes = [PKPushType.voIP]
@@ -140,23 +135,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // MARK: - Notifications
     
-    func setUpLocalNotification() {
-        let center = UNUserNotificationCenter.current()
-        center.delegate = self
-        let options: UNAuthorizationOptions = [.alert, .sound]
-        center.requestAuthorization(options: options) {
-            (granted, error) in
-            if !granted {
-                print("Permission not granted")
-            }
-        }
-        center.getNotificationSettings { (settings) in
-            if settings.authorizationStatus != .authorized {
-                // Notifications not allowed
-            }
-        }
-    }
-    
     func sendLocalNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Tap \"Start 30\" button to accept the call!"
@@ -212,8 +190,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     DispatchQueue.main.async {
                         application.registerForRemoteNotifications()
                     }
-                } else {
-                    // TODO: Present screen asking to turn on notifications
                 }
             })
         }

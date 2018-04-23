@@ -9,6 +9,7 @@
 import UIKit
 import MessageUI
 import Kingfisher
+import UserNotifications
 
 class FeatureViewController: UIViewController, MFMessageComposeViewControllerDelegate {
     
@@ -18,6 +19,7 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailsLabel: UILabel!
     @IBOutlet weak var addUserButton: UIButton!
+    @IBOutlet weak var remindMeButton: UIButton!
     
     // MARK: Init
     
@@ -52,7 +54,12 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
         detailsLabel.text = featuredUser.promoDetails
         addUserButton.setTitle("ADD \(featuredUser.username.uppercased())", for: .normal)
         addUserButton.setBackgroundImage(UIImage(color: .darkGray, size: addUserButton.frame.size), for: .disabled)
-        addUserButton.isEnabled = UserManager.shared.contacts.filter({ $0.username == featuredUser.username }).isEmpty
+        addUserButton.isHidden = !UserManager.shared.contacts.filter({ $0.username == featuredUser.username }).isEmpty
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            DispatchQueue.main.async {
+                self.remindMeButton.isHidden = (settings.authorizationStatus == .authorized || settings.authorizationStatus == .denied)
+            }
+        }
         if let urlString = featuredUser.photoUrlString {
             let url = URL(string: urlString)
             photoImageView.kf.setImage(with: url)
@@ -62,17 +69,25 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
     // MARK: - Actions
     
     @IBAction func addUserButtonTapped() {
-        addUserButton.isEnabled = false
+        addUserButton.isHidden = true
         FirebaseManager.shared.addUserAsFriend(username: featuredUser.username) { [weak self] result in
+            guard let strongSelf = self else { return }
             switch result {
             case .success():
-                self?.showShareAlert()
+                UserManager.shared.contacts.append(strongSelf.featuredUser)
+                strongSelf.showShareAlert()
             case .failure(let error):
-                self?.addUserButton.isEnabled = true
+                strongSelf.addUserButton.isHidden = false
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to add user.", message: error.localizedDescription)
-                self?.present(alertVC, animated: true, completion: nil)
+                strongSelf.present(alertVC, animated: true, completion: nil)
             }
         }
+    }
+    
+    @IBAction func remindMeButtonTapped() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.setUpRemoteNotificationsForApplication(UIApplication.shared)
+        remindMeButton.isHidden = true
     }
     
     // MARK: - Helpers

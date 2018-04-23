@@ -70,6 +70,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
         RootViewController.shared.showStatusBarBackground = true
+        tableView.reloadData()
     }
     
     // MARK: - Setup

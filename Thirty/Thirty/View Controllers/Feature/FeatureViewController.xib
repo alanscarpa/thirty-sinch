@@ -15,6 +15,7 @@
                 <outlet property="addUserButton" destination="Ye5-yA-8lL" id="hKS-2G-pmm"/>
                 <outlet property="detailsLabel" destination="EeF-7S-HS8" id="kYX-RP-yJb"/>
                 <outlet property="photoImageView" destination="W1R-sq-2dS" id="X2q-lj-N2z"/>
+                <outlet property="remindMeButton" destination="7cV-14-raq" id="kPT-La-LOP"/>
                 <outlet property="titleLabel" destination="Ibz-fW-lnm" id="NOD-Pr-m44"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -52,6 +53,25 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cV-14-raq">
+                                    <rect key="frame" x="48" y="518" width="280" height="70"/>
+                                    <color key="backgroundColor" red="0.52384120980000004" green="0.2426977713" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="280" id="Axg-AP-a8n"/>
+                                        <constraint firstAttribute="height" constant="70" id="Wn7-fJ-oJx"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="19"/>
+                                    <state key="normal" title="REMIND ME!">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <state key="disabled" title="ADDED">
+                                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="remindMeButtonTapped" destination="-1" eventType="touchUpInside" id="G9L-Zk-t6P"/>
+                                    </connections>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ye5-yA-8lL">
                                     <rect key="frame" x="48" y="518" width="280" height="70"/>
                                     <color key="backgroundColor" red="0.52384120980000004" green="0.2426977713" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -74,10 +94,12 @@
                             </subviews>
                             <color key="backgroundColor" red="0.39607843139999999" green="0.0" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
+                                <constraint firstItem="7cV-14-raq" firstAttribute="centerX" secondItem="Ye5-yA-8lL" secondAttribute="centerX" id="0yi-gM-gya"/>
                                 <constraint firstItem="Ibz-fW-lnm" firstAttribute="leading" secondItem="YV5-a9-CAw" secondAttribute="leading" constant="8" id="1Nv-kf-b0j"/>
                                 <constraint firstItem="Ye5-yA-8lL" firstAttribute="top" secondItem="EeF-7S-HS8" secondAttribute="bottom" constant="45" id="1d7-dB-Jw5"/>
                                 <constraint firstItem="2dY-F2-qU1" firstAttribute="centerX" secondItem="W1R-sq-2dS" secondAttribute="centerX" id="5YO-H9-tFh"/>
                                 <constraint firstItem="W1R-sq-2dS" firstAttribute="top" secondItem="YV5-a9-CAw" secondAttribute="top" constant="20" id="AiJ-hA-xJy"/>
+                                <constraint firstItem="7cV-14-raq" firstAttribute="centerY" secondItem="Ye5-yA-8lL" secondAttribute="centerY" id="CgP-e5-OHi"/>
                                 <constraint firstItem="2dY-F2-qU1" firstAttribute="centerY" secondItem="W1R-sq-2dS" secondAttribute="centerY" id="JjU-6E-r52"/>
                                 <constraint firstAttribute="height" priority="250" constant="647" id="JxX-02-KhB"/>
                                 <constraint firstItem="EeF-7S-HS8" firstAttribute="width" secondItem="Ibz-fW-lnm" secondAttribute="width" constant="-24" id="NYh-3P-sOg"/>
