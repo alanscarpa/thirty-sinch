@@ -20,13 +20,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pse-pu-7mT">
-                        <rect key="frame" x="16" y="8" width="50" height="14"/>
+                        <rect key="frame" x="16" y="12" width="50" height="14"/>
                         <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="10"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y1u-Vo-KHL">
-                        <rect key="frame" x="16" y="19.5" width="96" height="25"/>
+                        <rect key="frame" x="16" y="26" width="96" height="25"/>
                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="18"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -49,11 +49,11 @@
                 <color key="backgroundColor" red="0.396078431372549" green="0.0" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstAttribute="leadingMargin" secondItem="y1u-Vo-KHL" secondAttribute="leading" id="7jw-oe-npP"/>
-                    <constraint firstItem="y1u-Vo-KHL" firstAttribute="centerY" secondItem="NwQ-ki-rol" secondAttribute="centerY" id="80o-Ty-NW8"/>
                     <constraint firstItem="WsE-6c-2e2" firstAttribute="leading" secondItem="y1u-Vo-KHL" secondAttribute="leading" id="8vJ-zY-NuR"/>
-                    <constraint firstItem="WsE-6c-2e2" firstAttribute="centerY" secondItem="y1u-Vo-KHL" secondAttribute="centerY" id="Lzj-bD-k1N"/>
                     <constraint firstItem="pse-pu-7mT" firstAttribute="leading" secondItem="NwQ-ki-rol" secondAttribute="leading" constant="16" id="M8l-yK-qbF"/>
-                    <constraint firstItem="pse-pu-7mT" firstAttribute="top" secondItem="NwQ-ki-rol" secondAttribute="top" constant="8" id="RAR-gs-yuG"/>
+                    <constraint firstItem="pse-pu-7mT" firstAttribute="top" secondItem="NwQ-ki-rol" secondAttribute="top" constant="12" id="RAR-gs-yuG"/>
+                    <constraint firstItem="y1u-Vo-KHL" firstAttribute="top" secondItem="pse-pu-7mT" secondAttribute="bottom" id="TEa-3O-aRT"/>
+                    <constraint firstItem="WsE-6c-2e2" firstAttribute="centerY" secondItem="NwQ-ki-rol" secondAttribute="centerY" id="jYA-Wb-aXX"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
