@@ -11,6 +11,7 @@ import SCLAlertView
 import AVFoundation
 import Contacts
 import MessageUI
+import StoreKit
 
 class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, ContactTableViewCellDelegate {
     
@@ -21,6 +22,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var loadingView = UIView()
     let numberOfFriendsNeededToHideAddressBook = 25
     private let headerInSectionHeight: CGFloat = 24
+    private let minimumCallsRequiredBeforeAskingForReview = 5
     
     let contactStore = CNContactStore()
     var foundAddressBookContacts = [CNContact]()
@@ -44,6 +46,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         RootViewController.shared.showNavigationBar = false
         RootViewController.shared.showStatusBarBackground = true
         tableView.reloadData()
+        print(UserDefaultsManager.shared.callsMade)
+        if #available(iOS 10.3, *) {
+            if UserDefaultsManager.shared.callsMade >= minimumCallsRequiredBeforeAskingForReview {
+                SKStoreReviewController.requestReview()
+            }
+        }
     }
     
     // MARK: - Setup
@@ -485,7 +493,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to call user.", message: error.localizedDescription)
+                    let alertVC = UIAlertController.createSimpleAlert(withTitle: error.alertInfo.title, message: error.alertInfo.description)
                     strongSelf.present(alertVC, animated: true, completion: nil)
                 }
             }

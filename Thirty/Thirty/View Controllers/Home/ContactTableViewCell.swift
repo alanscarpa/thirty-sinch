@@ -30,7 +30,7 @@ class ContactTableViewCell: UITableViewCell {
     }
     
     func setUpForUser(_ user: User) {
-        usernameLabel.text = user.username
+        usernameLabel.text = user.username.lowercased()
         fullNameLabel.text = user.fullName
         noFriendsLabel.isHidden = true
         usernameLabel.isHidden = false

@@ -218,7 +218,7 @@ class FirebaseManager {
     
     func getCurrentDetailsForUser(_ user: User, completion: @escaping (Result<User>) -> Void) {
         let cancelBlock: (Error) -> Void = { completion(.failure($0) )}
-        usersRef.child(user.username).observeSingleEvent(of: .value, with: { snapshot in
+        usersRef.child(user.username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
             guard let user = snapshot.value as? [String : Any] else {
                 completion(.failure(THError.usernameDoesNotExist))
                 return

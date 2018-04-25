@@ -106,6 +106,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     }
     
     func pushCallVCWithCall(_ call: Call) {
+        UserDefaultsManager.shared.callsMade += 1
         let callVC = CallViewController(call: call)
         present(callVC, animated: true, completion: nil)
     }

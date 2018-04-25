@@ -14,6 +14,7 @@ class UserDefaultsManager {
     
     private let hasLaunchedAppKey = "hasLaunchedAppKey"
     private let hasAddedAddressBookFriendsKey = "hasAddedAddressBookFriendsKey"
+    private let callsMadeKey = "callsMadeKey"
     
     var hasLaunchedApp: Bool {
         get {
@@ -28,6 +29,14 @@ class UserDefaultsManager {
             return UserDefaults.standard.bool(forKey: hasAddedAddressBookFriendsKey)
         } set {
             UserDefaults.standard.set(newValue, forKey: hasAddedAddressBookFriendsKey)
+        }
+    }
+    
+    var callsMade: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: callsMadeKey)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: callsMadeKey)
         }
     }
     
