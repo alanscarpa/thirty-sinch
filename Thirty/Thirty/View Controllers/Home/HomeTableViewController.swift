@@ -24,35 +24,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     let contactStore = CNContactStore()
     var foundAddressBookContacts = [CNContact]()
-    
-    lazy var allAddressBookContacts: [CNContact] = {
-        guard CNContactStore.authorizationStatus(for: .contacts) == .authorized else { return [CNContact]() }
- 
-        let contactStore = CNContactStore()
-        let keysToFetch = [CNContactGivenNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactFamilyNameKey]
-        
-        // Get all the containers
-        var allContainers: [CNContainer] = []
-        do {
-            allContainers = try contactStore.containers(matching: nil)
-        } catch {
-            print("Error fetching containers")
-        }
-        
-        var results: [CNContact] = []
-        
-        // Iterate all containers and append their contacts to our results array
-        for container in allContainers {
-            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
-            do {
-                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as [CNKeyDescriptor])
-                results.append(contentsOf: containerResults)
-            } catch {
-                print("Error fetching results for container")
-            }
-        }
-        return results.sorted(by: { $0.givenName < $1.givenName })
-    }()
+    var allAddressBookContacts = [CNContact]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,55 +45,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         RootViewController.shared.showStatusBarBackground = true
         tableView.reloadData()
     }
-    
-    private func addAddressBookContactsAsFriends() {
-        THSpinner.showSpinnerOnView(view)
-        var indexesToRemove = [Int]()
-        let dispatchGroup = DispatchGroup()
-        var enterCount = 0
-        var exitCount = 0
-        for (index, contact) in allAddressBookContacts.enumerated() {
-            contact.phoneNumbers.forEach { phoneNumber in
-                let strippedPhoneNumber = phoneNumber.value.stringValue.digits
-                dispatchGroup.enter()
-                FirebaseManager.shared.usersWithPhoneNumber(strippedPhoneNumber) { result in
-                    defer { dispatchGroup.leave() }
-                    switch result {
-                    case .success(let users):
-                        if let users = users, !users.isEmpty {
-                            users.forEach { user in
-                                guard !UserManager.shared.contacts.contains(where: { $0.username == user.username }) else { return }
-                                dispatchGroup.enter()
-                                enterCount += 1
-                                print("ENTER COUNT: \(enterCount)")
-                                FirebaseManager.shared.addUserAsFriend(username: user.username) { (result) in
-                                    defer {
-                                        exitCount += 1
-                                         print("EXIT COUNT: \(exitCount)")
-                                        dispatchGroup.leave() }
-                                    if result.isSuccess {
-                                        UserManager.shared.addUserAsContact(user)
-                                        indexesToRemove.append(index)
-                                    } else {
-                                        print(result.error?.localizedDescription as Any)
-                                    }
-                                }
-                            }
-                        }
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                    }
-                }
-            }
-        }
-        dispatchGroup.notify(queue: .main) {
-            print("DISPATCH")
-            THSpinner.dismiss()
-            self.allAddressBookContacts.remove(at: indexesToRemove)
-            self.tableView.reloadData()
-        }
-    }
-
     
     // MARK: - Setup
     
@@ -179,10 +102,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     case .success():
                         FirebaseManager.shared.getFeaturedUsers { [weak self] result in
                             self?.tearDownLoaderView()
-                            self?.tableView.reloadData()
                             switch result {
                             case .success():
-                                break // no-op
+                                self?.getAllAddressBookContacts()
+                                self?.tableView.reloadData()
                             case .failure(let error):
                                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
                                 self?.present(alertVC, animated: true, completion: nil)
@@ -313,6 +236,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         case .addressBook:
             if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
                 CNContactStore().requestAccess(for: .contacts) { (granted, _) in
+                    self.getAllAddressBookContacts()
                     guard !UserDefaultsManager.shared.hasAddedAddressBookFriends else { return }
                     DispatchQueue.main.async {
                         self.addAddressBookContactsAsFriends()
@@ -594,6 +518,92 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         controller.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Address Book
+    
+    private func getAllAddressBookContacts() {
+        guard CNContactStore.authorizationStatus(for: .contacts) == .authorized else { return }
+        let contactStore = CNContactStore()
+        let keysToFetch = [CNContactGivenNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey, CNContactFamilyNameKey]
+        var allContainers: [CNContainer] = []
+        do {
+            allContainers = try contactStore.containers(matching: nil)
+        } catch {
+            print("Error fetching containers")
+        }
+        var results: [CNContact] = []
+        for container in allContainers {
+            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+            do {
+                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as [CNKeyDescriptor])
+                results.append(contentsOf: containerResults)
+            } catch {
+                print("Error fetching results for container")
+            }
+        }
+        allAddressBookContacts = results.sorted(by: { $0.givenName < $1.givenName })
+        removeAlreadyAddedFriendsFromAddressBook()
+    }
+    
+    private func removeAlreadyAddedFriendsFromAddressBook() {
+        var indexesToRemove = [Int]()
+        for (index, result) in allAddressBookContacts.enumerated() {
+            for phoneNumber in result.phoneNumbers {
+                if UserManager.shared.contacts.contains(where: { $0.phoneNumber == phoneNumber.value.stringValue.digits }) {
+                    indexesToRemove.append(index)
+                    break
+                }
+            }
+        }
+        allAddressBookContacts.remove(at: indexesToRemove)
+    }
+    
+    private func addAddressBookContactsAsFriends() {
+        var spinnerIsShown = false
+        var indexesToRemove = [Int]()
+        let dispatchGroup = DispatchGroup()
+        // This is so the lazy var will initiate and get all the contacts
+        var addressBookContacts = allAddressBookContacts
+        for (index, contact) in addressBookContacts.enumerated() {
+            contact.phoneNumbers.forEach { phoneNumber in
+                if !spinnerIsShown {
+                    THSpinner.showSpinnerOnView(view)
+                    spinnerIsShown = true
+                }
+                dispatchGroup.enter()
+                let strippedPhoneNumber = phoneNumber.value.stringValue.digits
+                FirebaseManager.shared.usersWithPhoneNumber(strippedPhoneNumber) { result in
+                    defer { dispatchGroup.leave() }
+                    switch result {
+                    case .success(let users):
+                        if let users = users, !users.isEmpty {
+                            users.forEach { user in
+                                guard !UserManager.shared.contacts.contains(where: { $0.username == user.username }) else { return }
+                                guard UserManager.shared.currentUserUsername != user.username else { return }
+                                dispatchGroup.enter()
+                                FirebaseManager.shared.addUserAsFriend(username: user.username) { (result) in
+                                    defer { dispatchGroup.leave() }
+                                    if result.isSuccess {
+                                        UserManager.shared.addUserAsContact(user)
+                                        indexesToRemove.append(index)
+                                    } else {
+                                        print(result.error?.localizedDescription as Any)
+                                    }
+                                }
+                            }
+                        }
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+        dispatchGroup.notify(queue: .main) {
+            THSpinner.dismiss()
+            self.allAddressBookContacts.remove(at: indexesToRemove)
+            self.tableView.reloadData()
+        }
     }
     
     // MARK: - Section Logic
