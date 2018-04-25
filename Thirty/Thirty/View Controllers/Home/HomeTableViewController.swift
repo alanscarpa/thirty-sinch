@@ -19,11 +19,12 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var searchResults = [User]()
     var isVisible = false
     var loadingView = UIView()
-    let numberOfFriendsNeededToHideAddressBook = 15
+    let numberOfFriendsNeededToHideAddressBook = 25
     private let headerInSectionHeight: CGFloat = 24
     
     let contactStore = CNContactStore()
     var foundAddressBookContacts = [CNContact]()
+    
     lazy var allAddressBookContacts: [CNContact] = {
         guard CNContactStore.authorizationStatus(for: .contacts) == .authorized else { return [CNContact]() }
  
@@ -72,6 +73,55 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         RootViewController.shared.showStatusBarBackground = true
         tableView.reloadData()
     }
+    
+    private func addAddressBookContactsAsFriends() {
+        THSpinner.showSpinnerOnView(view)
+        var indexesToRemove = [Int]()
+        let dispatchGroup = DispatchGroup()
+        var enterCount = 0
+        var exitCount = 0
+        for (index, contact) in allAddressBookContacts.enumerated() {
+            contact.phoneNumbers.forEach { phoneNumber in
+                let strippedPhoneNumber = phoneNumber.value.stringValue.digits
+                dispatchGroup.enter()
+                FirebaseManager.shared.usersWithPhoneNumber(strippedPhoneNumber) { result in
+                    defer { dispatchGroup.leave() }
+                    switch result {
+                    case .success(let users):
+                        if let users = users, !users.isEmpty {
+                            users.forEach { user in
+                                guard !UserManager.shared.contacts.contains(where: { $0.username == user.username }) else { return }
+                                dispatchGroup.enter()
+                                enterCount += 1
+                                print("ENTER COUNT: \(enterCount)")
+                                FirebaseManager.shared.addUserAsFriend(username: user.username) { (result) in
+                                    defer {
+                                        exitCount += 1
+                                         print("EXIT COUNT: \(exitCount)")
+                                        dispatchGroup.leave() }
+                                    if result.isSuccess {
+                                        UserManager.shared.addUserAsContact(user)
+                                        indexesToRemove.append(index)
+                                    } else {
+                                        print(result.error?.localizedDescription as Any)
+                                    }
+                                }
+                            }
+                        }
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+        dispatchGroup.notify(queue: .main) {
+            print("DISPATCH")
+            THSpinner.dismiss()
+            self.allAddressBookContacts.remove(at: indexesToRemove)
+            self.tableView.reloadData()
+        }
+    }
+
     
     // MARK: - Setup
     
@@ -263,8 +313,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         case .addressBook:
             if CNContactStore.authorizationStatus(for: .contacts) == .notDetermined {
                 CNContactStore().requestAccess(for: .contacts) { (granted, _) in
+                    guard !UserDefaultsManager.shared.hasAddedAddressBookFriends else { return }
                     DispatchQueue.main.async {
-                        self.tableView.reloadData()
+                        self.addAddressBookContactsAsFriends()
+                        UserDefaultsManager.shared.hasAddedAddressBookFriends = true
                     }
                 }
             }

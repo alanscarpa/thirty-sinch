@@ -95,7 +95,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate, UITextViewDel
             }
             let user = User(username: usernameTextField.text!,
                             email: emailTextField.text!,
-                            phoneNumber: phoneNumberTextField.text!,
+                            phoneNumber: phoneNumberTextField.text!.digits,
                             password: passwordTextField.text!,
                             deviceToken: TokenUtils.deviceToken,
                             firstName: firstNameTextField.text ?? "",
@@ -181,7 +181,7 @@ class SignupViewController: UIViewController, UITextFieldDelegate, UITextViewDel
                 if text.isEmpty {
                     results = (false, "Please enter your phone number, we use it to connect you with friends!", textField)
                 } else if text.count != 10 {
-                    results = (false, "Please enter a valid U.S. phone number (no spaces or special characters).", textField)
+                    results = (false, "Please enter a valid U.S. phone number with no spaces or special characters.", textField)
                 }
             case firstNameTextField:
                 if text.isEmpty {

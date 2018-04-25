@@ -241,12 +241,11 @@ class FirebaseManager {
             completion(.success(mostUpToDateUser))
         }, withCancel: cancelBlock)
     }
-
-
+    
     // MARK: Search Users
 
     func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {
-        databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
+        usersRef.child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
             if let value = snapshot.value as? NSDictionary {
                 let user = User(username: value["display-name"] as? String ?? "",
                                 email: value["email"] as? String ?? "",
@@ -266,6 +265,31 @@ class FirebaseManager {
     
     func searchForUserWithFullName(_ fullName: String, completion: @escaping (Result<[User]?>) -> Void) {
         usersRef.queryOrdered(byChild: "full-name").queryEqual(toValue: fullName.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
+            if let foundUsers = snapshot.value as? [String: Any] {
+                var users = [User]()
+                let usernames = foundUsers.keys
+                usernames.forEach { username in
+                    guard let foundUser = foundUsers[username] as? [String: Any] else { return }
+                    let user = User(username: foundUser["display-name"] as? String ?? "",
+                                    email: foundUser["email"] as? String ?? "",
+                                    phoneNumber: foundUser["phone-number"] as? String ?? "",
+                                    password: "",
+                                    deviceToken: foundUser["device-token"] as? String ?? "",
+                                    firstName: foundUser["first-name"] as? String ?? "",
+                                    lastName: foundUser["last-name"] as? String ?? "")
+                    users.append(user)
+                }
+                completion(.success(users))
+            } else {
+                completion(.success(nil))
+            }
+        }) { (error) in
+            completion(.failure(error))
+        }
+    }
+    
+    func usersWithPhoneNumber(_ phoneNumber: String, completion: @escaping (Result<[User]?>) -> Void) {
+        usersRef.queryOrdered(byChild: "phone-number").queryEqual(toValue: phoneNumber).observeSingleEvent(of: .value, with: { snapshot in
             if let foundUsers = snapshot.value as? [String: Any] {
                 var users = [User]()
                 let usernames = foundUsers.keys

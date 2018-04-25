@@ -63,6 +63,8 @@
 		45A3489D208CFCD100810EFB /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A3489C208CFCD100810EFB /* UserDefaultsManager.swift */; };
 		45A348A8208D8D2D00810EFB /* LockScreenTipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A348A6208D8D2D00810EFB /* LockScreenTipViewController.swift */; };
 		45A348A9208D8D2D00810EFB /* LockScreenTipViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45A348A7208D8D2D00810EFB /* LockScreenTipViewController.xib */; };
+		45BCC8B1208FBB8F0032129C /* String+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BCC8B0208FBB8F0032129C /* String+Thirty.swift */; };
+		45BCC8B3209110DA0032129C /* Array+Thirty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BCC8B2209110DA0032129C /* Array+Thirty.swift */; };
 		45DB90DC205E292000591EC8 /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 45DB90DB205E292000591EC8 /* ringtone.mp3 */; };
 		B7A52E5625C42DFE752B2F33 /* Pods_Thirty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3152D64C737D790F67B24341 /* Pods_Thirty.framework */; };
 /* End PBXBuildFile section */
@@ -130,6 +132,8 @@
 		45A3489C208CFCD100810EFB /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		45A348A6208D8D2D00810EFB /* LockScreenTipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenTipViewController.swift; sourceTree = "<group>"; };
 		45A348A7208D8D2D00810EFB /* LockScreenTipViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LockScreenTipViewController.xib; sourceTree = "<group>"; };
+		45BCC8B0208FBB8F0032129C /* String+Thirty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Thirty.swift"; sourceTree = "<group>"; };
+		45BCC8B2209110DA0032129C /* Array+Thirty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Thirty.swift"; sourceTree = "<group>"; };
 		45DB90DB205E292000591EC8 /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
 		5B482AA5894AC0DB0293AD4F /* Pods-Thirty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thirty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Thirty/Pods-Thirty.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -242,11 +246,13 @@
 			isa = PBXGroup;
 			children = (
 				450AB12B206D7E8A00BCDBA3 /* Error+Thirty.swift */,
+				45BCC8B2209110DA0032129C /* Array+Thirty.swift */,
 				4500C7821E4E926500AF54AA /* UIColor+Thirty.swift */,
 				4500C78C1E5278AB00AF54AA /* UIAlertController+Thirty.swift */,
 				4530A9171F05CF9E0039D303 /* JHSpinnerView+Thirty.swift */,
 				459E61F02058BF00004C385A /* UIView+Thirty.swift */,
 				450AB13B206DDDD500BCDBA3 /* UIImage+Thirty.swift */,
+				45BCC8B0208FBB8F0032129C /* String+Thirty.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -580,6 +586,7 @@
 				4500C7801E4E8F2500AF54AA /* RootViewController.swift in Sources */,
 				4530A9181F05CF9E0039D303 /* JHSpinnerView+Thirty.swift in Sources */,
 				4500C7911E527AFF00AF54AA /* HomeTableViewController.swift in Sources */,
+				45BCC8B3209110DA0032129C /* Array+Thirty.swift in Sources */,
 				45A348A8208D8D2D00810EFB /* LockScreenTipViewController.swift in Sources */,
 				459E61F12058BF00004C385A /* UIView+Thirty.swift in Sources */,
 				457A9ABF1F57C09F004FC8D1 /* SearchResultTableViewCell.swift in Sources */,
@@ -592,6 +599,7 @@
 				45993F322058D7DB002276E9 /* Explodable.swift in Sources */,
 				454CC7081E568F640087FAAD /* UserManager.swift in Sources */,
 				4530A9161F05C59D0039D303 /* THError.swift in Sources */,
+				45BCC8B1208FBB8F0032129C /* String+Thirty.swift in Sources */,
 				450AB12D206D7E8A00BCDBA3 /* Error+Thirty.swift in Sources */,
 				4530A9051F033DDD0039D303 /* LoginViewController.swift in Sources */,
 				458483FA208D987600A7F95C /* CameraMicrophoneTipViewController.swift in Sources */,

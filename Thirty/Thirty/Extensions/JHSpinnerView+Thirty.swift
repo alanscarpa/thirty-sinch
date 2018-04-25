@@ -9,7 +9,7 @@
 import JHSpinner
 
 class THSpinner {
-    static let shared = THSpinner()
+    private static let shared = THSpinner()
     private var jhSpinner: JHSpinnerView?
     
     private init() {}
