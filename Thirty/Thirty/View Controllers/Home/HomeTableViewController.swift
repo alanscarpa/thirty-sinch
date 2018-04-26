@@ -22,7 +22,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var loadingView = UIView()
     let numberOfFriendsNeededToHideAddressBook = 25
     private let headerInSectionHeight: CGFloat = 24
-    private let minimumCallsRequiredBeforeAskingForReview = 5
+    private let minimumCallsRequiredBeforeAskingForReview = 10
     
     let contactStore = CNContactStore()
     var foundAddressBookContacts = [CNContact]()
@@ -46,7 +46,6 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         RootViewController.shared.showNavigationBar = false
         RootViewController.shared.showStatusBarBackground = true
         tableView.reloadData()
-        print(UserDefaultsManager.shared.callsMade)
         if #available(iOS 10.3, *) {
             if UserDefaultsManager.shared.callsMade >= minimumCallsRequiredBeforeAskingForReview {
                 SKStoreReviewController.requestReview()
