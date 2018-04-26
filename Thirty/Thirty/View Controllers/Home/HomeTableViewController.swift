@@ -581,7 +581,11 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                     spinnerIsShown = true
                 }
                 dispatchGroup.enter()
-                let strippedPhoneNumber = phoneNumber.value.stringValue.digits
+                var strippedPhoneNumber = phoneNumber.value.stringValue.digits
+                // Some people have their phone numbers saved with the country code of 1 in the beginning.  This removes that as country code is invalid during account signup.
+                if strippedPhoneNumber.count > 10 {
+                    strippedPhoneNumber = String(strippedPhoneNumber.dropFirst())
+                }
                 FirebaseManager.shared.usersWithPhoneNumber(strippedPhoneNumber) { result in
                     defer { dispatchGroup.leave() }
                     switch result {
