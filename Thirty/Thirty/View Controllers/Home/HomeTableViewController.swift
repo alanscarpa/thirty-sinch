@@ -549,7 +549,8 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                 print("Error fetching results for container")
             }
         }
-        allAddressBookContacts = results.sorted(by: { $0.givenName < $1.givenName })
+        let resultsWithFirstNameAndPhoneNumber = results.filter({ !$0.givenName.isEmpty && !$0.phoneNumbers.isEmpty })
+        allAddressBookContacts = resultsWithFirstNameAndPhoneNumber.sorted(by: { $0.givenName < $1.givenName })
         removeAlreadyAddedFriendsFromAddressBook()
     }
     
