@@ -77,6 +77,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.tintColor = .gray
         searchController.searchBar.backgroundColor  = .thPrimaryPurple
+        searchController.searchBar.placeholder = "Search for username or full name"
         let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as? UITextField
         textFieldInsideSearchBar?.textColor = .white
         searchController.searchResultsUpdater = self
