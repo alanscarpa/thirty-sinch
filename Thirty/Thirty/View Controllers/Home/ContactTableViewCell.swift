@@ -39,7 +39,7 @@ class ContactTableViewCell: UITableViewCell {
     }
 
     func displayNoFriendsLabel() {
-        noFriendsLabel.text = "You haven't added any friends yet.  Search for friends and add to get started!"
+        noFriendsLabel.text = "You haven't added any friends yet.  Search for friends above and add to get started!"
         noFriendsLabel.isHidden = false
         usernameLabel.isHidden = true
         fullNameLabel.isHidden = true
