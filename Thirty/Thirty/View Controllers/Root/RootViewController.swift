@@ -55,13 +55,18 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .thPrimaryPurple
+        setUpPageViewController()
         setUpRootNavigationController()
         setUpAppearances()
-        dataSource = self
-        setViewControllers([allViewControllers.first!], direction: .forward, animated: true, completion: nil)
     }
     
     // MARK: - Setup
+    
+    private func setUpPageViewController() {
+        swipeGestureIsEnabled = false
+        dataSource = self
+        setViewControllers([allViewControllers.first!], direction: .forward, animated: true, completion: nil)
+    }
     
     private func setUpRootNavigationController() {
         rootNavigationController.setNavigationBarHidden(true, animated: false)
@@ -123,7 +128,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     
     func logOut() {
         goToWelcomeVC()
-        setViewControllers([allViewControllers.first!], direction: .forward, animated: true, completion: nil)
+        setViewControllers([allViewControllers.first!], direction: .reverse, animated: true, completion: nil)
     }
     
     // MARK: - UIPageViewControllerDataSource
@@ -147,6 +152,16 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     
     // MARK: - Helpers
     
+    var swipeGestureIsEnabled: Bool = false {
+        didSet {
+            for view in view.subviews {
+                if let subView = view as? UIScrollView {
+                    subView.isScrollEnabled = swipeGestureIsEnabled
+                }
+            }
+        }
+    }
+
     private func indexOfViewController(_ viewController: UIViewController) -> Int? {
         guard let viewControllerIndex = allViewControllers.index(of: viewController) else { return nil }
         return viewControllerIndex

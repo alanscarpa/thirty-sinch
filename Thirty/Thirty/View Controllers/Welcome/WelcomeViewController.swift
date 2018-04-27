@@ -19,6 +19,7 @@ class WelcomeViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
+        RootViewController.shared.swipeGestureIsEnabled = false
     }
     
     // MARK: - Actions

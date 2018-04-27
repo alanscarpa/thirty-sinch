@@ -45,6 +45,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         super.viewWillAppear(animated)
         RootViewController.shared.showNavigationBar = false
         RootViewController.shared.showStatusBarBackground = true
+        RootViewController.shared.swipeGestureIsEnabled = true
         tableView.reloadData()
         if #available(iOS 10.3, *) {
             if UserDefaultsManager.shared.callsMade >= minimumCallsRequiredBeforeAskingForReview {
