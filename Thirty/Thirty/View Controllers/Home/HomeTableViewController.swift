@@ -20,7 +20,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     var searchResults = [User]()
     var isVisible = false
     var loadingView = UIView()
-    let numberOfFriendsNeededToHideAddressBook = 25
+    let numberOfFriendsNeededToHideAddressBook = 10
     private let headerInSectionHeight: CGFloat = 24
     private let minimumCallsRequiredBeforeAskingForReview = 10
     
