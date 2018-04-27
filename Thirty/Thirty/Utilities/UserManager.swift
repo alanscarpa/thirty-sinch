@@ -15,7 +15,7 @@ class UserManager {
     var currentUser = User()
     
     var currentUserUsername: String {
-        return FirebaseManager.shared.currentUser!.displayName!
+        return FirebaseManager.shared.currentUser?.displayName ?? ""
     }
     
     var hasFeaturedUsers: Bool {

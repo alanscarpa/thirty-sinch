@@ -123,7 +123,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     
     func logOut() {
         goToWelcomeVC()
-        setViewControllers([allViewControllers.first!], direction: .reverse, animated: true, completion: nil)
+        setViewControllers([allViewControllers.first!], direction: .forward, animated: true, completion: nil)
     }
     
     // MARK: - UIPageViewControllerDataSource

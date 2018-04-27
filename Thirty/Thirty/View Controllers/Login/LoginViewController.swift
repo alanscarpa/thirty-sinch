@@ -39,7 +39,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 THSpinner.dismiss()
                 switch result {
                 case .success(_):
-                    self?.completeLoginProcess()
+                    RootViewController.shared.goToHomeVC()
                 case .failure(let error):
                     let errorInfo = error.alertInfo
                     let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description, handler: nil)
@@ -50,10 +50,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let alert = UIAlertController.createSimpleAlert(withTitle: "Error", message: "Please enter your username and password.")
             present(alert, animated: true, completion: nil)
         }
-    }
-    
-    func completeLoginProcess() {
-        RootViewController.shared.goToHomeVC()
     }
     
     // MARK: - UITextFieldDelegate
