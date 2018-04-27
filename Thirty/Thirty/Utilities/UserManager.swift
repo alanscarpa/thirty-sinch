@@ -37,6 +37,10 @@ class UserManager {
     
     var featuredUsers = [FeaturedUser]()
     
+    var currentUserIsAFeaturedUser: Bool {
+        return UserManager.shared.featuredUsers.contains(where: { $0.username == UserManager.shared.currentUserUsername })
+    }
+    
     func addUserAsContact(_ contact: User) {
         rawContacts.append(contact)
         rawContacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })

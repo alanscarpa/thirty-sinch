@@ -437,6 +437,12 @@ class FirebaseManager {
             completion(.failure(error))
         }
     }
+    
+    // MARK: Settings
+    
+    func setDoNotDisturb(_ doNotDisturb: Bool) {
+        currentUserRef?.updateChildValues(["do-not-disturb": doNotDisturb])
+    }
 
     // MARK: Calls
 

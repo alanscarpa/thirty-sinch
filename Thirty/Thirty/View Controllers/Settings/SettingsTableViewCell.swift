@@ -53,14 +53,18 @@ class SettingsTableViewCell: UITableViewCell {
         case .phoneNumber:
             titleLabel.text = "Phone Number"
             detailLabel.text = currentUser.phoneNumber
-        case .logout:
-            genericButton.setTitle("Log Out", for: .normal)
-            showGenericButton()
         case .termsOfService:
             genericButton.setTitle("Terms", for: .normal)
             showGenericButton()
         case .privacyPolicy:
             genericButton.setTitle("Privacy Policy", for: .normal)
+            showGenericButton()
+        case .doNotDisturb:
+            let doNotDisturb = UserManager.shared.currentUser.doNotDisturb ? "ON" : "OFF"
+            genericButton.setTitle("Do Not Disturb: \(doNotDisturb)", for: .normal)
+            showGenericButton()
+        case .logout:
+            genericButton.setTitle("Log Out", for: .normal)
             showGenericButton()
         }
     }

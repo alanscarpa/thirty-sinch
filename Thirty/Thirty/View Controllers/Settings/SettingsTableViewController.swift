@@ -16,12 +16,13 @@ enum Setting {
     case phoneNumber
     case termsOfService
     case privacyPolicy
+    case doNotDisturb
     case logout
 }
 
 class SettingsTableViewController: UITableViewController, SettingsTableViewCellDelegte {
     
-    let settings: [Setting] = [.username,
+    var settings: [Setting] = [.username,
                                .firstName,
                                .lastName,
                                .phoneNumber,
@@ -38,6 +39,11 @@ class SettingsTableViewController: UITableViewController, SettingsTableViewCellD
         tableView.register(UINib(nibName: SettingsTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SettingsTableViewCell.nibName)
         tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
+        
+        // If the current user is a featured user
+        if UserManager.shared.currentUserIsAFeaturedUser {
+            settings.insert(Setting.doNotDisturb, at: settings.count - 2)
+        }
     }
 
     // MARK: - Table view data source
@@ -69,6 +75,11 @@ class SettingsTableViewController: UITableViewController, SettingsTableViewCellD
             let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
             vc.modalPresentationStyle = .overFullScreen
             present(vc, animated: true)
+        case .doNotDisturb:
+            let newDNDStatus = !UserManager.shared.currentUser.doNotDisturb
+            UserManager.shared.currentUser.doNotDisturb = newDNDStatus
+            FirebaseManager.shared.setDoNotDisturb(newDNDStatus)
+            tableView.reloadData()
         case .logout:
             FirebaseManager.shared.logOutCurrentUser { result in
                 switch result {
