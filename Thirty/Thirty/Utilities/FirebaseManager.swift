@@ -32,11 +32,14 @@ class FirebaseManager {
     private let friendsRef = Database.database().reference().child("friends")
     private let activeCallsRef = Database.database().reference().child("active-calls")
 
-    var currentUsersFriendsRef: DatabaseReference {
+    var currentUsersFriendsRef: DatabaseReference? {
+        // References will crash if username is blank ""
+        guard !userManager.currentUserUsername.lowercased().isEmpty else { return nil }
         return friendsRef.child(userManager.currentUserUsername.lowercased())
     }
     
-    var currentUserRef: DatabaseReference {
+    var currentUserRef: DatabaseReference? {
+        guard !userManager.currentUserUsername.lowercased().isEmpty else { return nil }
         return usersRef.child(userManager.currentUserUsername.lowercased())
     }
 
@@ -112,9 +115,9 @@ class FirebaseManager {
     }
     
     func logOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
-        currentUserRef.observeSingleEvent(of: .value) { snapshot in
+        currentUserRef?.observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
-                self.currentUserRef.updateChildValues(["device-token":""]) { (error, ref) in
+                self.currentUserRef?.updateChildValues(["device-token":""]) { (error, ref) in
                     self.authSignOut()
                     if let error = error {
                         completion(.failure(error))
@@ -196,7 +199,7 @@ class FirebaseManager {
     
     func getCurrentUserDetails(completion: @escaping (Result<Void>) -> Void) {
         let cancelBlock: (Error) -> Void = { completion(.failure($0) )}
-        currentUserRef.observeSingleEvent(of: .value, with: { snapshot in
+        currentUserRef?.observeSingleEvent(of: .value, with: { snapshot in
             guard let user = snapshot.value as? [String : Any] else {
                 completion(.failure(THError.noCurrentUser))
                 return
@@ -344,7 +347,7 @@ class FirebaseManager {
 
     func getContacts(completion: @escaping (Result<Void>) -> Void) {
         let cancelBlock: (Error) -> Void = { completion(.failure($0) )}
-        currentUsersFriendsRef.observeSingleEvent(of: .value, with: { [weak self] snapshot in
+        currentUsersFriendsRef?.observeSingleEvent(of: .value, with: { [weak self] snapshot in
             guard let friends = snapshot.value as? [String : Any] else {
                 completion(.success) // user doesn't have any friends :(
                 return
@@ -415,9 +418,9 @@ class FirebaseManager {
     // MARK: Device Token
 
     func updateDeviceToken() {
-        currentUserRef.observeSingleEvent(of: .value) { snapshot in
+        currentUserRef?.observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
-                self.currentUserRef.updateChildValues(["device-token": TokenUtils.deviceToken])
+                self.currentUserRef?.updateChildValues(["device-token": TokenUtils.deviceToken])
             }
         }
     }
