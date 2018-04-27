@@ -70,16 +70,13 @@ class SettingsTableViewController: UITableViewController, SettingsTableViewCellD
             vc.modalPresentationStyle = .overFullScreen
             present(vc, animated: true)
         case .logout:
-            THSpinner.showSpinnerOnView(view)
             FirebaseManager.shared.logOutCurrentUser { result in
-                THSpinner.dismiss()
                 switch result {
                 case .success(_):
                     UserManager.shared.logOut()
                     RootViewController.shared.logOut()
                 case .failure(let error):
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to log out.  Try again.", message: error.localizedDescription)
-                    self.present(alertVC, animated: true, completion: nil)
+                    print(error.localizedDescription)
                 }
             }
         }

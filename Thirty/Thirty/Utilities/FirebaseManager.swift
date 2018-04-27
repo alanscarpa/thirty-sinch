@@ -112,18 +112,25 @@ class FirebaseManager {
     }
     
     func logOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
-        currentUserRef.updateChildValues(["device-token":""]) { (error, ref) in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                do {
-                    try Auth.auth().signOut()
-                    completion(.success)
-                } catch {
-                    completion(.failure(error))
+        currentUserRef.observe(.value) { snapshot in
+            if snapshot.exists() {
+                self.currentUserRef.updateChildValues(["device-token":""]) { (error, ref) in
+                    self.authSignOut()
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success)
+                    }
                 }
+            } else {
+                self.authSignOut()
+                completion(.success)
             }
         }
+    }
+    
+    func authSignOut() {
+        try? Auth.auth().signOut()
     }
 
     // MARK: Create User
@@ -408,7 +415,11 @@ class FirebaseManager {
     // MARK: Device Token
 
     func updateDeviceToken() {
-        databaseRef.child("users").child(UserManager.shared.currentUserUsername.lowercased()).updateChildValues(["device-token": TokenUtils.deviceToken])
+        currentUserRef.observe(.value) { snapshot in
+            if snapshot.exists() {
+                self.currentUserRef.updateChildValues(["device-token": TokenUtils.deviceToken])
+            }
+        }
     }
     
     func getDeviceTokenForUsername(_ username: String, completion: @escaping (Result<String>) -> Void) {

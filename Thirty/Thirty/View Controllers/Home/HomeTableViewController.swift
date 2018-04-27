@@ -31,10 +31,10 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpLoaderView()
+        FirebaseManager.shared.updateDeviceToken()
         getData()
         setUpSearchController()
         setUpTableView()
-        FirebaseManager.shared.updateDeviceToken()
         if !UserDefaultsManager.shared.hasLaunchedApp {
             RootViewController.shared.presentLockScreenTipVC()
             UserDefaultsManager.shared.hasLaunchedApp = true
@@ -115,19 +115,23 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                                 self?.getAllAddressBookContacts()
                                 self?.tableView.reloadData()
                             case .failure(let error):
-                                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users.", message: error.localizedDescription)
+                                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get featured users", message: error.alertInfo.description)
                                 self?.present(alertVC, animated: true, completion: nil)
                             }
                         }
                     case .failure(let error):
                         self?.tearDownLoaderView()
-                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts.", message: error.localizedDescription)
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get contacts", message: error.alertInfo.description)
                         self?.present(alertVC, animated: true, completion: nil)
                     }
                 }
             case .failure(let error):
                 self?.tearDownLoaderView()
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to get current user.", message: error.localizedDescription)
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: error.alertInfo.title, message: error.alertInfo.description, handler: { (action) in
+                    FirebaseManager.shared.authSignOut()
+                    UserManager.shared.logOut()
+                    RootViewController.shared.logOut()
+                })
                 self?.present(alertVC, animated: true, completion: nil)
             }
         }
