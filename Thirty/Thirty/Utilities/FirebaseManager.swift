@@ -112,7 +112,7 @@ class FirebaseManager {
     }
     
     func logOutCurrentUser(completion: @escaping (Result<Void>) -> Void) {
-        currentUserRef.observe(.value) { snapshot in
+        currentUserRef.observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
                 self.currentUserRef.updateChildValues(["device-token":""]) { (error, ref) in
                     self.authSignOut()
@@ -415,7 +415,7 @@ class FirebaseManager {
     // MARK: Device Token
 
     func updateDeviceToken() {
-        currentUserRef.observe(.value) { snapshot in
+        currentUserRef.observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
                 self.currentUserRef.updateChildValues(["device-token": TokenUtils.deviceToken])
             }
