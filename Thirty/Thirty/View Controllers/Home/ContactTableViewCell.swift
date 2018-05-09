@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import SwipeCellKit
 
 protocol ContactTableViewCellDelegate: class {
     func addButtonWasTapped(sender: ContactTableViewCell)
 }
 
-class ContactTableViewCell: UITableViewCell {
+class ContactTableViewCell: SwipeTableViewCell {
     static let nibName = "ContactTableViewCell"
 
     @IBOutlet weak var usernameLabel: UILabel!
@@ -20,7 +21,7 @@ class ContactTableViewCell: UITableViewCell {
     @IBOutlet weak var noFriendsLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
     
-    weak var delegate: ContactTableViewCellDelegate?
+    weak var contactDelegate: ContactTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -55,6 +56,6 @@ class ContactTableViewCell: UITableViewCell {
     }
     
     @IBAction func tappedAddButton() {
-        delegate?.addButtonWasTapped(sender: self)
+        contactDelegate?.addButtonWasTapped(sender: self)
     }
 }

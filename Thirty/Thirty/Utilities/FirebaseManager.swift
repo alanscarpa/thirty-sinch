@@ -379,6 +379,27 @@ class FirebaseManager {
             }
             }, withCancel: cancelBlock)
     }
+    
+    // MARK: Remove friend
+    
+    func removeUserAsFriend(username: String, completion: @escaping (Result<Void>) -> Void) {
+        friendsRef
+            .child(UserManager.shared.currentUserUsername.lowercased()).child(username).removeValue { [weak self] (error, ref) in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    self?.friendsRef
+                        .child(username.lowercased())
+                        .child(UserManager.shared.currentUserUsername.lowercased()).removeValue { (error, ref) in
+                        if let error = error {
+                            completion(.failure(error))
+                        } else {
+                            completion(.success)
+                        }
+                    }
+                }
+        }
+    }
 
     // MARK: Featured Users
     

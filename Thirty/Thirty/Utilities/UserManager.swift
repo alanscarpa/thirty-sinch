@@ -46,6 +46,10 @@ class UserManager {
         rawContacts.sort(by: { $0.username.lowercased() < $1.username.lowercased() })
     }
     
+    func removeContactAtIndex(_ index: Int) {
+        rawContacts.remove(at: [index])
+    }
+    
     func logOut() {
         currentUser = User()
         rawContacts = [User]()

@@ -15,5 +15,6 @@ target 'Thirty' do
   pod 'Alamofire', '~> 4.7'
   pod 'SCLAlertView'
   pod 'Kingfisher', '~> 4.0'
-  
+  pod 'SwipeCellKit'
+
 end

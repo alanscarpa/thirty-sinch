@@ -12,8 +12,9 @@ import AVFoundation
 import Contacts
 import MessageUI
 import StoreKit
+import SwipeCellKit
 
-class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, ContactTableViewCellDelegate {
+class HomeTableViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate, SearchResultsTableViewCellDelegate, MFMessageComposeViewControllerDelegate, ContactTableViewCellDelegate, SwipeTableViewCellDelegate {
     
     var searchController = UISearchController(searchResultsController: nil)
     var isSearching = false
@@ -207,7 +208,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         switch section {
         case .searching:
             let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.nibName, for: indexPath) as! ContactTableViewCell
-            cell.delegate = self
+            cell.contactDelegate = self
             if searchResults.count > 0 {
                 cell.setUpForUser(searchResults[indexPath.row])
             } else {
@@ -221,6 +222,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             return cell
         case .friends:
             let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.nibName, for: indexPath) as! ContactTableViewCell
+            cell.contactDelegate = self
             cell.delegate = self
             if UserManager.shared.hasFriends {
                 cell.setUpForUser(UserManager.shared.contacts[indexPath.row])
@@ -278,6 +280,53 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         } else {
             return 64
         }
+    }
+    
+    // MARK: - SwipeTableViewCellDelegate
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        guard sectionType(indexPath.section) == .friends else { return nil }
+        let username = UserManager.shared.contacts[indexPath.row].username
+        let blockUserAction = SwipeAction(style: .destructive, title: "Block") { action, indexPath in
+            let alertVC = UIAlertController(title: "Block \(username)? ", message: "Are you sure you want to block \(username)?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let confirmAction = UIAlertAction(title: "Block", style: .destructive) { (action) in
+                print("blocked")
+            }
+            alertVC.addAction(cancelAction)
+            alertVC.addAction(confirmAction)
+            self.present(alertVC, animated: true, completion: nil)
+        }
+        blockUserAction.backgroundColor = .red
+        blockUserAction.font =  UIFont(name: "Avenir-Black", size: 12)
+        
+        let removeFriendAction = SwipeAction(style: .destructive, title: "Unfriend") { action, indexPath in
+            let alertVC = UIAlertController(title: "Unfriend \(username)? ", message: "Are you sure you want to unfriend \(username)?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let confirmAction = UIAlertAction(title: "Unfriend", style: .destructive) { (action) in
+                FirebaseManager.shared.removeUserAsFriend(username: username) { [weak self] (result) in
+                    switch result {
+                    case .success():
+                        UserManager.shared.removeContactAtIndex(indexPath.row)
+                        self?.tableView.beginUpdates()
+                        self?.tableView.deleteRows(at: [indexPath], with: .fade)
+                        self?.tableView.endUpdates()
+                    case .failure(let error):
+                        let errorInfo = error.alertInfo
+                        let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description, handler: nil)
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+            alertVC.addAction(cancelAction)
+            alertVC.addAction(confirmAction)
+            self.present(alertVC, animated: true, completion: nil)
+        }
+        removeFriendAction.backgroundColor = .orange
+        removeFriendAction.font = UIFont(name: "Avenir-Black", size: 12)
+        
+        return [blockUserAction, removeFriendAction]
     }
     
     // MARK: - UISearchResultsUpdating
