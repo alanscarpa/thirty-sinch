@@ -47,7 +47,7 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - SCLAlertView (0.8)
-  - TwilioVideo (2.0.0-beta3)
+  - TwilioVideo (2.0.1)
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
@@ -58,7 +58,7 @@ DEPENDENCIES:
   - JHSpinner
   - Kingfisher (~> 4.0)
   - SCLAlertView
-  - TwilioVideo (= 2.0.0-beta3)
+  - TwilioVideo
 
 SPEC CHECKSUMS:
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
@@ -76,8 +76,8 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
-  TwilioVideo: 08cada2c04a7a908655fd80a1423a9c762344625
+  TwilioVideo: d9e0e61748b574f4adb6d540db469b3a93e77e43
 
-PODFILE CHECKSUM: 1624824a04ee1a65ca9a8b7e38302fc4a15db120
+PODFILE CHECKSUM: 4ee6823735fb50ae54bf4880774638671c441a1c
 
 COCOAPODS: 1.4.0

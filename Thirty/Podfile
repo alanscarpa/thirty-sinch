@@ -11,7 +11,7 @@ target 'Thirty' do
   pod 'Firebase/Auth', '~> 4.0'
   pod 'Firebase/Database', '~> 4.0'
   pod 'JHSpinner'
-  pod 'TwilioVideo', '2.0.0-beta3'
+  pod 'TwilioVideo'
   pod 'Alamofire', '~> 4.7'
   pod 'SCLAlertView'
   pod 'Kingfisher', '~> 4.0'

@@ -105,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let startVideoCallIntent = interaction.intent as? INStartVideoCallIntent {
             personHandle = startVideoCallIntent.contacts?[0].personHandle
         }
-        if let personHandle = personHandle?.value {
+        if let personHandle = personHandle?.value?.components(separatedBy: " ").first {
             let callDirection: CallDirection = CallManager.shared.call == nil ? .outgoing : .incoming
             if callDirection == .outgoing {
                 if loggedIn  {

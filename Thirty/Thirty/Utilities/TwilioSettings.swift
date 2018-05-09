@@ -12,16 +12,16 @@ import TwilioVideo
 class TwilioSettings {
     static let shared = TwilioSettings()
     private init() { }
-
-    let supportedAudioCodecs = [TVIAudioCodec.ISAC,
-                                TVIAudioCodec.opus,
-                                TVIAudioCodec.PCMA,
-                                TVIAudioCodec.PCMU,
-                                TVIAudioCodec.G722]
     
-    let supportedVideoCodecs = [TVIVideoCodec.VP8,
-                                TVIVideoCodec.H264,
-                                TVIVideoCodec.VP9]
+    let supportedAudioCodecs: [TVIAudioCodec] = [TVIG722Codec.init(),
+                                TVIIsacCodec.init(),
+                                TVIOpusCodec.init(),
+                                TVIPcmaCodec.init(),
+                                TVIPcmuCodec.init()]
+    
+    let supportedVideoCodecs: [TVIVideoCodec] = [TVIH264Codec.init(),
+                                TVIVp8Codec.init(),
+                                TVIVp9Codec.init()]
     
     var audioCodec: TVIAudioCodec?
     var videoCodec: TVIVideoCodec?
