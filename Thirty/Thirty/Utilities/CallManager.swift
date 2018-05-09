@@ -66,6 +66,7 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func playAnsweredTone() {
+        stopRingbackTone()
         let path = Bundle.main.path(forResource: "answeredChime.wav", ofType: nil)!
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
