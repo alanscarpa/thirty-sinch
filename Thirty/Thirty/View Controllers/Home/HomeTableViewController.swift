@@ -292,7 +292,19 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
             let alertVC = UIAlertController(title: "Block \(username)? ", message: "Are you sure you want to block \(username)?", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             let confirmAction = UIAlertAction(title: "Block", style: .destructive) { (action) in
-                print("blocked")
+                FirebaseManager.shared.blockUser(username: username) { [weak self] (result) in
+                    switch result {
+                    case .success():
+                        UserManager.shared.removeContactAtIndex(indexPath.row)
+                        self?.tableView.beginUpdates()
+                        self?.tableView.deleteRows(at: [indexPath], with: .fade)
+                        self?.tableView.endUpdates()
+                    case .failure(let error):
+                        let errorInfo = error.alertInfo
+                        let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description, handler: nil)
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                }
             }
             alertVC.addAction(cancelAction)
             alertVC.addAction(confirmAction)

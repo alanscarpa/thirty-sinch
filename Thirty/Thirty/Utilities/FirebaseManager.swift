@@ -30,6 +30,7 @@ class FirebaseManager {
     private let databaseRef = Database.database().reference()
     private let usersRef = Database.database().reference().child("users")
     private let friendsRef = Database.database().reference().child("friends")
+    private let blockedUsersRef = Database.database().reference().child("blocked-users")
     private let activeCallsRef = Database.database().reference().child("active-calls")
 
     var currentUsersFriendsRef: DatabaseReference? {
@@ -398,6 +399,22 @@ class FirebaseManager {
                         }
                     }
                 }
+        }
+    }
+    
+    // MARK: Block User
+    
+    func blockUser(username: String, completion: @escaping (Result<Void>) -> Void) {
+        blockedUsersRef
+            .child(UserManager.shared.currentUserUsername.lowercased())
+            .updateChildValues([username.lowercased(): true]) { [weak self] (error, ref) in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    self?.removeUserAsFriend(username: username) { (result) in
+                        completion(result)
+                    }
+            }
         }
     }
 
