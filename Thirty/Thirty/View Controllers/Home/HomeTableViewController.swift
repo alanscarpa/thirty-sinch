@@ -268,7 +268,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         case .searching:
             let user = searchResults[indexPath.row]
             if UserManager.shared.contacts.contains(where: { $0.username == user.username }) {
-                callUser(user)
+                callUser(user, atIndexPath: indexPath)
             }
         case .featured:
             let featuredUser = UserManager.shared.featuredUsers[indexPath.row]
@@ -276,7 +276,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         case .friends:
             guard UserManager.shared.hasFriends else { return }
             let user = UserManager.shared.contacts[indexPath.row]
-            callUser(user)
+            callUser(user, atIndexPath: indexPath)
         }
     }
     
@@ -536,37 +536,64 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     // MARK: - Helpers
     
-    private func callUser(_ user: User) {
-        FirebaseManager.shared.getCurrentDetailsForUser(user) { [weak self] result in
-            guard let strongSelf = self else { return }
-            switch result {
-            case .success(let user):
-                if user.doNotDisturb {
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time 🤷‍♂️", message: "This user has do not disturb mode enabled.  💤  Try again later.")
-                    DispatchQueue.main.async {
-                        strongSelf.present(alertVC, animated: true, completion: nil)
-                    }
-                } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
-                    let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callerFullName: UserManager.shared.currentUser.fullName, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
-                    if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
-                        strongSelf.requestCameraAndMicrophonePermissions { granted in
-                            if granted {
-                                RootViewController.shared.pushCallVCWithCall(call)
-                            }
+    private func callUser(_ user: User, atIndexPath indexPath: IndexPath) {
+        FirebaseManager.shared.userIsBlocked(user) { [weak self] isBlocked in
+            if isBlocked {
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to 30 this user 🤷‍♂️", message: "This user can't be reached.")
+                DispatchQueue.main.async {
+                    self?.present(alertVC, animated: true, completion: nil)
+                }
+                FirebaseManager.shared.removeUserAsFriend(username: user.username) { [weak self] (result) in
+                    switch result {
+                    case .success():
+                        guard let strongSelf = self else { return }
+                        UserManager.shared.removeUserFromContacts(user: user)
+                        if strongSelf.isSearching {
+                            strongSelf.resetTableView()
+                        } else {
+                            strongSelf.tableView.beginUpdates()
+                            strongSelf.tableView.deleteRows(at: [indexPath], with: .fade)
+                            strongSelf.tableView.endUpdates()
                         }
-                    } else {
-                        RootViewController.shared.pushCallVCWithCall(call)
-                    }
-                } else {
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make 30", message: "This user is currently logged out and unable to receive 30s at this time 😞")
-                    DispatchQueue.main.async {
-                        strongSelf.present(alertVC, animated: true, completion: nil)
+                    case .failure(let error):
+                        let errorInfo = error.alertInfo
+                        let alert = UIAlertController.createSimpleAlert(withTitle: errorInfo.title, message: errorInfo.description, handler: nil)
+                        self?.present(alert, animated: true, completion: nil)
                     }
                 }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    let alertVC = UIAlertController.createSimpleAlert(withTitle: error.alertInfo.title, message: error.alertInfo.description)
-                    strongSelf.present(alertVC, animated: true, completion: nil)
+            } else {
+                FirebaseManager.shared.getCurrentDetailsForUser(user) { [weak self] result in
+                    guard let strongSelf = self else { return }
+                    switch result {
+                    case .success(let user):
+                        if user.doNotDisturb {
+                            let alertVC = UIAlertController.createSimpleAlert(withTitle: "User is not accepting 30s at this time 🤷‍♂️", message: "This user has do not disturb mode enabled.  💤  Try again later.")
+                            DispatchQueue.main.async {
+                                strongSelf.present(alertVC, animated: true, completion: nil)
+                            }
+                        } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+                            let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callerFullName: UserManager.shared.currentUser.fullName, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
+                            if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
+                                strongSelf.requestCameraAndMicrophonePermissions { granted in
+                                    if granted {
+                                        RootViewController.shared.pushCallVCWithCall(call)
+                                    }
+                                }
+                            } else {
+                                RootViewController.shared.pushCallVCWithCall(call)
+                            }
+                        } else {
+                            let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to make 30", message: "This user is currently logged out and unable to receive 30s at this time 😞")
+                            DispatchQueue.main.async {
+                                strongSelf.present(alertVC, animated: true, completion: nil)
+                            }
+                        }
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            let alertVC = UIAlertController.createSimpleAlert(withTitle: error.alertInfo.title, message: error.alertInfo.description)
+                            strongSelf.present(alertVC, animated: true, completion: nil)
+                        }
+                    }
                 }
             }
         }

@@ -50,6 +50,10 @@ class UserManager {
         rawContacts.remove(at: [index])
     }
     
+    func removeUserFromContacts(user: User) {
+        rawContacts = rawContacts.filter {$0.username != user.username}
+    }
+    
     func logOut() {
         currentUser = User()
         rawContacts = [User]()

@@ -255,11 +255,16 @@ class FirebaseManager {
     
     // MARK: Blocked Status
     
-//    func getBlockedStatusForUser(_ user: User) -> Bool {
-//        blockedUsersRef.child(user.username).observeSingleEvent(of: .value) { (snapshot) in
-//            <#code#>
-//        }
-//    }
+    func userIsBlocked(_ user: User, isBlocked: @escaping (Bool) -> Void) {
+        blockedUsersRef.child(user.username).observeSingleEvent(of: .value) { snapshot in
+            if let value = snapshot.value as? NSDictionary,
+                let blockedUsernames = value.allKeys as? [String] {
+                isBlocked(blockedUsernames.contains(where: { $0 == UserManager.shared.currentUserUsername }))
+            } else {
+                isBlocked(false)
+            }
+        }
+    }
     
     // MARK: Search Users
 
