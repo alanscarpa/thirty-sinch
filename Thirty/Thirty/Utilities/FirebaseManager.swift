@@ -354,9 +354,12 @@ class FirebaseManager {
     // MARK: Friends
     
     func addUserAsFriend(username: String, completion: @escaping (Result<Void>) -> Void) {
-        friendsRef
-            .child(UserManager.shared.currentUserUsername.lowercased())
-            .updateChildValues([username.lowercased(): true], withCompletionBlock: { [weak self] (error, ref) in
+        unblockUser(username: username) { (result) in
+            switch result {
+            case .success(_):
+                self.friendsRef
+                    .child(UserManager.shared.currentUserUsername.lowercased())
+                    .updateChildValues([username.lowercased(): true], withCompletionBlock: { [weak self] (error, ref) in
                         if let error = error {
                             completion(.failure(error))
                         } else {
@@ -370,7 +373,11 @@ class FirebaseManager {
                                     }
                                 })
                         }
-            })
+                    })
+            case .failure(_):
+                completion(result)
+            }
+        }
     }
 
     func getContacts(completion: @escaping (Result<Void>) -> Void) {
@@ -443,6 +450,18 @@ class FirebaseManager {
                     }
             }
         }
+    }
+    
+    func unblockUser(username: String, completion: @escaping (Result<Void>) -> Void) {
+        blockedUsersRef
+            .child(UserManager.shared.currentUserUsername.lowercased())
+            .child(username).removeValue { (error, ref) in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success)
+                }
+            }
     }
 
     // MARK: Featured Users
