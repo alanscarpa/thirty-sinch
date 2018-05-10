@@ -1,5 +1,8 @@
 PODS:
   - Alamofire (4.7.0)
+  - Crashlytics (3.10.1):
+    - Fabric (~> 1.7.5)
+  - Fabric (1.7.6)
   - Firebase/Auth (4.11.0):
     - Firebase/Core
     - FirebaseAuth (= 4.5.0)
@@ -52,6 +55,8 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
+  - Crashlytics (~> 3.10.1)
+  - Fabric (~> 1.7.6)
   - Firebase/Auth (~> 4.0)
   - Firebase/Core (~> 4.0)
   - Firebase/Database (~> 4.0)
@@ -64,6 +69,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
+  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
+  Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
   Firebase: cc13dfab1038c8b45d7903e01fc690451d6d0b24
   FirebaseAnalytics: 3dfae28d4a5e06f86c4fae830efc2ad3fadb19bc
   FirebaseAuth: 147bf340a0706b44ca1753d6b41ebafd9687cfe6
@@ -81,6 +88,6 @@ SPEC CHECKSUMS:
   SwipeCellKit: 8ae09401e1137566b187980d824310129233c959
   TwilioVideo: d9e0e61748b574f4adb6d540db469b3a93e77e43
 
-PODFILE CHECKSUM: b6d69203c07ee40186ac4b6d6ea4ba6835b495ba
+PODFILE CHECKSUM: 19a580afb800d7b6031ee69dfd4e953d56a6762a
 
 COCOAPODS: 1.4.0

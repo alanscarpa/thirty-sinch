@@ -404,6 +404,7 @@
 				4500C7591E4BDD5A00AF54AA /* Resources */,
 				565854783B5CEE47AB6346E4 /* [CP] Embed Pods Frameworks */,
 				50444A70B51F0B39F367D8BD /* [CP] Copy Pods Resources */,
+				4563C37D20A4FC8800417DE7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -491,6 +492,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4563C37D20A4FC8800417DE7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+		};
 		50444A70B51F0B39F367D8BD /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -756,6 +770,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thirty/Thirty.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 98E8SVTQ29;
 				INFOPLIST_FILE = Thirty/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

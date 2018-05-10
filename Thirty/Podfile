@@ -16,5 +16,7 @@ target 'Thirty' do
   pod 'SCLAlertView'
   pod 'Kingfisher', '~> 4.0'
   pod 'SwipeCellKit'
+  pod 'Fabric', '~> 1.7.6'
+  pod 'Crashlytics', '~> 3.10.1'
 
 end

@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         } else {
             RootViewController.shared.goToWelcomeVC()
         }
-        
         return true
     }
     
