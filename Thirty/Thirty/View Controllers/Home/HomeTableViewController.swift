@@ -537,7 +537,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     // MARK: - Helpers
     
     private func callUser(_ user: User, atIndexPath indexPath: IndexPath) {
-        FirebaseManager.shared.userIsBlocked(user) { [weak self] isBlocked in
+        FirebaseManager.shared.userIsBlocked(user.username) { [weak self] isBlocked in
             if isBlocked {
                 let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to 30 this user 🤷‍♂️", message: "This user can't be reached.")
                 DispatchQueue.main.async {

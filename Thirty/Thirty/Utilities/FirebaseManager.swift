@@ -255,8 +255,8 @@ class FirebaseManager {
     
     // MARK: Blocked Status
     
-    func userIsBlocked(_ user: User, isBlocked: @escaping (Bool) -> Void) {
-        blockedUsersRef.child(user.username).observeSingleEvent(of: .value) { snapshot in
+    func userIsBlocked(_ username: String, isBlocked: @escaping (Bool) -> Void) {
+        blockedUsersRef.child(username).observeSingleEvent(of: .value) { snapshot in
             if let value = snapshot.value as? NSDictionary,
                 let blockedUsernames = value.allKeys as? [String] {
                 isBlocked(blockedUsernames.contains(where: { $0 == UserManager.shared.currentUserUsername }))
@@ -269,21 +269,27 @@ class FirebaseManager {
     // MARK: Search Users
 
     func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {
-        usersRef.child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
-            if let value = snapshot.value as? NSDictionary {
-                let user = User(username: value["display-name"] as? String ?? "",
-                                email: value["email"] as? String ?? "",
-                                phoneNumber: value["phone-number"] as? String ?? "",
-                                password: "",
-                                deviceToken: value["device-token"] as? String ?? "",
-                                firstName: value["first-name"] as? String ?? "",
-                                lastName: value["last-name"] as? String ?? "")
-                completion(.success(user))
-            } else {
+        userIsBlocked(username) { (isBlocked) in
+            if isBlocked {
                 completion(.success(nil))
+            } else {
+                self.usersRef.child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
+                    if let value = snapshot.value as? NSDictionary {
+                        let user = User(username: value["display-name"] as? String ?? "",
+                                        email: value["email"] as? String ?? "",
+                                        phoneNumber: value["phone-number"] as? String ?? "",
+                                        password: "",
+                                        deviceToken: value["device-token"] as? String ?? "",
+                                        firstName: value["first-name"] as? String ?? "",
+                                        lastName: value["last-name"] as? String ?? "")
+                        completion(.success(user))
+                    } else {
+                        completion(.success(nil))
+                    }
+                }) { (error) in
+                    completion(.failure(error))
+                }
             }
-        }) { (error) in
-            completion(.failure(error))
         }
     }
     
@@ -292,18 +298,26 @@ class FirebaseManager {
             if let foundUsers = snapshot.value as? [String: Any] {
                 var users = [User]()
                 let usernames = foundUsers.keys
+                let dispatchGroup = DispatchGroup()
                 usernames.forEach { username in
-                    guard let foundUser = foundUsers[username] as? [String: Any] else { return }
-                    let user = User(username: foundUser["display-name"] as? String ?? "",
-                                    email: foundUser["email"] as? String ?? "",
-                                    phoneNumber: foundUser["phone-number"] as? String ?? "",
-                                    password: "",
-                                    deviceToken: foundUser["device-token"] as? String ?? "",
-                                    firstName: foundUser["first-name"] as? String ?? "",
-                                    lastName: foundUser["last-name"] as? String ?? "")
-                    users.append(user)
+                    dispatchGroup.enter()
+                    self.userIsBlocked(username) { isBlocked in
+                        guard !isBlocked else { dispatchGroup.leave(); return }
+                        guard let foundUser = foundUsers[username] as? [String: Any] else { dispatchGroup.leave(); return }
+                        let user = User(username: foundUser["display-name"] as? String ?? "",
+                                        email: foundUser["email"] as? String ?? "",
+                                        phoneNumber: foundUser["phone-number"] as? String ?? "",
+                                        password: "",
+                                        deviceToken: foundUser["device-token"] as? String ?? "",
+                                        firstName: foundUser["first-name"] as? String ?? "",
+                                        lastName: foundUser["last-name"] as? String ?? "")
+                        users.append(user)
+                        dispatchGroup.leave()
+                    }
                 }
-                completion(.success(users))
+                dispatchGroup.notify(queue: .main) {
+                    completion(.success(users))
+                }
             } else {
                 completion(.success(nil))
             }
