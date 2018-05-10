@@ -39,15 +39,9 @@ class SettingsTableViewController: UITableViewController, SettingsTableViewCellD
         tableView.register(UINib(nibName: SettingsTableViewCell.nibName, bundle: nil), forCellReuseIdentifier: SettingsTableViewCell.nibName)
         tableView.backgroundColor = .thPrimaryPurple
         tableView.separatorInset = .zero
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // If the current user is a featured user
         if UserManager.shared.currentUserIsAFeaturedUser {
             settings.insert(Setting.doNotDisturb, at: settings.count - 2)
         }
-        tableView.reloadData()
     }
 
     // MARK: - Table view data source

@@ -13,7 +13,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     static let shared = RootViewController()
     
     private let rootNavigationController = UINavigationController()
-    private let settingsTableViewController = SettingsTableViewController()
+    private var settingsTableViewController = SettingsTableViewController()
     
     var showNavigationBar = false {
         didSet {
@@ -41,7 +41,6 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     var numberOfViewControllers: Int {
         return allViewControllers.count
     }
-    private var currentVCIndex = 0
     
     required override init(transitionStyle style: UIPageViewControllerTransitionStyle, navigationOrientation: UIPageViewControllerNavigationOrientation, options: [String : Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -129,6 +128,8 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     
     func logOut() {
         goToWelcomeVC()
+        // We do this so we have a fresh settings screen when you log back in.  We keep 1 reference to Settings while logged in for the pageviewcontroller data source.
+        settingsTableViewController = SettingsTableViewController()
         setViewControllers([allViewControllers.first!], direction: .reverse, animated: true, completion: nil)
     }
     
@@ -138,7 +139,6 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         guard let viewControllerIndex = indexOfViewController(viewController) else { return nil }
         let previousIndex = viewControllerIndex - 1
         guard previousIndex >= 0 && numberOfViewControllers > previousIndex else { return nil }
-        currentVCIndex = previousIndex
         return allViewControllers[previousIndex]
     }
     
@@ -147,12 +147,11 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         guard viewControllerIndex == 0, rootNavigationController.topViewController?.isKind(of: HomeTableViewController.self) == true else { return nil }
         let nextIndex = viewControllerIndex + 1
         guard numberOfViewControllers != nextIndex && numberOfViewControllers > nextIndex else { return nil }
-        currentVCIndex = nextIndex
         return allViewControllers[nextIndex]
     }
     
     func scrollToSettingsVC() {
-        guard let nextVC = dataSource?.pageViewController(self, viewControllerAfter: allViewControllers[currentVCIndex]) else { return }
+        guard let nextVC = dataSource?.pageViewController(self, viewControllerAfter: allViewControllers[0]) else { return }
         setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
     }
     
