@@ -253,6 +253,14 @@ class FirebaseManager {
         }, withCancel: cancelBlock)
     }
     
+    // MARK: Blocked Status
+    
+//    func getBlockedStatusForUser(_ user: User) -> Bool {
+//        blockedUsersRef.child(user.username).observeSingleEvent(of: .value) { (snapshot) in
+//            <#code#>
+//        }
+//    }
+    
     // MARK: Search Users
 
     func searchForUserWithUsername(_ username: String, completion: @escaping (Result<User?>) -> Void) {

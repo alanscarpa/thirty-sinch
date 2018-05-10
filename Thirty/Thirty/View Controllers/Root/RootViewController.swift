@@ -13,6 +13,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     static let shared = RootViewController()
     
     private let rootNavigationController = UINavigationController()
+    private let settingsTableViewController = SettingsTableViewController()
     
     var showNavigationBar = false {
         didSet {
@@ -34,7 +35,7 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
     }
     
     var allViewControllers: [UIViewController] {
-        return [rootNavigationController, SettingsTableViewController()]
+        return [rootNavigationController, settingsTableViewController]
     }
     
     var numberOfViewControllers: Int {
@@ -148,6 +149,11 @@ class RootViewController: UIPageViewController, UIPageViewControllerDataSource, 
         guard numberOfViewControllers != nextIndex && numberOfViewControllers > nextIndex else { return nil }
         currentVCIndex = nextIndex
         return allViewControllers[nextIndex]
+    }
+    
+    func scrollToSettingsVC() {
+        guard let nextVC = dataSource?.pageViewController(self, viewControllerAfter: allViewControllers[currentVCIndex]) else { return }
+        setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
     }
     
     // MARK: - Helpers

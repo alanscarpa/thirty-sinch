@@ -44,7 +44,13 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        RootViewController.shared.showNavigationBar = false
+        RootViewController.shared.showNavigationBar = true
+        navigationItem.setHidesBackButton(true, animated: false)
+        let imageView = UIImageView(image: UIImage(named: "appIconForNavBar"))
+        imageView.contentMode = .scaleAspectFit
+        navigationItem.titleView = imageView
+        let settingsBarButtonItem = UIBarButtonItem(image: UIImage(named: "avatar"), style: .plain, target: self, action: #selector(settingsButtonTapped))
+        navigationItem.rightBarButtonItem = settingsBarButtonItem
         RootViewController.shared.showStatusBarBackground = true
         RootViewController.shared.swipeGestureIsEnabled = true
         tableView.reloadData()
@@ -580,7 +586,9 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
         tableView.reloadData()
     }
     
-    var permissionCompletion: ((Bool) -> Void)?
+    @objc func settingsButtonTapped() {
+        RootViewController.shared.scrollToSettingsVC()
+    }
     
     private func requestCameraAndMicrophonePermissions(completion: @escaping (Bool) -> Void) {
         let permissionsVC = CameraMicrophoneTipViewController()
