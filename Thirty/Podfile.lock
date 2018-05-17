@@ -50,7 +50,7 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - SCLAlertView (0.8)
-  - SwipeCellKit (2.2.0)
+  - SwipeCellKit (2.1.0)
   - TwilioVideo (2.0.1)
 
 DEPENDENCIES:
@@ -64,7 +64,7 @@ DEPENDENCIES:
   - JHSpinner
   - Kingfisher (~> 4.0)
   - SCLAlertView
-  - SwipeCellKit
+  - SwipeCellKit (= 2.1)
   - TwilioVideo
 
 SPEC CHECKSUMS:
@@ -85,9 +85,9 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
-  SwipeCellKit: 8ae09401e1137566b187980d824310129233c959
+  SwipeCellKit: 80bdb188166484d8a0d813d9fd7748ad33181815
   TwilioVideo: d9e0e61748b574f4adb6d540db469b3a93e77e43
 
-PODFILE CHECKSUM: 19a580afb800d7b6031ee69dfd4e953d56a6762a
+PODFILE CHECKSUM: 8c70a28b239419ecbf3bf6c0dcf376eff8821a7f
 
 COCOAPODS: 1.4.0
