@@ -206,6 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("became active")
         removeLocalNotifications()
         if let call = CallManager.shared.call, call.state != .active {
+            CallManager.shared.stopSiriAnswerInstructions()
             RootViewController.shared.pushCallVCWithCall(call)
         }
     }

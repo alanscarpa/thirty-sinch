@@ -29,7 +29,8 @@ class CallManager: NSObject, CXProviderDelegate {
     private var audioDevice: TVIDefaultAudioDevice = TVIDefaultAudioDevice()
     weak var delegate: CallManagerDelegate?
     private var ringbackAudioPlayer: AVAudioPlayer?
-    
+    private var synthesizer = AVSpeechSynthesizer()
+
     func configure() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeVideoChat, options: [.mixWithOthers, .allowBluetooth, .defaultToSpeaker])
@@ -80,6 +81,9 @@ class CallManager: NSObject, CXProviderDelegate {
         ringbackAudioPlayer?.currentTime = 0.0
     }
     
+    func stopSiriAnswerInstructions() {
+        synthesizer.stopSpeaking(at: .immediate)
+    }
     // MARK -
     
     func performStartCallAction(call: Call, completion: @escaping ((Error?) -> Void)) {
@@ -201,6 +205,13 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.isEnabled = true
         if call?.direction == .outgoing {
             playRingbackTone()
+        }
+        if UIApplication.shared.applicationState == .background {
+            synthesizer = AVSpeechSynthesizer()
+            let utterance = AVSpeechUtterance(string: "Tap the \"Start 30\" button to begin.  It's in the bottom right corner.  Tap the \"Start 30\" button to get started.")
+            utterance.rate = 0.48
+            utterance.preUtteranceDelay = 1.5
+            synthesizer.speak(utterance)
         }
     }
     

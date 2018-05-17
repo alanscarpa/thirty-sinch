@@ -646,7 +646,11 @@ class FirebaseManager {
     }
     
     func removeBusyStatusForCall(_ call: Call) {
-        busyUsersCallsRef.child(call.caller).removeValue()
-        busyUsersCallsRef.child(call.callee).removeValue()
+        if !call.caller.isEmpty {
+            busyUsersCallsRef.child(call.caller).removeValue()
+        }
+        if !call.callee.isEmpty {
+            busyUsersCallsRef.child(call.callee).removeValue()
+        }
     }
 }
