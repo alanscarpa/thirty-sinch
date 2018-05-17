@@ -250,6 +250,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             remoteParticipant = participant
             remoteParticipant?.delegate = self
         }
+        if call.direction == .outgoing {
+            CallManager.shared.stopRingbackTone()
+        }
         logMessage(messageText: "Participant \(participant.identity) connected with \(participant.remoteAudioTracks.count) audio and \(participant.remoteVideoTracks.count) video tracks")
     }
     

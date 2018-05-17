@@ -58,6 +58,7 @@ class CallManager: NSObject, CXProviderDelegate {
     }
     
     func playRingbackTone() {
+        print("PLAY RINGBACK TONE")
         let path = Bundle.main.path(forResource: "chill-ringback-quiet.m4a", ofType:nil)!
         let url = URL(fileURLWithPath: path)
         ringbackAudioPlayer = try? AVAudioPlayer(contentsOf: url)
@@ -84,6 +85,7 @@ class CallManager: NSObject, CXProviderDelegate {
     func stopSiriAnswerInstructions() {
         synthesizer.stopSpeaking(at: .immediate)
     }
+    
     // MARK -
     
     func performStartCallAction(call: Call, completion: @escaping ((Error?) -> Void)) {
