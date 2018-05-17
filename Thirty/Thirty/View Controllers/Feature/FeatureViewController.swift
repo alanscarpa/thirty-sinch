@@ -50,7 +50,7 @@ class FeatureViewController: UIViewController, MFMessageComposeViewControllerDel
     func setUpUI() {
         title = "30 PRESENTS..."
         photoImageView.makeCircle()
-        titleLabel.text = featuredUser.username.uppercased()
+        titleLabel.text = featuredUser.displayName.uppercased()
         detailsLabel.text = featuredUser.promoDetails
         addUserButton.setTitle("ADD \(featuredUser.username.uppercased())", for: .normal)
         addUserButton.setBackgroundImage(UIImage(color: .darkGray, size: addUserButton.frame.size), for: .disabled)

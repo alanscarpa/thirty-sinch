@@ -485,6 +485,9 @@ class FirebaseManager {
                     if let promoDetails = (value[featuredUserName] as? NSDictionary)?["promo-details"] as? String {
                         featuredUser.promoDetails = promoDetails
                     }
+                    if let displayName = (value[featuredUserName] as? NSDictionary)?["display-name"] as? String {
+                        featuredUser.displayName = displayName
+                    }
                     if let deviceToken = (value[featuredUserName] as? NSDictionary)?["device-token"] as? String {
                         featuredUser.deviceToken = deviceToken
                     }

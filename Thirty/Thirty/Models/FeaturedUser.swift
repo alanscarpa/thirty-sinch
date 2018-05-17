@@ -11,4 +11,5 @@ import Foundation
 class FeaturedUser: User {
     var featureDate = Date()
     var promoDetails = ""
+    var displayName = ""
 }
