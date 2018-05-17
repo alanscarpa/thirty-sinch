@@ -18,7 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var window: UIWindow?
     private var loggedIn: Bool { return FirebaseManager.shared.currentUserIsLoggedIn }
-    
+    let registry = PKPushRegistry(queue: nil)
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         CallManager.shared.configure()
         FirebaseApp.configure()
@@ -31,7 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
         
-        let registry = PKPushRegistry(queue: nil)
         registry.delegate = self
         registry.desiredPushTypes = [PKPushType.voIP]
         

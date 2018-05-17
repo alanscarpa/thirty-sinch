@@ -508,6 +508,7 @@ class FirebaseManager {
     func updateDeviceToken() {
         currentUserRef?.observeSingleEvent(of: .value) { snapshot in
             if snapshot.exists() {
+                guard !TokenUtils.deviceToken.isEmpty else { return }
                 self.currentUserRef?.updateChildValues(["device-token": TokenUtils.deviceToken])
             }
         }
