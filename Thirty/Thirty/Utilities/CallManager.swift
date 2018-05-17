@@ -148,8 +148,9 @@ class CallManager: NSObject, CXProviderDelegate {
         audioDevice.block()
 
         if UIApplication.shared.applicationState == .background {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.sendLocalNotification()
+            // We used to send a local push to tell the user to tap the "Start 30" button but this was confusing.  Removing for now.
+            // let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            // appDelegate.sendLocalNotification()
         }
         action.fulfill()
     }
