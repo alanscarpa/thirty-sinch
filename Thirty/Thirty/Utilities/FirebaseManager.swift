@@ -514,7 +514,7 @@ class FirebaseManager {
     }
     
     func getDeviceTokenForUsername(_ username: String, completion: @escaping (Result<String>) -> Void) {
-        databaseRef.child("users").child(username).observeSingleEvent(of: .value, with: { snapshot in
+        databaseRef.child("users").child(username.lowercased()).observeSingleEvent(of: .value, with: { snapshot in
             let value = snapshot.value as? NSDictionary
             if let deviceToken = value?["device-token"] as? String {
                 completion(.success(deviceToken))

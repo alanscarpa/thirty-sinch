@@ -153,7 +153,14 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
                 guard let strongSelf = self else { return }
                 switch result {
                 case .success(let token):
-                    strongSelf.makeCallWithDeviceToken(token, toRoom: room)
+                    if token.isEmpty {
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "User has logged out of 30.", message: "Please try again later.") { action in
+                            strongSelf.endCall()
+                        }
+                        strongSelf.present(alertVC, animated: true, completion: nil)
+                    } else {
+                        strongSelf.makeCallWithDeviceToken(token, toRoom: room)
+                    }
                 case .failure(let error):
                     let alertVC = UIAlertController.createSimpleAlert(withTitle: "User has logged out of 30.  Please try again later.", message: error.localizedDescription) { action in
                         strongSelf.endCall()

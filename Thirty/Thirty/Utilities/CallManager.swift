@@ -107,6 +107,7 @@ class CallManager: NSObject, CXProviderDelegate {
         callKitCallController.request(transaction) { error in
             if let error = error {
                 print("EndCallAction transaction request failed: \(error.localizedDescription).")
+                self.endCall()
             } else {
                 print("EndCallAction transaction request successful")
             }
@@ -249,6 +250,8 @@ class CallManager: NSObject, CXProviderDelegate {
         // AudioDevice is enabled by default
         audioDevice.isEnabled = true
         delegate?.callDidEnd()
-        UIApplication.shared.isIdleTimerDisabled = false
+        DispatchQueue.main.async {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
     }
 }
