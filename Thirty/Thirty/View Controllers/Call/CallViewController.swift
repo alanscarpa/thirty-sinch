@@ -165,17 +165,28 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     private func makeCallWithDeviceToken(_ deviceToken: String, toRoom room: TVIRoom) {
-        FirebaseManager.shared.createCallStatusForCall(call) { [weak self] result in
+        FirebaseManager.shared.setBusyStatusForCall(call) { [weak self] result in
             guard let strongSelf = self else { return }
             switch result {
-            case .success():
-                var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString, "caller_full_name" : strongSelf.call.callerFullName]
-                #if DEBUG
-                    parameters["dev"] = true
-                #endif
-                strongSelf.sendVOIPPush(parameters)
+            case .success:
+                FirebaseManager.shared.createCallStatusForCall(strongSelf.call) { [weak self] result in
+                    guard let strongSelf = self else { return }
+                    switch result {
+                    case .success():
+                        var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString, "caller_full_name" : strongSelf.call.callerFullName]
+                        #if DEBUG
+                        parameters["dev"] = true
+                        #endif
+                        strongSelf.sendVOIPPush(parameters)
+                    case .failure(let error):
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to create call on FB.", message: error.localizedDescription) { action in
+                            strongSelf.endCall()
+                        }
+                        strongSelf.present(alertVC, animated: true, completion: nil)
+                    }
+                }
             case .failure(let error):
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to create call on FB.", message: error.localizedDescription) { action in
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to set busy status for call.", message: error.localizedDescription) { action in
                     strongSelf.endCall()
                 }
                 strongSelf.present(alertVC, animated: true, completion: nil)
@@ -359,6 +370,7 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
             THSpinner.dismiss()
             room?.disconnect()
             CallManager.shared.performEndCallAction(uuid: call.uuid)
+            FirebaseManager.shared.removeBusyStatusForCall(call)
             FirebaseManager.shared.endCallWithRoomName(call.roomName)
             dismiss(animated: true, completion: nil)
             CallManager.shared.stopRingbackTone()

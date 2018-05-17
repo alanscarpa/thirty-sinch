@@ -572,6 +572,7 @@ class HomeTableViewController: UITableViewController, UISearchResultsUpdating, U
                                 strongSelf.present(alertVC, animated: true, completion: nil)
                             }
                         } else if let deviceToken = user.deviceToken, !deviceToken.isEmpty {
+                            
                             let call = Call(uuid: UUID(), caller: UserManager.shared.currentUserUsername, callerFullName: UserManager.shared.currentUser.fullName, callee: user.username, calleeDeviceToken: deviceToken, direction: .outgoing)
                             if AVCaptureDevice.authorizationStatus(for: .video) != .authorized || AVAudioSession.sharedInstance().recordPermission() != .granted  {
                                 strongSelf.requestCameraAndMicrophonePermissions { granted in

@@ -32,6 +32,7 @@ class FirebaseManager {
     private let friendsRef = Database.database().reference().child("friends")
     private let blockedUsersRef = Database.database().reference().child("blocked-users")
     private let activeCallsRef = Database.database().reference().child("active-calls")
+    private let busyUsersCallsRef = Database.database().reference().child("busy-users")
 
     var currentUsersFriendsRef: DatabaseReference? {
         // References will crash if username is blank ""
@@ -612,5 +613,26 @@ class FirebaseManager {
                 }
             }
         }
+    }
+    
+    func setBusyStatusForCall(_ call: Call, completion: @escaping (Result<Void>) -> Void) {
+        busyUsersCallsRef.child(call.caller).setValue(true) { (error, ref) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                self.busyUsersCallsRef.child(call.callee).setValue(true) { (error, ref) in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success)
+                    }
+                }
+            }
+        }
+    }
+    
+    func removeBusyStatusForCall(_ call: Call) {
+        busyUsersCallsRef.child(call.caller).removeValue()
+        busyUsersCallsRef.child(call.callee).removeValue()
     }
 }
