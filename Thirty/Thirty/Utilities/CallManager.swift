@@ -208,11 +208,14 @@ class CallManager: NSObject, CXProviderDelegate {
             playRingbackTone()
         }
         if UIApplication.shared.applicationState == .background {
-            synthesizer = AVSpeechSynthesizer()
-            let utterance = AVSpeechUtterance(string: "Tap the \"Start 30\" button to begin.  It's in the bottom right corner.  Tap the \"Start 30\" button to get started.")
-            utterance.rate = 0.48
-            utterance.preUtteranceDelay = 1.5
-            synthesizer.speak(utterance)
+            if !UserDefaultsManager.shared.hasHeardSiriInstructions {
+                synthesizer = AVSpeechSynthesizer()
+                let utterance = AVSpeechUtterance(string: "Tap the \"Start 30\" button to begin.  It's in the bottom right corner.  Tap the \"Start 30\" button to get started.")
+                utterance.rate = 0.48
+                utterance.preUtteranceDelay = 0.5
+                synthesizer.speak(utterance)
+                UserDefaultsManager.shared.hasHeardSiriInstructions = true
+            }
         }
     }
     
