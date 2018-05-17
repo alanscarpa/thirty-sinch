@@ -165,31 +165,41 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     }
     
     private func makeCallWithDeviceToken(_ deviceToken: String, toRoom room: TVIRoom) {
-        FirebaseManager.shared.setBusyStatusForCall(call) { [weak self] result in
+        FirebaseManager.shared.getBusyStatusForCall(call) { [weak self] calleeIsBusy in
             guard let strongSelf = self else { return }
-            switch result {
-            case .success:
-                FirebaseManager.shared.createCallStatusForCall(strongSelf.call) { [weak self] result in
+            if calleeIsBusy {
+                let alertVC = UIAlertController.createSimpleAlert(withTitle: "\(strongSelf.call.callee) is currently in another 30!", message: "Try again in about 30 seconds.  👍") { action in
+                    strongSelf.endCall()
+                }
+                strongSelf.present(alertVC, animated: true, completion: nil)
+            } else {
+                FirebaseManager.shared.setBusyStatusForCall(strongSelf.call) { [weak self] result in
                     guard let strongSelf = self else { return }
                     switch result {
-                    case .success():
-                        var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString, "caller_full_name" : strongSelf.call.callerFullName]
-                        #if DEBUG
-                        parameters["dev"] = true
-                        #endif
-                        strongSelf.sendVOIPPush(parameters)
+                    case .success:
+                        FirebaseManager.shared.createCallStatusForCall(strongSelf.call) { [weak self] result in
+                            guard let strongSelf = self else { return }
+                            switch result {
+                            case .success():
+                                var parameters: Parameters = ["device_token": deviceToken, "room_name": strongSelf.call.roomName, "uuid_string": strongSelf.call.uuid.uuidString, "caller_full_name" : strongSelf.call.callerFullName]
+                                #if DEBUG
+                                parameters["dev"] = true
+                                #endif
+                                strongSelf.sendVOIPPush(parameters)
+                            case .failure(let error):
+                                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to create call on FB.", message: error.localizedDescription) { action in
+                                    strongSelf.endCall()
+                                }
+                                strongSelf.present(alertVC, animated: true, completion: nil)
+                            }
+                        }
                     case .failure(let error):
-                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to create call on FB.", message: error.localizedDescription) { action in
+                        let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to set busy status for call.", message: error.localizedDescription) { action in
                             strongSelf.endCall()
                         }
                         strongSelf.present(alertVC, animated: true, completion: nil)
                     }
                 }
-            case .failure(let error):
-                let alertVC = UIAlertController.createSimpleAlert(withTitle: "Unable to set busy status for call.", message: error.localizedDescription) { action in
-                    strongSelf.endCall()
-                }
-                strongSelf.present(alertVC, animated: true, completion: nil)
             }
         }
     }

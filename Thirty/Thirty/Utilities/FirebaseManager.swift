@@ -615,6 +615,17 @@ class FirebaseManager {
         }
     }
     
+    func getBusyStatusForCall(_ call: Call, calleeIsBusy: @escaping (Bool) -> Void) {
+        busyUsersCallsRef.observeSingleEvent(of: .value) { snapshot in
+            if let value = snapshot.value as? NSDictionary,
+                let busyUsers = value.allKeys as? [String] {
+                calleeIsBusy(busyUsers.contains(where: { $0 == call.callee }))
+            } else {
+                calleeIsBusy(false)
+            }
+        }
+    }
+    
     func setBusyStatusForCall(_ call: Call, completion: @escaping (Result<Void>) -> Void) {
         busyUsersCallsRef.child(call.caller).setValue(true) { (error, ref) in
             if let error = error {
