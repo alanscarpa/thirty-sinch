@@ -69,7 +69,9 @@ class CallViewController: UIViewController, TVIRoomDelegate, TVIRemoteParticipan
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showCallSpinner()
+        DispatchQueue.main.async {
+            self.showCallSpinner()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
